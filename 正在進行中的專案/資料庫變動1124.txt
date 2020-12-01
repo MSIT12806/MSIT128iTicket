@@ -1,0 +1,7 @@
+Order資料表
+增加OrderStatus欄位代表是否有付款
+增加OrderGuid訂單編號
+
+OrderDetail資料表增加trigger
+當產生OrderDetail時,Ticket的UnitsInStock會扣掉相應的數量
+當刪除OrderDetail時,Ticket的UnitsInStock會補回相應的數量

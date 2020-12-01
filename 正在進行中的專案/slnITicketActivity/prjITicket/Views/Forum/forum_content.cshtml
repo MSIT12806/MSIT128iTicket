@@ -1,0 +1,132 @@
+﻿@model prjITicket.Models.Article
+@{
+    ViewBag.Title = "forum_content";
+    int count = 0;
+}
+<link href="~/css/styles.css" rel="stylesheet" />
+<link href="~/Content/Forum_use/forumcontent.css" rel="stylesheet" />
+<div class="container">
+    <div class="row">
+        <!-- Post Content Column -->
+        <div class="col-lg-8">
+            <!-- Title -->
+
+            <h1 class="mt-4">@Model.ArticleTitle</h1>
+            <!-- Author -->
+            <p class="lead">
+                by
+                <a href="#">@Model.Member.Name</a>
+            </p>
+            <hr>
+            <!-- Date/Time -->
+            <p>Posted on @Model.Date</p>
+            <hr>
+            <!-- Post Content -->
+
+            <div id="content" style="width:auto; height:auto;">
+
+
+
+            </div>
+            <!-- Comments Form -->
+            <div class="card my-4">
+                <h5 class="card-header">Leave a Comment:</h5>
+                <div class="card-body">
+                    <div class="form-group">
+                        <textarea class="form-control" rows="3" id="replycontent"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary" id="replysql">Submit</button>
+                </div>
+            </div>
+            <div id="ajaxdemoshow">
+
+            </div>
+        </div>
+        <!-- Sidebar Widgets Column -->
+        <div class="col-md-4">
+            <!-- Search Widget -->
+            <div class="card my-4">
+                <h5 class="card-header">Search</h5>
+                <div class="card-body">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search for...">
+                        <span class="input-group-append">
+                            <button class="btn btn-secondary" type="button">Go!</button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <!-- Categories Widget -->
+            <div class="card my-4">
+                <h5 class="card-header">Categories</h5>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <ul class="list-unstyled mb-0">
+                                <li>
+                                    <a href="#">Web Design</a>
+                                </li>
+                                <li>
+                                    <a href="#">HTML</a>
+                                </li>
+                                <li>
+                                    <a href="#">Freebies</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-lg-6">
+                            <ul class="list-unstyled mb-0">
+                                <li>
+                                    <a href="#">JavaScript</a>
+                                </li>
+                                <li>
+                                    <a href="#">CSS</a>
+                                </li>
+                                <li>
+                                    <a href="#">Tutorials</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Side Widget -->
+            <div class="card my-4">
+                <h5 class="card-header" style="background-color:coral">管理員/發文者才能看到的文章操作區</h5>
+                <div class="card-body">
+                    @Html.ActionLink("編輯", "before_Edit_article", "Forum", new { articleID = Model.ArticleID }, null)
+                    @Html.ActionLink("刪除", "Delete", "Forum", new { articleID = Model.ArticleID }, null)
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /.row -->
+</div>
+<script>
+    refreshTime()
+    function refreshTime() {
+    $("#ajaxdemoshow").load("/Forum/forum_reply?articleID=@Model.ArticleID")
+    }
+    setInterval("refreshTime()", 60000); 
+
+    $("#content").html(`@Html.Raw(Model.ArticleContent)`);
+
+     $("#replysql").click(function () {
+        let rpcontent = $("#replycontent").val();
+        let articleID = @Model.ArticleID;
+         if (rpcontent == "") {
+             alert("請輸入留言");
+         }
+         else {
+             $.ajax({
+                 type: "post",
+                 url: "@Url.Action("forum_content")",
+                 data: { content: rpcontent, articleID: articleID },
+                 success: function (data) {
+                     alert("成功")
+                 }
+             });
+         }
+
+    });
+</script>
