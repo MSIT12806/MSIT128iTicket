@@ -1,15 +1,15 @@
-git hub �ϥΤ�U�G
+﻿git hub 使用手冊：
 
-������T�Ѿ\�Ghttps://cloud.tencent.com/developer/article/1355182
+相關資訊參閱：https://cloud.tencent.com/developer/article/1355182
 
-�̷ӤW�z���}�Ыئb�a�����w�Bgithub���ݪ����w�A�ñN�G�����p�H��G
+依照上述網址創建在地版本庫、github雲端版本庫，並將二者關聯以後：
 
-1. �b�b�a�����w�i��{�����g
-2. �i�H�z�L"git status"���O�X�ݥثe��Ƨ��Mgit�������t���A�p�A���L�s�W�ɮסB�ɮפ��e���L��ʡC
-   "git add XXX"�i�N��Ƨ����٤��bgit�����w���ɮצs�J�����w���C
-3. " git commit -m "" "���O�X�i�H�N�ثe��Ƨ������ʦP�B��git�����A�᭱���޸��i�H���O��r�C
-4. "git log" �i�H�ݾ��v����
-5. "git reset -hard HEAD^" �X��^�N�h�^�X�Ӫ������e�A"-hard HEAD~n"�A�h�^��n�Ӫ������e
+1. 在在地版本庫進行程式撰寫
+2. 可以透過"git status"指令碼看目前資料夾和git中間的差異，如，有無新增檔案、檔案內容有無更動。
+   "git add XXX"可將資料夾中還不在git版本庫的檔案存入版本庫中。
+3. " git commit -m "" "指令碼可以將目前資料夾的異動同步到git之中，後面雙引號可以註記文字。
+4. "git log" 可以看歷史紀錄
+5. "git reset -hard HEAD^" 幾個^就退回幾個版本之前，"-hard HEAD~n"，退回到n個版本之前
 
 11111111111111111111111111
 6. "
