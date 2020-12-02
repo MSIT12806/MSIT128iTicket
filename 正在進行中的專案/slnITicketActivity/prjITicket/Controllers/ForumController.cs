@@ -133,7 +133,7 @@ namespace 期末專題_討論版.Controllers
         }
         public ActionResult Reply_Delete(int replyID, int ArticleID)
         {
-            TicketSysEntities2 db = new TicketSysEntities2();
+            TicketSysEntities db = new TicketSysEntities();
             var q = db.Reply.Where(n => n.ReplyID == replyID).FirstOrDefault();
             db.Reply.Remove(q);
             db.SaveChanges();
@@ -324,7 +324,7 @@ namespace 期末專題_討論版.Controllers
                     where n.ArticleID == articleID
                     select n;
             Article article = q.FirstOrDefault();
-            return View(article);
+            return PartialView(article);
 
         }
     }

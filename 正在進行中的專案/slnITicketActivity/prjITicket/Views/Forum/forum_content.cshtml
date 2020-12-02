@@ -105,7 +105,7 @@
 <script>
     refreshTime()
     function refreshTime() {
-    $("#ajaxdemoshow").load("/Forum/forum_reply?articleID=@Model.ArticleID")
+        $("#ajaxdemoshow").empty().load("/Forum/forum_reply?articleID=@Model.ArticleID")
     }
     setInterval("refreshTime()", 60000); 
 
