@@ -441,6 +441,7 @@
       <DependentUpon>TicketSysModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Forum\CCropImage.cs" />
+    <Compile Include="Models\Forum\CleanClear.cs" />
     <Compile Include="Models\Member.cs">
       <DependentUpon>TicketSysModel.tt</DependentUpon>
     </Compile>

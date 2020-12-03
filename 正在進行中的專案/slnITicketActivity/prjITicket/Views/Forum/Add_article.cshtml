@@ -7,6 +7,11 @@
     #ImgAreaSelect img:not(.img2) {
         max-width: 700px;
     }
+
+    .ck-editor__main {
+        height: 400px;
+        overflow: scroll;
+    }
 </style>
 
 <div class="container">
@@ -14,11 +19,14 @@
         {*@
     <div class="row">
         <!-- Post Content Column -->
-        <div class="col-lg-8">
+        <div class="col-lg-9">
             <!-- Title -->
             <h1 class="mt-4">Real Post</h1>
             <div class="card my-lg-n5">
                 <h5 class="toast-header">發表新文章</h5>
+                <div class="my-4">
+                    <input id="articleTitle" style="margin-top:10px;margin-bottom:10px;" type="text" class="form-control" placeholder="請輸入文章標題" />
+                </div>
                 <div class="toast-body">
                     <select style="width:80px">
                         <option value="0">選擇討論版</option>
@@ -35,39 +43,64 @@
                         <option value="4">爆料</option>
                     </select>
                     <div>
-                        <label for="UploadPhoto">選擇封面圖片(accept: .png, .jpg, .jpeg)</label>
+                        <p for="UploadPhoto">選擇封面圖片(accept: .png, .jpg, .jpeg)</p>
 
-                        <input id="UploadPhoto" accept=".png, .jpg, .jpeg" type="file" class="form-control" placeholder="Default input" />
+                        <input id="UploadPhoto" accept=".png, .jpg, .jpeg" type="file" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" />
                     </div>
+
+                    <hr />
                     @* 是不是給他一個不限大小的裁剪區比較乾脆? *@
                     @*置中？*@
                     <div id="ImgAreaSelect">
-                        剪裁圖片區
-                        <div id="Panel1" style="height: 100px; padding: 5px 0px 5px 0px;">
-                            <img id="Image3" style="display: none;" />
+                        剪裁圖片
+                        <div id="Panel1" class="my-4">
+                            <img id="Image3" src="xxx" onerror="this.src='/Content/Forum_use/ImageStore/1144.jpg'" />
                         </div>
+
                         <hr />
-                        <input type="button" id="ButtonCrop" value="Save the Crop Image" />
-                        <hr />
-                        <p>預覽圖片</p>
-                        <div align="center">
-                            <div style="width: 700px; height: 200px;">
-                                <div style="float: left; position: relative; overflow: hidden; width: 600px; height: 200px;">
-                                    <img id="Image2" class="img2" alt="Thumbnail Preview" />
+                        @* 彈出視窗:Modal *@
+                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-lg" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>預覽圖片</p>
+                                        <div align="center">
+                                            <div style="width: 700px; height: 200px;">
+                                                <div style="float: left; position: relative; overflow: hidden; width: 600px; height: 200px;">
+                                                    <img id="Image2" class="img2" alt="Thumbnail Preview" />
+                                                </div>
+                                            </div>
+                                            <hr />
+
+
+                                            <p>框選圖片：</p>
+                                            <img id="Image1" style="float: left; margin-right: 10px;" alt="Create Thumbnail" />
+                                        </div>
+                                        <form>
+                                            <input type="hidden" id="x1" name="x1" value="" runat="server" />
+                                            <input type="hidden" id="y1" name="y1" value="" runat="server" />
+                                            <input type="Hidden" id="x2" name="x2" value="" runat="server" />
+                                            <input type="hidden" id="y2" name="y2" value="" runat="server" />
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        <input type="button" class="btn btn-primary" id="ButtonCrop" data-dismiss="modal" value="Save the Crop Image" />
+
+                                    </div>
                                 </div>
                             </div>
-                            <hr />
-                            <p>框選圖片：</p>
-                            <img id="Image1" style="float: left; margin-right: 10px;" alt="Create Thumbnail" />
                         </div>
-                        <input type="hidden" id="x1" name="x1" value="" runat="server" />
-                        <input type="hidden" id="y1" name="y1" value="" runat="server" />
-                        <input type="Hidden" id="x2" name="x2" value="" runat="server" />
-                        <input type="hidden" id="y2" name="y2" value="" runat="server" />
-                    </div>
-                    <input id="articleTitle" style="margin-top:10px;margin-bottom:10px;" type="text" class="form-control" placeholder="Default input" />
 
-                    <div class="form-group" style="width:auto;height:auto;">
+                    </div>
+
+                    <div>
                         <textarea id="editor">
                             
                         </textarea>
@@ -80,7 +113,7 @@
 
         </div>
         <!-- Sidebar Widgets Column -->
-        <div class="col-md-4">
+        <div class="col-md-3">
             <!-- Search Widget -->
             <div class="card my-4">
                 <h5 class="card-header">Search</h5>
@@ -146,7 +179,8 @@
             {
                 handles: false,
                 aspectRatio: '3:1',
-                onSelectChange: preview
+                onSelectChange: preview,
+                instance: true
             });
 
         $('#ButtonCrop').click(function () {
@@ -234,6 +268,8 @@
                         $('img#Image3').attr('src', result.CropImage);
                         $('img#Image3').show();
                         picPath = result.CropImage;
+                        $('img#Image1').imgAreaSelect({ hide: true });//好莫名其妙的東西喔！
+
                     }
                     return false;
                 }

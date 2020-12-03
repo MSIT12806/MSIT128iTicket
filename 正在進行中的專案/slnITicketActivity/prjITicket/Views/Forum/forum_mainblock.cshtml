@@ -1,6 +1,10 @@
 ﻿@model List<prjITicket.Models.Article>
+@using prjITicket.Models
+
+
 @{
-    @functions{
+    Member member = Session[CDictionary.SK_Logined_Member] as Member;
+    @functions{        
         public static string RemoveHtml(String html)
         {
             string text = System.Text.RegularExpressions.Regex.Replace(html, "<[^>]+>", "");
@@ -14,77 +18,78 @@
 <link href="~/Content/Forum_use/Forum.css" rel="stylesheet" />
 <div class="container-fluid">
     <div class="row">
-        <div class="col-2" style="position:relative;">
-            <div class="sidebar">
+        <div class="col-xl-2 col-md-3 col-sm-12 sidebar">
 
-                <div>
-                    <a href="http://localhost:49752/Forum/forum_mainblock" class="Active">電影娛樂新視界</a>
-                </div>
-                <div>
-                    <a href="http://localhost:49752/Forum/forum_mainblock">大眾交通討論板</a>
-                </div>
-                <div class="navbar-fixed-bottom" style="bottom:100px;">
-                    <a href="~/Forum/before_Add_article" class="btn btn-info btn-lg" style="font-size:75px;position:fixed; bottom:50px;">
-                        <span class="glyphicon"></span> 發文
-                    </a>
-                </div>
+            <div style="text-overflow: ellipsis;">
+                <a href="http://localhost:49752/Forum/forum_mainblock" class="active">電影娛樂新視界</a>
+            </div>
+            <div>
+                <a href="http://localhost:49752/Forum/forum_mainblock">大眾交通討論板</a>
+            </div>
+            <div class="navbar-fixed-bottom" style="bottom:100px;">
+                <a href="~/Forum/before_Add_article" class="btn btn-info btn-lg" style="font-size:8vmin;position:fixed; bottom:50px;">
+                    <span class="glyphicon"></span> 發文
+                </a>
             </div>
         </div>
-        <div class=" col-10">
-            <div class="container">
-                <!-- Page Content -->
-                <!-- Page Heading -->
-                <h1 class="my-4">
-                    電影娛樂新視界
-                    <small>Secondary Text</small>
-                </h1>
-                <!-- Project One -->
-                @foreach (var item in Model)
-                {
+        <div class=" col-md-9 col-sm-12">
+            <!-- Page Content -->
+            <!-- Page Heading -->
+            <h1 class="my-4">
+                電影娛樂新視界
+                <small>Secondary Text</small>
+            </h1>
+            <!-- Project One -->
+            @foreach (var item in Model.OrderByDescending(n=>n.Date))
+            {
 
-                    <div class="row">
-                        <div class="col-md-6">
-                            <a href="~/Forum/forum_content/?articleID=@item.ArticleID"><img id="img@(count)" class="img-fluid rounded mb-3 mb-md-0" src="@item.Picture" alt=""></a>
-                        </div>
-                        <div class="col-md-6">
-                            @Html.ActionLink("刪除", "Delete", "Forum", new { articleID = item.ArticleID }, null)
-                            @Html.ActionLink("編輯", "before_Edit_article", "Forum", new { articleID = item.ArticleID }, null)
-                            <h3>@Html.ActionLink(string.IsNullOrEmpty(item.ArticleTitle) ? "沒有標題" : item.ArticleTitle, "forum_content", "Forum", new { articleID = item.ArticleID }, null)</h3>
-                            <p id="content" style="overflow:hidden;white-space: nowrap;text-overflow: ellipsis;display: -webkit-box;-webkit-line-clamp: 3;-webkit-box-orient: vertical;white-space: normal;">
-                                @RemoveHtml(item.ArticleContent)
-                            </p>
-                            @Html.ActionLink("更多", "forum_content", "Forum", new { articleID = item.ArticleID }, new { @class = "btn btn-primary" })
-                        </div>
+                <div class="row">
+                    <div class="col-xl-2" style="height:auto"></div>
+                    <div class="col-xl-5 col-lg-6 col-md-10">
+                        <a href="~/Forum/forum_content/?articleID=@item.ArticleID"><img id="img@(count)" class="img-fluid rounded mb-3 mb-md-0" style="width:600px;" src="@item.Picture" alt=""></a>
                     </div>
+                    <div class="col-xl-4 col-lg-6 col-md-10">
+                        @if (member!=null && item.MemberID == member.MemberID)
+                        {
+                            @Html.ActionLink(" 刪除 ", "Delete", "Forum", new { articleID = item.ArticleID }, null);
+                            @Html.ActionLink(" 編輯 ", "before_Edit_article", "Forum", new { articleID = item.ArticleID }, null);
+                        }
 
-                    <hr>
-                    count++;
-                }
-                <!-- Pagination -->
-                <ul class="pagination justify-content-center">
-                    <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                            <span class="sr-only">Previous</span>
-                        </a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">1</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">2</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">3</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                            <span class="sr-only">Next</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
+                        <h3>@Html.ActionLink(string.IsNullOrEmpty(item.ArticleTitle) ? "沒有標題" : item.ArticleTitle, "forum_content", "Forum", new { articleID = item.ArticleID }, null)</h3>
+                        <p id="content" style="overflow:hidden;white-space: nowrap;text-overflow: ellipsis;display: -webkit-box;-webkit-line-clamp: 3;-webkit-box-orient: vertical;white-space: normal;">
+                            @RemoveHtml(item.ArticleContent)
+                        </p>
+                        @Html.ActionLink("更多", "forum_content", "Forum", new { articleID = item.ArticleID }, new { @class = "btn btn-primary" })
+                    </div>
+                </div>
+
+                <hr>
+                count++;
+            }
+            <!-- Pagination -->
+            <ul class="pagination justify-content-center">
+                <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="#">1</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="#">2</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="#">3</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
         </div>
     </div>
 </div>

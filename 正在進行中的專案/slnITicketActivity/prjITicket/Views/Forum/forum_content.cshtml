@@ -8,7 +8,7 @@
 <div class="container">
     <div class="row">
         <!-- Post Content Column -->
-        <div class="col-lg-8">
+        <div class="col-lg-9">
             <!-- Title -->
 
             <h1 class="mt-4">@Model.ArticleTitle</h1>
@@ -43,9 +43,9 @@
             </div>
         </div>
         <!-- Sidebar Widgets Column -->
-        <div class="col-md-4">
+        <div class="col-md-3">
             <!-- Search Widget -->
-            <div class="card my-4">
+            <div class="card my-3">
                 <h5 class="card-header">Search</h5>
                 <div class="card-body">
                     <div class="input-group">
@@ -57,7 +57,7 @@
                 </div>
             </div>
             <!-- Categories Widget -->
-            <div class="card my-4">
+            <div class="card my-3">
                 <h5 class="card-header">Categories</h5>
                 <div class="card-body">
                     <div class="row">
@@ -91,7 +91,7 @@
                 </div>
             </div>
             <!-- Side Widget -->
-            <div class="card my-4">
+            <div class="card my-3">
                 <h5 class="card-header" style="background-color:coral">管理員/發文者才能看到的文章操作區</h5>
                 <div class="card-body">
                     @Html.ActionLink("編輯", "before_Edit_article", "Forum", new { articleID = Model.ArticleID }, null)
