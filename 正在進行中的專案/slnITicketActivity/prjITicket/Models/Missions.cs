@@ -12,26 +12,22 @@ namespace prjITicket.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Reply
+    public partial class Missions
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Reply()
+        public Missions()
         {
-            this.Reply_Emotion = new HashSet<Reply_Emotion>();
-            this.Reply_Report = new HashSet<Reply_Report>();
+            this.MemberMissionStatusList = new HashSet<MemberMissionStatusList>();
         }
     
-        public int ReplyID { get; set; }
-        public string ReplyContent { get; set; }
-        public int MemberID { get; set; }
-        public System.DateTime ReplyDate { get; set; }
-        public int ArticleID { get; set; }
+        public int MissionID { get; set; }
+        public string MissionName { get; set; }
+        public string Description { get; set; }
+        public int Reward { get; set; }
+        public int Difficulty { get; set; }
+        public System.DateTime EndDate { get; set; }
     
-        public virtual Article Article { get; set; }
-        public virtual Member Member { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Reply_Emotion> Reply_Emotion { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Reply_Report> Reply_Report { get; set; }
+        public virtual ICollection<MemberMissionStatusList> MemberMissionStatusList { get; set; }
     }
 }

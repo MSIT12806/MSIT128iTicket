@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using System.IO;
 using System.Drawing;
 using System.Web.UI;
+using prjITicket.ViewModel;
 
 namespace 期末專題_討論版.Controllers
 {
@@ -160,7 +161,8 @@ namespace 期末專題_討論版.Controllers
                     where n.ArticleID == articleID
                     select n;
             Article article = q.FirstOrDefault();
-            return View(article);
+            List<Report> report = db.Report.ToList();
+            return View(new VMReport() { Article = article, Report = report });
         }
         //關閉保護html傳送
         [ValidateInput(false)]
@@ -324,9 +326,59 @@ namespace 期末專題_討論版.Controllers
                     where n.ArticleID == articleID
                     select n;
             Article article = q.FirstOrDefault();
-            return PartialView(article);
+            List<Report> report = db.Report.ToList();
+
+            return PartialView(new VMReport() { Article = article, Report = report });
 
         }
+
+        public string Reply_report(int ReportID, int ReplyID)
+        {
+            try
+            {
+                if (Session[CDictionary.SK_Logined_Member] == null)
+                    return "您尚未登入";
+                TicketSysEntities db = new TicketSysEntities();
+                Reply_Report report = new Reply_Report();
+
+                Member member = Session[CDictionary.SK_Logined_Member] as Member;
+                report.MemberId = member.MemberID;
+                report.ReplyId = ReplyID;
+                report.ReportId = ReportID;
+                db.Reply_Report.Add(report);
+                db.SaveChanges();
+                return "OK";
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
+
+        public string Article_report(int ReportID, int ArticleID)
+        {
+            try
+            {
+                if (Session[CDictionary.SK_Logined_Member] == null)
+                    return "您尚未登入";
+                TicketSysEntities db = new TicketSysEntities();
+                Article_Report report = new Article_Report();
+
+                Member member = Session[CDictionary.SK_Logined_Member] as Member;
+                report.MemberId = member.MemberID;
+                report.ArticleId = ArticleID;
+                report.ReportId = ReportID;
+                db.Article_Report.Add(report);
+                db.SaveChanges();
+                return "OK";
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
     }
 }
 //todo: 檢舉按鈕、文章分類、左側列RWD...

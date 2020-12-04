@@ -17,13 +17,16 @@ namespace prjITicket.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public EmotionAction()
         {
-            this.Emotion = new HashSet<Emotion>();
+            this.Article_Emotion = new HashSet<Article_Emotion>();
+            this.Reply_Emotion = new HashSet<Reply_Emotion>();
         }
     
         public int EmotionActionId { get; set; }
         public string EmotionActionName { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Emotion> Emotion { get; set; }
+        public virtual ICollection<Article_Emotion> Article_Emotion { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Reply_Emotion> Reply_Emotion { get; set; }
     }
 }

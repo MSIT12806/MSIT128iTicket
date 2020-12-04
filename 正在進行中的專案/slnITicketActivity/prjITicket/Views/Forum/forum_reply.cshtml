@@ -1,6 +1,7 @@
-﻿<script src="~/Content/js/scripts.js"></script>
-
-@model prjITicket.Models.Article
+﻿@*<script src="~/Content/js/scripts.js"></script>*@
+@using prjITicket.Models;
+@using prjITicket.ViewModel
+@model VMReport
 @{
 
     int count = 0;
@@ -8,10 +9,12 @@
 
 
 <!-- Single Comment -->
-<script src="~/Content/js/jquery-3.5.1.min.js"></script>
-<link href="~/css/styles.css" rel="stylesheet" />
-<link href="~/Content/css/forumcontent.css" rel="stylesheet" />
-@foreach (var item in Model.Reply)
+@*<script src="~/Content/Forum_use/js/jquery-3.5.1.min.js"></script>*@
+
+<link href="~/Content/Forum_use/forumcontent.css" rel="stylesheet" />
+<link href="~/Content/Forum_use/css/styles.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+@foreach (var item in Model.Article.Reply)
 {
 
 
@@ -39,9 +42,9 @@
                     <div class="collapse multi-collapse" id="CollapseDemo@(count)">
                         <div class="card card-body">
                             <div class="col-xs-5">
-                                <button class="emotion info">推</button>
-                                <button class="emotion info">噓</button>
-                                <button class="emotion info">檢舉</button>
+                                <button class="gp">👍</button>
+                                <button class="bp">👎</button>
+                                <button class="emotion info" onclick="showModal(@count)">檢舉</button>
                                 <button onclick="toggleEdit(@item.ReplyID)" class="emotion info">編輯留言</button>
                                 @*改天把刪除也改成按鈕*@
                                 <button onclick="replydelete(@item.ReplyID)" class="emotion info">刪除留言</button>
@@ -52,7 +55,43 @@
             </div>
         </div>
     </div>
+
+    <div style="display:none" id="Modal@(count)" class="w3-modal w3-animate-opacity">
+        <div class="w3-modal-content">
+            <header class="w3-container w3-teal">
+                <span onclick="closeModal(@count)" class="w3-button w3-display-topright">&times;</span>
+                <h3>檢舉留言</h3>
+            </header>
+            <div class="w3-container">
+                <br />
+                <span>請選擇檢舉理由：</span>
+                <select id="reason">
+                    <option value="#">請選擇理由</option>
+                    @foreach (var q in Model.Report)
+                    {
+
+                        <option value="@q.ReportId">@q.ReportReason</option>
+
+                    }
+                </select>
+                <p style=" margin-top:3px;font-size:12px;color:darkgray">
+                    人身攻擊、侵犯個人隱私、著作權限當事人檢舉。
+                    惡意檢舉，經查證屬實將依站規處分。.
+                </p>
+            </div>
+            <footer class="w3-container w3-teal">
+                <div style="margin:5px 0px;" class="float-right">
+                    <button class="w3-button w3-black" type="button" onclick="closeModal(@count)">取消</button>
+                    <button class="w3-button w3-pale-green" type="button" onclick="reportReason(@item.ReplyID)">確定</button>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+
     count += 1;
+
+
 }
 
 <script>
@@ -64,10 +103,10 @@
         $.ajax({
                     type: "post",
                     url: "@Url.Action("Reply_Delete")",
-                    data: { replyId: replyId ,ArticleID:@Model.ArticleID},
+                    data: { replyId: replyId ,ArticleID:@Model.Article.ArticleID},
             success: function (data) {
-                        
-                        $("#ajaxdemoshow").load(`/Forum/forum_reply?articleID=@Model.ArticleID`);
+                        alert(data)
+                        $("#ajaxdemoshow").load(`/Forum/forum_reply?articleID=@Model.Article.ArticleID`);
                     }
                 });
     }
@@ -89,7 +128,7 @@
                     data: { rpcontent: rpcontent, replyId: replyId },
                     success: function (data) {
                         alert("成功")
-                        $("#ajaxdemoshow").load(`/Forum/forum_reply?articleID=@Model.ArticleID`);
+                        $("#ajaxdemoshow").load(`/Forum/forum_reply?articleID=@Model.Article.ArticleID`);
                     }
                 });
             }
@@ -117,6 +156,34 @@
                y.style.display = 'block';
                z.style.display = 'none';
            }
+    }
+
+    function showModal(count) {
+        let Modal = document.getElementById('Modal' + count);
+        Modal.style.display = 'block';
+    }
+
+    function closeModal(count) {
+        let Modal = document.getElementById('Modal' + count);
+        Modal.style.display = 'none';
+    }
+
+    function reportReason(replyId) {
+        let reportId = $('#reason').val();
+        if (reportId === '#') {
+            alert("社會再走，理由要有");
+        }
+        else {
+         $.ajax({
+            type: "post",
+             url: "@Url.Action("Reply_Report")",
+             data: {
+                 ReportID: reportId, ReplyID: replyId},
+        success: function (data) {
+            alert("檢舉" + data);
+        }
+      });
+    }
     }
 </script>
 

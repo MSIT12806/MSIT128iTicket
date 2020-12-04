@@ -12,15 +12,15 @@ namespace prjITicket.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Emotion
+    public partial class Article_Report
     {
-        public int EmotionId { get; set; }
-        public int MemberId { get; set; }
+        public int Article_ReportId { get; set; }
         public int ArticleId { get; set; }
-        public int ActionId { get; set; }
+        public int MemberId { get; set; }
+        public int ReportId { get; set; }
     
         public virtual Article Article { get; set; }
-        public virtual EmotionAction EmotionAction { get; set; }
         public virtual Member Member { get; set; }
+        public virtual Report Report { get; set; }
     }
 }

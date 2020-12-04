@@ -17,9 +17,9 @@ namespace prjITicket.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Districts()
         {
+            this.Activity = new HashSet<Activity>();
             this.Member = new HashSet<Member>();
             this.Orders = new HashSet<Orders>();
-            this.Activity = new HashSet<Activity>();
         }
     
         public int DistrictId { get; set; }
@@ -27,12 +27,12 @@ namespace prjITicket.Models
         public string PostCode { get; set; }
         public int CityId { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Activity> Activity { get; set; }
         public virtual Cities Cities { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Member> Member { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Orders> Orders { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Activity> Activity { get; set; }
     }
 }
