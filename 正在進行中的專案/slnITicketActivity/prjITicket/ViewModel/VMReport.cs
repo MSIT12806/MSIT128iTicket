@@ -12,10 +12,11 @@ namespace prjITicket.ViewModel
         public List<Report> Report { get; set; }
         
     }
-    public class VMforum_mailblock
+    public class VMforum_mainblock
     {
         public List<ArticleCategories> ArticleCategories { get; set; }
         public List<Article> Article { get; set; }
+        public string searchWord { get; set; }
     }
 
 }

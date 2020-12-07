@@ -1,4 +1,4 @@
-﻿@model prjITicket.ViewModel.VMforum_mailblock
+﻿@model prjITicket.ViewModel.VMforum_mainblock
 @using prjITicket.Models
 
 
@@ -49,16 +49,17 @@
             <div class="form-group my-4">
                 <input type="text" id="searchWord" class="form-control" placeholder="搜索文章" style="font-size:20px;" />
             </div>
-            <h1 class="my-4">
-                @blockTitle
-                <small>Secondary Text</small>
-            </h1>
+           
 
 
 
 
             <!-- Project One -->
             <div id="contentList">
+                <h1 class="my-4">
+                    @blockTitle
+                    <small>Secondary Text</small>
+                </h1>
                 @foreach (var item in Model.Article.OrderByDescending(n => n.Date))
                 {
 

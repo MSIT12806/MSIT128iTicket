@@ -1,4 +1,4 @@
-﻿@model prjITicket.ViewModel.VMforum_mailblock
+﻿@model prjITicket.ViewModel.VMforum_mainblock
 @using prjITicket.Models
 
 @{ int count = 0;
@@ -12,7 +12,10 @@
         }
         int count = 0;
     }}
-
+<h1 class="my-4">
+    @Model.searchWord 
+    <small>的搜尋結果</small>
+</h1>
 @foreach (var item in Model.Article.OrderByDescending(n => n.Date))
 {
 

@@ -145,25 +145,16 @@ namespace 期末專題_討論版.Controllers
             return RedirectToAction("forum_mainblock");
         }
 
-        public ActionResult forum_mainblock(int ArticleCategoryID=0, string searchText = null)
+        public ActionResult forum_mainblock(int ArticleCategoryID=0)
         {
             TicketSysEntities db = new TicketSysEntities();
-            if (!string.IsNullOrEmpty(searchText))
-            {
-                var q = (from n in db.Article
-                         where n.ArticleTitle.Contains(searchText) || n.ArticleContent.Contains(searchText)
-                         select n).ToList();
-                var p = db.ArticleCategories.Select(n => n).ToList();
-                var qq = new VMforum_mailblock { Article = q, ArticleCategories = p };
-                return View("forum_mainblock", "_ForumLayout", qq);
-            }
 
             if (ArticleCategoryID == 0)
             {
                 var q = (from n in db.Article
                          select n).ToList();
                 var p = db.ArticleCategories.Select(n => n).ToList();
-                var qq = new VMforum_mailblock { Article = q, ArticleCategories = p };
+                var qq = new VMforum_mainblock { Article = q, ArticleCategories = p };
                 return View("forum_mainblock", "_ForumLayout", qq);
             }
             else
@@ -172,7 +163,7 @@ namespace 期末專題_討論版.Controllers
                          where n.ArticleCategoryID == ArticleCategoryID
                          select n).ToList();
                 var p = db.ArticleCategories.Select(n => n).ToList();
-                var qq = new VMforum_mailblock { Article = q, ArticleCategories = p };
+                var qq = new VMforum_mainblock { Article = q, ArticleCategories = p };
                 return View("forum_mainblock", "_ForumLayout", qq);
             }
             
@@ -409,10 +400,10 @@ namespace 期末專題_討論版.Controllers
         {
             TicketSysEntities db = new TicketSysEntities();
             var q = (from n in db.Article
-                    where n.ArticleTitle.Contains(searchText) || n.ArticleContent.Contains(searchText)
+                    where n.ArticleTitle.Contains(searchText) || n.ArticleContent.Contains(searchText)||n.Member.NickName.Contains(searchText)
                     select n).ToList();
             var p = db.ArticleCategories.Select(n => n).ToList();
-            var qq = new VMforum_mailblock { Article = q, ArticleCategories = p };
+            var qq = new VMforum_mainblock { Article = q, ArticleCategories = p,searchWord =searchText };
 
             return PartialView(qq);
 
