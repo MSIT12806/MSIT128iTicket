@@ -16,7 +16,7 @@
     @Model.searchWord 
     <small>的搜尋結果</small>
 </h1>
-@foreach (var item in Model.Article.OrderByDescending(n => n.Date))
+@foreach (var item in Model.Article.Take(4))
 {
 
     <div class="row">

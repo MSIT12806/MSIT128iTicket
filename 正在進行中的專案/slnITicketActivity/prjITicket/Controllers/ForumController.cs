@@ -145,13 +145,14 @@ namespace 期末專題_討論版.Controllers
             return RedirectToAction("forum_mainblock");
         }
 
-        public ActionResult forum_mainblock(int ArticleCategoryID=0)
+        public ActionResult forum_mainblock(int ArticleCategoryID=0,int page =0)
         {
             TicketSysEntities db = new TicketSysEntities();
 
             if (ArticleCategoryID == 0)
             {
                 var q = (from n in db.Article
+                         orderby n.Date descending
                          select n).ToList();
                 var p = db.ArticleCategories.Select(n => n).ToList();
                 var qq = new VMforum_mainblock { Article = q, ArticleCategories = p };
@@ -161,6 +162,7 @@ namespace 期末專題_討論版.Controllers
             {
                 var q = (from n in db.Article
                          where n.ArticleCategoryID == ArticleCategoryID
+                         orderby n.Date descending
                          select n).ToList();
                 var p = db.ArticleCategories.Select(n => n).ToList();
                 var qq = new VMforum_mainblock { Article = q, ArticleCategories = p };
@@ -399,13 +401,30 @@ namespace 期末專題_討論版.Controllers
         public ActionResult SearchArticle(string searchText)
         {
             TicketSysEntities db = new TicketSysEntities();
-            var q = (from n in db.Article
-                    where n.ArticleTitle.Contains(searchText) || n.ArticleContent.Contains(searchText)||n.Member.NickName.Contains(searchText)
-                    select n).ToList();
-            var p = db.ArticleCategories.Select(n => n).ToList();
-            var qq = new VMforum_mainblock { Article = q, ArticleCategories = p,searchWord =searchText };
+            int maxPage = (db.Article.Count()/4);
+            int page = 0;
+            if(int.TryParse(searchText,out page)&&page<=maxPage)
+            {
+                var q = (from n in db.Article
+                         orderby n.Date descending
+                         select n).Skip(page * 4).ToList();
+                var p = db.ArticleCategories.Select(n => n).ToList();
+                var qq = new VMforum_mainblock { Article = q, ArticleCategories = p, searchWord = searchText };
+                return PartialView(qq);
+            }
+            else
+            {
+                var q = (from n in db.Article
+                         where n.ArticleTitle.Contains(searchText) || n.ArticleContent.Contains(searchText) || n.Member.NickName.Contains(searchText)
+                         orderby n.Date descending
+                         select n).ToList();
+                var p = db.ArticleCategories.Select(n => n).ToList();
+                var qq = new VMforum_mainblock { Article = q, ArticleCategories = p, searchWord = searchText };
 
-            return PartialView(qq);
+                return PartialView(qq);
+            }
+            
+           
 
         }
 
