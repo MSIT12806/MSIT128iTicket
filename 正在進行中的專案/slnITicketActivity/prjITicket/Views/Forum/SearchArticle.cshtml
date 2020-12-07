@@ -1,0 +1,41 @@
+﻿@model prjITicket.ViewModel.VMforum_mailblock
+@using prjITicket.Models
+
+@{ int count = 0;
+    Member member = Session[CDictionary.SK_Logined_Member] as Member;
+    @functions{
+        public static string RemoveHtml(String html)
+        {
+            string text = System.Text.RegularExpressions.Regex.Replace(html, "<[^>]+>", "");
+            text = System.Text.RegularExpressions.Regex.Replace(text, "&[^;]+;", "");
+            return text;
+        }
+        int count = 0;
+    }}
+
+@foreach (var item in Model.Article.OrderByDescending(n => n.Date))
+{
+
+    <div class="row">
+        <div class="col-xl-2" style="height:auto"></div>
+        <div class="col-xl-5 col-lg-6 col-md-10">
+            <a href="~/Forum/forum_content/?articleID=@item.ArticleID"><img id="img@(count)" class="img-fluid rounded mb-3 mb-md-0" style="width:600px;" src="@item.Picture" alt=""></a>
+        </div>
+        <div class="col-xl-4 col-lg-6 col-md-10">
+            @if (member != null && item.MemberID == member.MemberID)
+            {
+                @Html.ActionLink(" 刪除 ", "Delete", "Forum", new { articleID = item.ArticleID }, null);
+                @Html.ActionLink(" 編輯 ", "before_Edit_article", "Forum", new { articleID = item.ArticleID }, null);
+            }
+
+            <h3>@Html.ActionLink(string.IsNullOrEmpty(item.ArticleTitle) ? "沒有標題" : item.ArticleTitle, "forum_content", "Forum", new { articleID = item.ArticleID }, null)</h3>
+            <p id="content" style="overflow:hidden;white-space: nowrap;text-overflow: ellipsis;display: -webkit-box;-webkit-line-clamp: 3;-webkit-box-orient: vertical;white-space: normal;">
+                @RemoveHtml(item.ArticleContent)
+            </p>
+            @Html.ActionLink("更多", "forum_content", "Forum", new { articleID = item.ArticleID }, new { @class = "btn btn-primary" })
+        </div>
+    </div>
+
+    <hr>
+    count++;
+}

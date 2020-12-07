@@ -38,6 +38,7 @@ namespace prjITicket.Models
         public int DistrictId { get; set; }
     
         public virtual ActivityStatus ActivityStatus { get; set; }
+        public virtual Districts Districts { get; set; }
         public virtual Seller Seller { get; set; }
         public virtual SubCategories SubCategories { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -50,6 +51,5 @@ namespace prjITicket.Models
         public virtual ICollection<Tickets> Tickets { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TicketTimes> TicketTimes { get; set; }
-        public virtual Districts Districts { get; set; }
     }
 }

@@ -28,19 +28,23 @@ namespace prjITicket.Models
         public virtual DbSet<Activity> Activity { get; set; }
         public virtual DbSet<ActivityStatus> ActivityStatus { get; set; }
         public virtual DbSet<Article> Article { get; set; }
+        public virtual DbSet<Article_Emotion> Article_Emotion { get; set; }
+        public virtual DbSet<Article_Report> Article_Report { get; set; }
         public virtual DbSet<ArticleCategories> ArticleCategories { get; set; }
         public virtual DbSet<BanLIst> BanLIst { get; set; }
         public virtual DbSet<Categories> Categories { get; set; }
         public virtual DbSet<Cities> Cities { get; set; }
         public virtual DbSet<Comment> Comment { get; set; }
         public virtual DbSet<Districts> Districts { get; set; }
-        public virtual DbSet<Emotion> Emotion { get; set; }
         public virtual DbSet<EmotionAction> EmotionAction { get; set; }
         public virtual DbSet<Member> Member { get; set; }
+        public virtual DbSet<MemberMissionStatusList> MemberMissionStatusList { get; set; }
         public virtual DbSet<MemberRole> MemberRole { get; set; }
+        public virtual DbSet<Missions> Missions { get; set; }
         public virtual DbSet<Order_Detail> Order_Detail { get; set; }
         public virtual DbSet<Orders> Orders { get; set; }
         public virtual DbSet<Reply> Reply { get; set; }
+        public virtual DbSet<Reply_Emotion> Reply_Emotion { get; set; }
         public virtual DbSet<Reply_Report> Reply_Report { get; set; }
         public virtual DbSet<Report> Report { get; set; }
         public virtual DbSet<Seller> Seller { get; set; }

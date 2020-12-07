@@ -1,10 +1,15 @@
-﻿@model List<prjITicket.Models.Article>
+﻿@model prjITicket.ViewModel.VMforum_mailblock
 @using prjITicket.Models
 
 
 @{
+    string blockTitle = "所有文章列表";
+    if (Model.Article.GroupBy(n=>n.ArticleCategoryID).Distinct().Count() == 1)
+    {
+        blockTitle = Model.Article.FirstOrDefault().ArticleCategories.ArticleCategoryName;
+    }
     Member member = Session[CDictionary.SK_Logined_Member] as Member;
-    @functions{        
+    @functions{
         public static string RemoveHtml(String html)
         {
             string text = System.Text.RegularExpressions.Regex.Replace(html, "<[^>]+>", "");
@@ -21,51 +26,66 @@
         <div class="col-xl-2 col-md-3 col-sm-12 sidebar">
 
             <div style="text-overflow: ellipsis;">
-                <a href="http://localhost:49752/Forum/forum_mainblock" class="active">電影娛樂新視界</a>
+                @Html.ActionLink("所有文章的列表", "forum_mainblock", "Forum", null, null)
             </div>
-            <div>
-                <a href="http://localhost:49752/Forum/forum_mainblock">大眾交通討論板</a>
-            </div>
+            @foreach (var item in @Model.ArticleCategories)
+            {
+                <div style="text-overflow: ellipsis;">
+                    @Html.ActionLink(item.ArticleCategoryName, "forum_mainblock", "Forum", new { ArticleCategoryID = @item.ArticleCategoryID }, null)
+                </div>
+            }
+
+
             <div class="navbar-fixed-bottom" style="bottom:100px;">
                 <a href="~/Forum/before_Add_article" class="btn btn-info btn-lg" style="font-size:8vmin;position:fixed; bottom:50px;">
                     <span class="glyphicon"></span> 發文
                 </a>
             </div>
         </div>
+        <div class="col-xl-2 col-md-3"></div>
         <div class=" col-md-9 col-sm-12">
             <!-- Page Content -->
             <!-- Page Heading -->
+            <div class="form-group my-4">
+                <input type="text" id="searchWord" class="form-control" placeholder="搜索文章" style="font-size:20px;" />
+            </div>
             <h1 class="my-4">
-                電影娛樂新視界
+                @blockTitle
                 <small>Secondary Text</small>
             </h1>
+
+
+
+
             <!-- Project One -->
-            @foreach (var item in Model.OrderByDescending(n=>n.Date))
-            {
+            <div id="contentList">
+                @foreach (var item in Model.Article.OrderByDescending(n => n.Date))
+                {
 
-                <div class="row">
-                    <div class="col-xl-2" style="height:auto"></div>
-                    <div class="col-xl-5 col-lg-6 col-md-10">
-                        <a href="~/Forum/forum_content/?articleID=@item.ArticleID"><img id="img@(count)" class="img-fluid rounded mb-3 mb-md-0" style="width:600px;" src="@item.Picture" alt=""></a>
+                    <div class="row">
+                        <div class="col-xl-2" style="height:auto"></div>
+                        <div class="col-xl-5 col-lg-6 col-md-10">
+                            <a href="~/Forum/forum_content/?articleID=@item.ArticleID"><img id="img@(count)" class="img-fluid rounded mb-3 mb-md-0" style="width:600px;" src="@item.Picture" alt=""></a>
+                        </div>
+                        <div class="col-xl-4 col-lg-6 col-md-10">
+                            @if (member != null && item.MemberID == member.MemberID)
+                            {
+                                @Html.ActionLink(" 刪除 ", "Delete", "Forum", new { articleID = item.ArticleID }, null);
+                                @Html.ActionLink(" 編輯 ", "before_Edit_article", "Forum", new { articleID = item.ArticleID }, null);
+                            }
+
+                            <h3>@Html.ActionLink(string.IsNullOrEmpty(item.ArticleTitle) ? "沒有標題" : item.ArticleTitle, "forum_content", "Forum", new { articleID = item.ArticleID }, null)</h3>
+                            <p id="content" style="overflow:hidden;white-space: nowrap;text-overflow: ellipsis;display: -webkit-box;-webkit-line-clamp: 3;-webkit-box-orient: vertical;white-space: normal;">
+                                @RemoveHtml(item.ArticleContent)
+                            </p>
+                            @Html.ActionLink("更多", "forum_content", "Forum", new { articleID = item.ArticleID }, new { @class = "btn btn-primary" })
+                        </div>
                     </div>
-                    <div class="col-xl-4 col-lg-6 col-md-10">
-                        @if (member!=null && item.MemberID == member.MemberID)
-                        {
-                            @Html.ActionLink(" 刪除 ", "Delete", "Forum", new { articleID = item.ArticleID }, null);
-                            @Html.ActionLink(" 編輯 ", "before_Edit_article", "Forum", new { articleID = item.ArticleID }, null);
-                        }
 
-                        <h3>@Html.ActionLink(string.IsNullOrEmpty(item.ArticleTitle) ? "沒有標題" : item.ArticleTitle, "forum_content", "Forum", new { articleID = item.ArticleID }, null)</h3>
-                        <p id="content" style="overflow:hidden;white-space: nowrap;text-overflow: ellipsis;display: -webkit-box;-webkit-line-clamp: 3;-webkit-box-orient: vertical;white-space: normal;">
-                            @RemoveHtml(item.ArticleContent)
-                        </p>
-                        @Html.ActionLink("更多", "forum_content", "Forum", new { articleID = item.ArticleID }, new { @class = "btn btn-primary" })
-                    </div>
-                </div>
-
-                <hr>
-                count++;
-            }
+                    <hr>
+                    count++;
+                }
+            </div>
             <!-- Pagination -->
             <ul class="pagination justify-content-center">
                 <li class="page-item">
@@ -91,7 +111,18 @@
                 </li>
             </ul>
         </div>
+        </div>
     </div>
-</div>
-<script>
-</script>
+    <script>
+        $("#searchWord").change(function () {
+            var searchText = $("#searchWord").val();
+            $.ajax({
+                type: "post",
+                url: "@Url.Action("SearchArticle")",
+                data: { searchText: searchText },
+                success: function (result) {
+                    $("#contentList").empty().html(result)
+                }
+            })
+        })
+    </script>

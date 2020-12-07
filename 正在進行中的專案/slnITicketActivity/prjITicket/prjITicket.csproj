@@ -415,6 +415,12 @@
     <Compile Include="Models\ArticleCategories.cs">
       <DependentUpon>TicketSysModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Article_Emotion.cs">
+      <DependentUpon>TicketSysModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Article_Report.cs">
+      <DependentUpon>TicketSysModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\BanLIst.cs">
       <DependentUpon>TicketSysModel.tt</DependentUpon>
     </Compile>
@@ -434,9 +440,6 @@
     <Compile Include="Models\Districts.cs">
       <DependentUpon>TicketSysModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Emotion.cs">
-      <DependentUpon>TicketSysModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\EmotionAction.cs">
       <DependentUpon>TicketSysModel.tt</DependentUpon>
     </Compile>
@@ -445,7 +448,13 @@
     <Compile Include="Models\Member.cs">
       <DependentUpon>TicketSysModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\MemberMissionStatusList.cs">
+      <DependentUpon>TicketSysModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\MemberRole.cs">
+      <DependentUpon>TicketSysModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Missions.cs">
       <DependentUpon>TicketSysModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Orders.cs">
@@ -455,6 +464,9 @@
       <DependentUpon>TicketSysModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Reply.cs">
+      <DependentUpon>TicketSysModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Reply_Emotion.cs">
       <DependentUpon>TicketSysModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Reply_Report.cs">
@@ -518,6 +530,7 @@
     <Compile Include="ViewModel\QMember.cs" />
     <Compile Include="ViewModel\VMActivityDetail.cs" />
     <Compile Include="ViewModel\VMActivityList.cs" />
+    <Compile Include="ViewModel\VMReport.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
@@ -551,6 +564,7 @@
     <Content Include="Views\Forum\Index.cshtml" />
     <Content Include="Views\Shared\_ForumLayout.cshtml" />
     <Content Include="Views\Forum\forum_reply.cshtml" />
+    <Content Include="Views\Forum\SearchArticle.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

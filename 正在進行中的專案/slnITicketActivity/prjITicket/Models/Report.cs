@@ -17,12 +17,15 @@ namespace prjITicket.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Report()
         {
+            this.Article_Report = new HashSet<Article_Report>();
             this.Reply_Report = new HashSet<Reply_Report>();
         }
     
         public int ReportId { get; set; }
         public string ReportReason { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Article_Report> Article_Report { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Reply_Report> Reply_Report { get; set; }
     }

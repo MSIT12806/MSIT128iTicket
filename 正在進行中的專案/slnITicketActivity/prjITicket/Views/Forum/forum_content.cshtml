@@ -1,4 +1,4 @@
-﻿@model prjITicket.Models.Article
+﻿@model prjITicket.ViewModel.VMReport
 @{
     ViewBag.Title = "forum_content";
     int count = 0;
@@ -11,15 +11,15 @@
         <div class="col-lg-9">
             <!-- Title -->
 
-            <h1 class="mt-4">@Model.ArticleTitle</h1>
+            <h1 class="mt-4">@Model.Article.ArticleTitle</h1>
             <!-- Author -->
             <p class="lead">
                 by
-                <a href="#">@Model.Member.Name</a>
+                <a href="#">@Model.Article.Member.Name</a>
             </p>
             <hr>
             <!-- Date/Time -->
-            <p>Posted on @Model.Date</p>
+            <p>Posted on @Model.Article.Date</p>
             <hr>
             <!-- Post Content -->
 
@@ -94,8 +94,8 @@
             <div class="card my-3">
                 <h5 class="card-header" style="background-color:coral">管理員/發文者才能看到的文章操作區</h5>
                 <div class="card-body">
-                    @Html.ActionLink("編輯", "before_Edit_article", "Forum", new { articleID = Model.ArticleID }, null)
-                    @Html.ActionLink("刪除", "Delete", "Forum", new { articleID = Model.ArticleID }, null)
+                    @Html.ActionLink("編輯", "before_Edit_article", "Forum", new { articleID = Model.Article.ArticleID }, null)
+                    @Html.ActionLink("刪除", "Delete", "Forum", new { articleID = Model.Article.ArticleID }, null)
                 </div>
             </div>
         </div>
@@ -105,15 +105,15 @@
 <script>
     refreshTime()
     function refreshTime() {
-        $("#ajaxdemoshow").empty().load("/Forum/forum_reply?articleID=@Model.ArticleID")
+        $("#ajaxdemoshow").empty().load("/Forum/forum_reply?articleID=@Model.Article.ArticleID")
     }
     setInterval("refreshTime()", 60000); 
 
-    $("#content").html(`@Html.Raw(Model.ArticleContent)`);
+    $("#content").html(`@Html.Raw(Model.Article.ArticleContent)`);
 
      $("#replysql").click(function () {
         let rpcontent = $("#replycontent").val();
-        let articleID = @Model.ArticleID;
+        let articleID = @Model.Article.ArticleID;
          if (rpcontent == "") {
              alert("請輸入留言");
          }
