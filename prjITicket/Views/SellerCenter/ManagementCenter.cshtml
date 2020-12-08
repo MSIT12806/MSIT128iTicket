@@ -13,9 +13,11 @@
         <input id="Query" type="button" value="查詢" class="btn btn-secondary" />
     </div>
 </div>
+<div id="QResult">
 
-<table class="table table-info">
-    <tr class="text-center">
+</div>
+@*<table class="table table-info">*@
+    @*<tr class="text-center">
         <th style="width:70px;">
             序號
         </th>
@@ -46,62 +48,79 @@
 
         <th></th>
     </tr>
-    <tbody id="QResult">
-        @foreach (var item in Model)
-        {
-            count++;
-            <tr class="table-warning text-center">
-                <td>
-                    @count
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ActivityName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Districts.DistrictName)
-                </td>
+    <tbody id="QResult">*@
+        @*@foreach (var item in Model)
+            {
+                count++;
+                <tr class="table-warning text-center">
+                    <td>
+                        @count
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ActivityName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Districts.DistrictName)
+                    </td>
 
-                <td>
-                    @Html.DisplayFor(modelItem => item.Address)
-                </td>
-                <td>
-                    <img style="width:300px" src="@Url.Content("~/images/Activity/"+item.Picture)" alt="Alternate Text" />
-                </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Address)
+                    </td>
+                    <td>
+                        <img style="width:300px" src="@Url.Content("~/images/Activity/"+item.Picture)" alt="Alternate Text" />
+                    </td>
 
-                <td>
-                    @Html.DisplayFor(modelItem => item.SubCategories.SubCategoryName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Hostwords)
-                </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SubCategories.SubCategoryName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Hostwords)
+                    </td>
 
-                <td>
-                    @Html.DisplayFor(modelItem => item.ActivityStatus.ActivityStatusName)
-                </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ActivityStatus.ActivityStatusName)
+                    </td>
 
-                <td>
-                    <a href="JavaScript:;" class="btn btn-success">修改</a>
-                    <a href="JavaScript:;" class="btn btn-danger">刪除</a>
-                    @*@Html.ActionLink("修改", "Edit", new { id = item.ActivityID }) |
-                        @Html.ActionLink("刪除", "Delete", new { id = item.ActivityID })*@
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+                    <td>
+                        <a href="JavaScript:;" class="btn btn-success">修改</a>
+                        <a href="JavaScript:;" class="btn btn-danger">刪除</a>
+                        
+        </td>
+        </tr>
+        }*@
+    @*</tbody>*@
+@*</table>*@
 <script>
-$(function () {
-
+    $(function () {
+        getPage();
     $("#Query").click(function () {
-                $.ajax({
+        getPage();
+    });
+});
+    function getPage() {
+        $.ajax({
                     type: "get",
                     url: `@Url.Action("GetQueryResult", "SellerCenter")?txtQuery=${$("#txtQuery").val()}`,
                     success: function (result) {
                         $("#QResult").html(result);
                     }
-                 });
-                    });
-}
-);
+        });
+    }
+    @*$(function () {
+        $("#Query").click(function () {
+             $.ajax({
+            type: "get",
+            url: `@Url.Action("GetQueryResult", new {page=1})?txtQuery=${$("#txtQuery").val()}`,
+            success: function (data) {
+                console.log("測試123"+data);
+                $("#QResult").html(data);
+
+            }
+        });
+
+
+        });
+
+    });*@
 </script>
 

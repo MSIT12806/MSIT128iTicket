@@ -1,4 +1,5 @@
-﻿using prjITicket.Models;
+﻿using PagedList;
+using prjITicket.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,12 +24,17 @@ namespace prjITicket.Controllers
                 return RedirectToAction("ActivityList", "Activity");
             }
 
-            var list = db.Activity.Where(s => s.SellerID == sellerid.SellerID);
-            return View(list);
+            //var list = db.Activity.Where(s => s.SellerID == sellerid.SellerID);
+            return View(/*list*/);
         }
 
-        public ActionResult GetQueryResult(string txtQuery)
+        public ActionResult GetQueryResult(string txtQuery="",int page=1)
         {
+            //-------
+            int pagesize = 6;
+            int pagecurrent = page < 1 ? 1 : page;
+            //------------------
+            ViewBag.Keyword = txtQuery;
             int memberid = (Session[CDictionary.SK_Logined_Member] as Member).MemberID;
             var sellerid = db.Seller.Where(x => x.MemberId == memberid).FirstOrDefault();
             if (sellerid.fPass != true)
@@ -38,16 +44,32 @@ namespace prjITicket.Controllers
             IQueryable<Activity> list = null;
             if (txtQuery != "")
             {
-               list = db.Activity.Where(s => s.ActivityName.Contains(txtQuery));
+               list = db.Activity.Where(s => s.SellerID == sellerid.SellerID&&s.ActivityName.Contains(txtQuery));
             }
             else
             {
                 list= db.Activity.Where(s => s.SellerID == sellerid.SellerID);
             }
-            
+            var pagedlist = list.ToList().ToPagedList(pagecurrent, pagesize);
 
-            return PartialView("GetQueryResult",list);
+            return PartialView(pagedlist);
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
