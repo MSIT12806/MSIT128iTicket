@@ -17,6 +17,14 @@
     <Property Name="ActivityStatusID" Type="int" Nullable="false" />
     <Property Name="DistrictId" Type="int" Nullable="false" />
   </EntityType>
+  <EntityType Name="ActivityFavourite">
+    <Key>
+      <PropertyRef Name="ActivityFavouriteId" />
+    </Key>
+    <Property Name="ActivityFavouriteId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="MemberId" Type="int" Nullable="false" />
+    <Property Name="ActivityId" Type="int" Nullable="false" />
+  </EntityType>
   <EntityType Name="ActivityStatus">
     <Key>
       <PropertyRef Name="ActivityStatusID" />
@@ -367,6 +375,30 @@
       </Principal>
       <Dependent Role="Activity">
         <PropertyRef Name="SubCategoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ActivityFavourite_Activity">
+    <End Role="Activity" Type="Self.Activity" Multiplicity="1" />
+    <End Role="ActivityFavourite" Type="Self.ActivityFavourite" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Activity">
+        <PropertyRef Name="ActivityID" />
+      </Principal>
+      <Dependent Role="ActivityFavourite">
+        <PropertyRef Name="ActivityId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ActivityFavourite_Member">
+    <End Role="Member" Type="Self.Member" Multiplicity="1" />
+    <End Role="ActivityFavourite" Type="Self.ActivityFavourite" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Member">
+        <PropertyRef Name="MemberID" />
+      </Principal>
+      <Dependent Role="ActivityFavourite">
+        <PropertyRef Name="MemberId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -900,6 +932,7 @@
   </Association>
   <EntityContainer Name="TicketSysModelStoreContainer">
     <EntitySet Name="Activity" EntityType="Self.Activity" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ActivityFavourite" EntityType="Self.ActivityFavourite" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ActivityStatus" EntityType="Self.ActivityStatus" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Article" EntityType="Self.Article" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Article_Emotion" EntityType="Self.Article_Emotion" Schema="dbo" store:Type="Tables" />
@@ -947,6 +980,14 @@
     <AssociationSet Name="FK_Activity_SubCategories" Association="Self.FK_Activity_SubCategories">
       <End Role="SubCategories" EntitySet="SubCategories" />
       <End Role="Activity" EntitySet="Activity" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ActivityFavourite_Activity" Association="Self.FK_ActivityFavourite_Activity">
+      <End Role="Activity" EntitySet="Activity" />
+      <End Role="ActivityFavourite" EntitySet="ActivityFavourite" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ActivityFavourite_Member" Association="Self.FK_ActivityFavourite_Member">
+      <End Role="Member" EntitySet="Member" />
+      <End Role="ActivityFavourite" EntitySet="ActivityFavourite" />
     </AssociationSet>
     <AssociationSet Name="FK_Article_ArticleCategories" Association="Self.FK_Article_ArticleCategories">
       <End Role="ArticleCategories" EntitySet="ArticleCategories" />

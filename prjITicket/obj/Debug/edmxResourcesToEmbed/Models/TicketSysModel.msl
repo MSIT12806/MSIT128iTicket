@@ -356,5 +356,14 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="ActivityFavourite">
+      <EntityTypeMapping TypeName="TicketSysModel.ActivityFavourite">
+        <MappingFragment StoreEntitySet="ActivityFavourite">
+          <ScalarProperty Name="ActivityId" ColumnName="ActivityId" />
+          <ScalarProperty Name="MemberId" ColumnName="MemberId" />
+          <ScalarProperty Name="ActivityFavouriteId" ColumnName="ActivityFavouriteId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

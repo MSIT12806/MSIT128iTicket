@@ -58,5 +58,6 @@ namespace prjITicket.Models
         public virtual DbSet<TicketQRCodes> TicketQRCodes { get; set; }
         public virtual DbSet<Tickets> Tickets { get; set; }
         public virtual DbSet<TicketTimes> TicketTimes { get; set; }
+        public virtual DbSet<ActivityFavourite> ActivityFavourite { get; set; }
     }
 }

@@ -10,6 +10,7 @@ using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 using Newtonsoft.Json;
+using PagedList;
 using prjITicket.Models;
 using prjITicket.Service;
 using prjITicket.ViewModel;
@@ -38,6 +39,7 @@ namespace prjITicket.Controllers
                 m.Name = ms.name;
                 m.NickName = ms.name;
                 m.MemberRoleId = 2;
+                m.Point = 0;
                 m.providerFB = true;
                 db.Member.Add(m);
                 db.SaveChanges();
@@ -81,6 +83,7 @@ namespace prjITicket.Controllers
                 m.Name = ms.Ad;
                 m.NickName = ms.Ad;
                 m.MemberRoleId = 2;
+                m.Point = 0;
                 m.providerGO = true;
                 db.Member.Add(m);
                 db.SaveChanges();
@@ -281,6 +284,7 @@ namespace prjITicket.Controllers
                 m.Name = "Guest";
                 m.NickName = "Guest";
                 m.MemberRoleId = 1;
+                m.Point = 0;
                 m.RegisterCheckCode = RegisterCheckCode;
                 db.Member.Add(m);
                 db.SaveChanges();
@@ -366,6 +370,7 @@ namespace prjITicket.Controllers
                 m.NickName = "Guest";
                 m.RegisterCheckCode = RegisterCheckCode;
                 m.MemberRoleId = 1;
+                m.Point = 0;
                 db.Member.Add(m);
                 db.SaveChanges();
 
@@ -632,6 +637,36 @@ namespace prjITicket.Controllers
             return JsonConvert.SerializeObject(districts);
         }
 
-      
+
+        //藉由districtId取得postCode
+        //====================================================
+        public string getPostCodeByDistrictId(int districtId)
+        {
+            var postCode = db.Districts.FirstOrDefault(d => d.DistrictId == districtId).PostCode;
+            return postCode;
+        }
+
+        //會員訂單管理查詢
+        public ActionResult getOrderbyEmail(string Email, int page = 1)
+        {
+            int pagesize = 5;
+            int pagecurrent = page < 1 ? 1 : page;
+            List<Orders> order = db.Orders.Where(o => o.Email == Email).ToList();
+            IPagedList<Orders> pagelist = order.ToPagedList(pagecurrent, pagesize);
+            ViewBag.Email = Email;
+            return PartialView("getOrderbyEmail", pagelist);
+        }
+
+        //會員我的收藏查詢
+        public ActionResult getActivityFavouriteByMemberId(int MemberId, int page = 1)
+        {
+            int pagesize = 6;
+            int pagecurrent = page < 1 ? 1 : page;
+            List<ActivityFavourite> favourite = db.ActivityFavourite.Where(a => a.MemberId == MemberId).ToList();
+            IPagedList<ActivityFavourite> pagelist = favourite.ToPagedList(pagecurrent, pagesize);
+            ViewBag.MemberId = MemberId;
+            return PartialView("getActivityFavouriteByMemberId", pagelist);
+        }
+
     }
 }

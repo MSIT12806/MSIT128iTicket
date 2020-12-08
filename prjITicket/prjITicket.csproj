@@ -581,6 +581,9 @@
     <Compile Include="Models\Activity.cs">
       <DependentUpon>TicketSysModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ActivityFavourite.cs">
+      <DependentUpon>TicketSysModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\ActivityStatus.cs">
       <DependentUpon>TicketSysModel.tt</DependentUpon>
     </Compile>
@@ -725,10 +728,8 @@
     <Content Include="Views\Activity\GetActivitySubDetailPage.cshtml" />
     <Content Include="Views\Activity\GetActivityCommentPage.cshtml" />
     <Content Include="Views\Activity\ActivityDetail.cshtml" />
-    <Content Include="Views\Login\BussEdit.cshtml" />
     <Content Include="Views\Login\BussRegister.cshtml" />
     <Content Include="Views\Login\Login.cshtml" />
-    <Content Include="Views\Login\MemberEdit.cshtml" />
     <Content Include="Views\Login\Register.cshtml" />
     <Content Include="Views\Activity\ShoppingCartList.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
@@ -752,6 +753,10 @@
     <Content Include="Views\Shared\_BackSellerLayout.cshtml" />
     <Content Include="Views\SellerCenter\GetUploadPage.cshtml" />
     <Content Include="Views\SellerCenter\GetQueryResult.cshtml" />
+    <Content Include="Views\Login\getActivityFavouriteByMemberId.cshtml" />
+    <Content Include="Views\Login\getOrderbyEmail.cshtml" />
+    <Content Include="Views\Login\BussEdit.cshtml" />
+    <Content Include="Views\Login\MemberEdit.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

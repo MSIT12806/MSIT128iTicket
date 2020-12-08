@@ -25,6 +25,7 @@
     <NavigationProperty Name="TicketGroupDetail" Relationship="Self.FK_TicketGroupDetail_Activity" FromRole="Activity" ToRole="TicketGroupDetail" />
     <NavigationProperty Name="Tickets" Relationship="Self.FK_Tickets_Activity" FromRole="Activity" ToRole="Tickets" />
     <NavigationProperty Name="TicketTimes" Relationship="Self.FK_TicketTimes_Activity" FromRole="Activity" ToRole="TicketTimes" />
+    <NavigationProperty Name="ActivityFavourite" Relationship="TicketSysModel.FK_ActivityFavourite_Activity" FromRole="Activity" ToRole="ActivityFavourite" />
   </EntityType>
   <EntityType Name="ActivityStatus">
     <Key>
@@ -186,6 +187,7 @@
     <NavigationProperty Name="ShoppingCart" Relationship="Self.FK_ShoppingCart_Member" FromRole="Member" ToRole="ShoppingCart" />
     <NavigationProperty Name="ShortMessage" Relationship="Self.FK_ShortMessage_Member" FromRole="Member" ToRole="ShortMessage" />
     <NavigationProperty Name="Subscribes" Relationship="Self.FK_Subscribes_Member" FromRole="Member" ToRole="Subscribes" />
+    <NavigationProperty Name="ActivityFavourite" Relationship="TicketSysModel.FK_ActivityFavourite_Member" FromRole="Member" ToRole="ActivityFavourite" />
   </EntityType>
   <EntityType Name="MemberMissionStatusList">
     <Key>
@@ -1220,5 +1222,48 @@
       <End Role="TicketTimes" EntitySet="TicketTimes" />
       <End Role="Tickets" EntitySet="Tickets" />
     </AssociationSet>
+    <EntitySet Name="ActivityFavourite" EntityType="TicketSysModel.ActivityFavourite" />
+    <AssociationSet Name="FK_ActivityFavourite_Activity" Association="TicketSysModel.FK_ActivityFavourite_Activity">
+      <End Role="Activity" EntitySet="Activity" />
+      <End Role="ActivityFavourite" EntitySet="ActivityFavourite" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ActivityFavourite_Member" Association="TicketSysModel.FK_ActivityFavourite_Member">
+      <End Role="Member" EntitySet="Member" />
+      <End Role="ActivityFavourite" EntitySet="ActivityFavourite" />
+    </AssociationSet>
   </EntityContainer>
+  <EntityType Name="ActivityFavourite">
+    <Key>
+      <PropertyRef Name="ActivityFavouriteId" />
+    </Key>
+    <Property Name="ActivityFavouriteId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="MemberId" Type="Int32" Nullable="false" />
+    <Property Name="ActivityId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Activity" Relationship="TicketSysModel.FK_ActivityFavourite_Activity" FromRole="ActivityFavourite" ToRole="Activity" />
+    <NavigationProperty Name="Member" Relationship="TicketSysModel.FK_ActivityFavourite_Member" FromRole="ActivityFavourite" ToRole="Member" />
+  </EntityType>
+  <Association Name="FK_ActivityFavourite_Activity">
+    <End Type="TicketSysModel.Activity" Role="Activity" Multiplicity="1" />
+    <End Type="TicketSysModel.ActivityFavourite" Role="ActivityFavourite" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Activity">
+        <PropertyRef Name="ActivityID" />
+      </Principal>
+      <Dependent Role="ActivityFavourite">
+        <PropertyRef Name="ActivityId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ActivityFavourite_Member">
+    <End Type="TicketSysModel.Member" Role="Member" Multiplicity="1" />
+    <End Type="TicketSysModel.ActivityFavourite" Role="ActivityFavourite" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Member">
+        <PropertyRef Name="MemberID" />
+      </Principal>
+      <Dependent Role="ActivityFavourite">
+        <PropertyRef Name="MemberId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema>

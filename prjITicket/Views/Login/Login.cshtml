@@ -5,6 +5,9 @@
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
 <link rel="stylesheet" href="~/Content/Login/css_login/style.css">
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+
+@*顯示或隱藏密碼*@
+<link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet">
 @{
     ViewBag.Title = "登入";
 
@@ -31,14 +34,15 @@
                         <form method="POST" class="register-form" id="login-form">
                             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                             <div class="form-group">
-                                <label for="your_name"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                                <label for="your_name"><i class="zmdi zmdi-account material-icons-name" style="font-size:24px"></i></label>
                                 @*<input type="Email" name="Email" id="Email" placeholder="Your Email" />*@
                                 @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @placeholder = "你的Email" } })
                             </div>
-                            <div class="form-group">
-                                <label for="your_pass"><i class="zmdi zmdi-lock"></i></label>
+                            <div class="form-group" style="position:relative">
+                                <label for="your_pass"><i class="zmdi zmdi-lock" style="font-size:20px"></i></label>
                                 @*<input type="password" name="your_pass" id="your_pass" placeholder="Password" />*@
-                                @Html.PasswordFor(model => model.Password, new { @placeholder = "密碼" })
+                                @Html.PasswordFor(model => model.Password, new { @placeholder = "密碼",id="pwd" })
+                                <i class="fa fa-eye" onclick="showhide()" id="eye" style="font-size:20px;line-height:36px;position:absolute;top:0;right:0"></i>
                             </div>
                             <div class="form-group">
                                 <input type="checkbox" name="remember-me" id="remember-me" class="agree-term" />
@@ -75,18 +79,18 @@
 
 
 <script>
-  $(function () {
+    $(function () {
 
-        
+
         var w = 770;
         var h = 600;
         var l = (screen.availWidth - w) / 2;
         var t = (screen.availHeight - h) / 2;
         $("#btnForget").on('click', function (event) {
-                                                          
+
             window.open(this.href, "window", "width= " + w + ",height=" + h + ",left=" + l + ",top=" + t + ", scrollbars = yes, location = no, toolbar = no, menubar = no, status = no");
-                return false;
-            });
+            return false;
+        });
 
     });
 </script>
@@ -225,4 +229,21 @@
 
     }
 
+</script>
+
+@*顯示或隱藏密碼*@
+<script type="text/javascript">
+    var eye = document.getElementById("eye");
+    var pwd = document.getElementById("pwd");
+
+    function showhide() {
+
+        if (pwd.type == "password") {
+            pwd.type = "text";
+            eye.className = 'fa fa-eye-slash'
+        } else {
+            pwd.type = "password";
+            eye.className = 'fa fa-eye'
+        }
+    }
 </script>
