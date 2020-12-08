@@ -1,0 +1,46 @@
+﻿@model IEnumerable<prjITicket.Models.Activity>
+@{   
+    int count = 0;
+}
+@foreach (var item in Model)
+{
+    count++;
+    <tr class="table-warning text-center">
+        <td>
+            @count
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ActivityName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Districts.DistrictName)
+        </td>
+
+        <td>
+            @Html.DisplayFor(modelItem => item.Address)
+        </td>
+        <td>
+            <img style="width:300px" src="@Url.Content("~/images/Activity/"+item.Picture)" alt="Alternate Text" />
+        </td>
+
+        <td>
+            @Html.DisplayFor(modelItem => item.SubCategories.SubCategoryName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Hostwords)
+        </td>
+
+        <td>
+            @Html.DisplayFor(modelItem => item.ActivityStatus.ActivityStatusName)
+        </td>
+
+        <td>
+            <a href="JavaScript:;" class="btn btn-success">修改</a>
+            <a href="JavaScript:;" class="btn btn-danger">刪除</a>
+         
+        </td>
+    </tr>
+}
+
+
+

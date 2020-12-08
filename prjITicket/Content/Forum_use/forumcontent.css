@@ -1,0 +1,39 @@
+﻿
+#content .image img{
+    max-width:700px;
+}
+.emotion {
+    border: none;
+    background-color: inherit;
+    padding: 8px 28px;
+    font-size: 14px;
+    line-height: 20px;
+    border-radius: 25% 25%;
+    cursor: pointer;
+    display: inline-block;
+    /*float: left;*/
+}
+
+.emotion:hover {
+        background: #eee;
+    }
+
+.success {
+    color: green;
+}
+
+.info {
+    color: dodgerblue;
+}
+
+.warning {
+    color: orange;
+}
+
+.danger {
+    color: red;
+}
+
+.default {
+    color: black;
+}
