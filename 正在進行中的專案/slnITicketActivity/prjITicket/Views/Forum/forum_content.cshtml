@@ -124,6 +124,8 @@
                  data: { content: rpcontent, articleID: articleID },
                  success: function (data) {
                      alert("成功")
+                     $("#content").html(`@Html.Raw(Model.Article.ArticleContent)`);
+                     $("#replycontent").val("");
                  }
              });
          }
