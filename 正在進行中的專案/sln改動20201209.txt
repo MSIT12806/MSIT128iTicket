@@ -1,0 +1,262 @@
+此次感動更新項目如下:
+
+1.forumcontent.css 樣式表
+
+2.Controller增加功能
+
+3.View 功能新增及修改
+a.forum_content 
+b.forum_Reply
+
+????????????????
+
+1. forumcontent.css 
+bp gp 改動 margin-right:10px;
+新增 bpclick、gpclick;
+-------------------------
+2. Controller
+增加Reply_EmotionAction、Reply_EmotionAction_Cancel、
+Article_EmotionAction、Article_EmotionAction_Cancel。
+所有return部分只要事件操作完成就return"成功"、不成功都return"您尚未登入！即將跳轉至登入頁面";
+以上是為了針對未登入帳戶進行審核及跳轉。
+---------------------------------------------------
+3. View
+a. forum_content
+增加語法及位置
+a-1. 開頭
+@using prjITicket.Models;
+@using prjITicket.ViewModel
+@model VMReport
+********************************
+a-2.  開頭@{}區
+Count 下增加     Member member = Session[CDictionary.SK_Logined_Member] as Member;
+***********************************
+a-3.  文章內容以下至留言區以上
+新增功能
+<hr />
+            <div class="col-xs-2">
+                <button class="gp">??</button>
+                @if (member != null && Model.Article.Article_Emotion.Where(n => n.ActionId == 1 && n.MemberId == member.MemberID && n.ArticleId == Model.Article.ArticleID).Any())
+                {
+                    <button class="gpclick" id="actionlike_a" onclick="likeBtn_a()">??</button>
+                }
+                else
+                {
+                    <button class="gp" id="actionlike_a" onclick="likeBtn_a()">??</button>
+                }
+                <label style="margin-right:20px" id="goodpoint">@Model.Article.Article_Emotion.Where(n => n.ArticleId == 1 && n.ArticleId == Model.Article.ArticleID).Count()</label>
+
+                @if (member != null && Model.Article.Article_Emotion.Where(n => n.ActionId == 2 && n.MemberId == member.MemberID && n.ArticleId == Model.Article.ArticleID).Any())
+                {
+                    <button class="bpclick" id="actiondislike_a" onclick="dislikeBtn_a()">??</button>
+                }
+                else
+                {
+                    <button class="bp" id="actiondislike_a" onclick="dislikeBtn_a()">??</button>
+                }
+                <label style="margin-right:20px" id="badpoint">@Model.Article.Article_Emotion.Where(n => n.ArticleId == 2 && n.ArticleId == Model.Article.ArticleID).Count()</label>
+                <div style="float:right;right:0px">
+                    <button class="w3-button w3-black" onclick="document.getElementById('Modal').style.display = 'block';">檢舉</button>
+                </div>
+            </div>
+
+            <hr />
+            <!--檢舉按鈕跳出浮動視窗???-->
+            <div style="display:none" id="Modal" class="w3-modal w3-animate-opacity">
+                <div class="w3-modal-content">
+                    <header class="w3-container w3-teal">
+                        <span onclick="document.getElementById('Modal').style.display = 'none';" class="w3-button w3-display-topright">&times;</span>
+                        <h3>檢舉留言</h3>
+                    </header>
+                    <div class="w3-container">
+                        <br />
+                        <span>請選擇檢舉理由：</span>
+                        <select id="articleReportReason">
+                            <option value="#">請選擇理由</option>
+                            @foreach (var q in Model.Report)
+                            {
+
+                                <option value="@q.ReportId">@q.ReportReason</option>
+
+                            }
+                        </select>
+                        <p style=" margin-top:3px;font-size:12px;color:darkgray">
+                            人身攻擊、侵犯個人隱私、著作權限當事人檢舉。
+                            惡意檢舉，經查證屬實將依站規處分。.
+                        </p>
+                    </div>
+                    <footer class="w3-container w3-teal">
+                        <div style="margin:5px 0px;" class="float-right">
+                            <button class="w3-button w3-black" type="button" onclick="document.getElementById('Modal').style.display = 'none';">取消</button>
+                            <button class="w3-button w3-pale-green" type="button" onclick="reportReason_article()">確定</button>
+                        </div>
+                    </footer>
+                </div>
+            </div>
+****************************************
+a-4. script區
+ $("#replysql").click的success 改成
+                     if (data != "成功") {
+                         alert(data);
+                         window.location.href = 'http://localhost:49949/Login/Login';
+                     }
+                     else {
+                         alert(data);
+                         $("#ajaxdemoshow").empty().load("/Forum/forum_reply?articleID=@Model.Article.ArticleID");
+                         $("#replycontent").val("");
+                     }
+*********************************************
+a-5. 同樣是script 
+ function reportReason_article() 同樣在success增加跳轉
+if (data != "成功") {
+                     alert(data);
+                     window.location.href = 'http://localhost:49949/Login/Login';
+                 } else{
+                     alert("檢舉" + data);
+                 }
+
+**********************************************
+a-6. script
+增加語法
+    function likeBtn_a()
+    {
+        let likebtn = document.getElementById('actionlike');
+        let dislikebtn = document.getElementById('actiondislike');
+        let ActionId = 1;
+        if (dislikebtn.className == 'bpclick') {
+            alert("此篇留言你已點了不喜歡。");
+        }
+        else {
+            if (likebtn.className == 'gp') {
+                likebtn.className = 'gpclick';
+                
+                $.ajax({
+                 type: "post",
+                    url: "@Url.Action("Article_EmotionAction")",
+                    data: { ArticleID:@Model.Article.ArticleID, ActionID: ActionId },
+                    success: function (data) {
+                        if (data != "成功") {
+                            alert(data);
+                            window.location.href = 'http://localhost:49949/Login/Login';
+                        }
+                    },
+                    error: function (data) {
+                    }
+                });
+            }
+            else {
+                likebtn.className = 'gp';
+
+                $.ajax({
+                 type: "post",
+                 url: "@Url.Action("Article_EmotionAction_Cancel")",
+                    data: { ReplyID: replyId},
+                    success: function (data) {
+                        
+                        
+                    },
+                    error: function (data) {
+                    }
+                });
+            }
+        }
+    }
+    function dislikeBtn_a() {
+
+    }
+
+********************************************************
+b. View  forum_Reply 幹我有點累了
+按扭區
+Like跟Dislike移至Reply內容以下，並增加帳號使用者是否已按讚判斷功能。
+增加Label以觀看按讚數。
+
+編輯留言及刪除留言不是發文者看不到
+
+以上按鈕都有增加跳轉登入頁面功能
+
+Script增加語法
+    function likeBtn(replyId) {
+        let likebtn = document.getElementById('actionlike' + replyId);
+        let dislikebtn = document.getElementById('actiondislike' + replyId);
+        let ActionId = 1;
+        if (dislikebtn.className == 'bpclick') {
+            alert("此篇留言你已點了不喜歡。");
+        }
+        else {
+            if (likebtn.className == 'gp') {
+                likebtn.className = 'gpclick';
+                
+                $.ajax({
+                 type: "post",
+                 url: "@Url.Action("Reply_EmotionAction")",
+                    data: { ReplyID: replyId, ActionID: ActionId},
+                    success: function (data) {
+                        if (data != "成功") {
+                            alert(data);
+                            window.location.href = 'http://localhost:49949/Login/Login';
+                        }
+                    },
+                    error: function (data) {
+                    }
+                });
+            }
+            else {
+                likebtn.className = 'gp';
+
+                $.ajax({
+                 type: "post",
+                 url: "@Url.Action("Reply_EmotionAction_Cancel")",
+                    data: { ReplyID: replyId},
+                    success: function (data) {
+                        
+                        
+                    },
+                    error: function (data) {
+                    }
+                });
+            }
+        }
+    }
+
+    function dislikeBtn(replyId) {
+        let likebtn = document.getElementById('actionlike' + replyId);
+        let dislikebtn = document.getElementById('actiondislike' + replyId);
+        let ActionId = 2;
+
+        if (likebtn.className == 'gpclick') {
+            alert("此篇留言你以點了喜歡。");
+        } else {
+            if (dislikebtn.className == 'bp') {
+                dislikebtn.className = 'bpclick';
+
+                  $.ajax({
+                 type: "post",
+                 url: "@Url.Action("Reply_EmotionAction")",
+                    data: { ReplyID: replyId, ActionID: ActionId},
+                      success: function (data) {
+                          if (data != "成功") {
+                              alert(data);
+                              window.location.href = 'http://localhost:49949/Login/Login';
+                          }
+                    },
+                    error: function (data) {
+                    }
+                });
+            }
+            else {
+                dislikebtn.className = 'bp';
+                $.ajax({
+                 type: "post",
+                 url: "@Url.Action("Reply_EmotionAction_Cancel")",
+                    data: { ReplyID: replyId},
+                    success: function (data) {
+                    },
+                    error: function (data) {
+                    }
+                });
+            }
+        }
+    }
+
+

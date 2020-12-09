@@ -186,8 +186,15 @@ namespace 期末專題_討論版.Controllers
         [HttpPost]
         public string forum_content(string content, int articleID)
         {
+            Member member = Session[CDictionary.SK_Logined_Member] as Member;
             try
             {
+                if (Session[CDictionary.SK_Logined_Member] == null)
+                {
+                    return "您尚未登入！即將跳轉至登入頁面";
+                }
+                else
+                {
                 TicketSysEntities db = new TicketSysEntities();
                 Reply rp = new Reply();
                 rp.MemberID = 1;
@@ -196,7 +203,9 @@ namespace 期末專題_討論版.Controllers
                 rp.ReplyContent = content;
                 db.Reply.Add(rp);
                 db.SaveChanges();
-                return "OK";
+                return "成功";
+
+                }
             }
             catch (Exception ex)
             {
@@ -355,7 +364,7 @@ namespace 期末專題_討論版.Controllers
             try
             {
                 if (Session[CDictionary.SK_Logined_Member] == null)
-                    return "您尚未登入";
+                    return "您尚未登入！即將跳轉至登入頁面";
                 TicketSysEntities db = new TicketSysEntities();
                 Reply_Report report = new Reply_Report();
 
@@ -365,7 +374,7 @@ namespace 期末專題_討論版.Controllers
                 report.ReportId = ReportID;
                 db.Reply_Report.Add(report);
                 db.SaveChanges();
-                return "OK";
+                return "成功";
             }
             catch (Exception ex)
             {
@@ -379,7 +388,7 @@ namespace 期末專題_討論版.Controllers
             try
             {
                 if (Session[CDictionary.SK_Logined_Member] == null)
-                    return "您尚未登入";
+                    return "您尚未登入！即將跳轉至登入頁面";
                 TicketSysEntities db = new TicketSysEntities();
                 Article_Report report = new Article_Report();
 
@@ -389,7 +398,7 @@ namespace 期末專題_討論版.Controllers
                 report.ReportId = ReportID;
                 db.Article_Report.Add(report);
                 db.SaveChanges();
-                return "OK";
+                return "成功";
             }
             catch (Exception ex)
             {
@@ -423,11 +432,93 @@ namespace 期末專題_討論版.Controllers
 
                 return PartialView(qq);
             }
-            
-           
-
         }
 
+        //⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇貼文、留言Emotion⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇//
+
+        public string Reply_EmotionAction(int ReplyID, int ActionID)
+        {
+            try
+            {
+                if (Session[CDictionary.SK_Logined_Member] == null)
+                    return "您尚未登入！即將跳轉至登入頁面";
+                TicketSysEntities db = new TicketSysEntities();
+                Reply_Emotion RE = new Reply_Emotion();
+                Member member = Session[CDictionary.SK_Logined_Member] as Member;
+
+                RE.MemberId = member.MemberID;
+                RE.ReplyId = ReplyID;
+                RE.ActionId = ActionID;
+                db.Reply_Emotion.Add(RE);
+                db.SaveChanges();
+                return "成功";
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        public string Reply_EmotionAction_Cancel(int ReplyID)
+        {
+            try
+            {
+                if (Session[CDictionary.SK_Logined_Member] == null)
+                    return "您尚未登入！即將跳轉至登入頁面";
+                TicketSysEntities db = new TicketSysEntities();
+                Member member = Session[CDictionary.SK_Logined_Member] as Member;
+                var q = db.Reply_Emotion.Where(n => n.ReplyId == ReplyID && n.MemberId == member.MemberID).FirstOrDefault();
+                db.Reply_Emotion.Remove(q);
+                db.SaveChanges();
+                return "成功";
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        public string Article_EmotionAction(int ArticleID, int ActionID)
+        {
+            try
+            {
+                if (Session[CDictionary.SK_Logined_Member] == null)
+                    return "您尚未登入！即將跳轉至登入頁面";
+                TicketSysEntities db = new TicketSysEntities();
+                Article_Emotion AE = new Article_Emotion();
+                Member member = Session[CDictionary.SK_Logined_Member] as Member;
+
+                AE.MemberId = member.MemberID;
+                AE.ArticleId = ArticleID;
+                AE.ActionId = ActionID;
+                db.Article_Emotion.Add(AE);
+                db.SaveChanges();
+                return "成功";
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        public string Article_EmotionAction_Cancel(int ArticleID)
+        {
+            try
+            {
+                if (Session[CDictionary.SK_Logined_Member] == null)
+                    return "您尚未登入！即將跳轉至登入頁面";
+                TicketSysEntities db = new TicketSysEntities();
+                Member member = Session[CDictionary.SK_Logined_Member] as Member;
+                var q = db.Article_Emotion.Where(n => n.ArticleId == ArticleID && n.MemberId == member.MemberID).FirstOrDefault();
+                db.Article_Emotion.Remove(q);
+                db.SaveChanges();
+                return "成功";
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
     }
 }
 //todo: 檢舉按鈕、文章分類、左側列RWD...

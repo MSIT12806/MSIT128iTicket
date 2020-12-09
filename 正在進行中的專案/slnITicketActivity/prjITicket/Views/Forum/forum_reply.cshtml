@@ -3,7 +3,7 @@
 @using prjITicket.ViewModel
 @model VMReport
 @{
-
+    Member member = Session[CDictionary.SK_Logined_Member] as Member;
     int count = 0;
 }
 
@@ -34,20 +34,39 @@
                     <span style="color:blue">Enter</span>修改或是
                     <span style="color:blue">Esc</span>取消
                 </p>
-
+                <div style="margin-bottom:5px;">
+                    @if (member != null && item.Reply_Emotion.Where(n => n.ActionId == 1 && n.MemberId == member.MemberID && n.ReplyId == item.ReplyID).Any())
+                    {
+                        <button class="gpclick" id="actionlike@(item.ReplyID)" onclick="likeBtn(@item.ReplyID)">👍</button>
+                    }
+                    else
+                    {
+                        <button class="gp" id="actionlike@(item.ReplyID)" onclick="likeBtn(@item.ReplyID)">👍</button>
+                    }
+                    <label style="margin-right:20px" id="goodpoint@(item.ReplyID)">@item.Reply_Emotion.Where(n => n.ActionId == 1 && n.ReplyId == item.ReplyID).Count()</label>
+                    @if (member != null && item.Reply_Emotion.Where(n => n.ActionId == 2 && n.MemberId == member.MemberID && n.ReplyId == item.ReplyID).Any())
+                    {
+                        <button class="bpclick" id="actiondislike@(item.ReplyID)" onclick="dislikeBtn(@item.ReplyID)">👎</button>
+                    }
+                    else
+                    {
+                        <button class="bp" id="actiondislike@(item.ReplyID)" onclick="dislikeBtn(@item.ReplyID)">👎</button>
+                    }
+                    <label style="margin-right:20px" id="badpoint@(item.ReplyID)">@item.Reply_Emotion.Where(n => n.ActionId == 2 && n.ReplyId == item.ReplyID).Count()</label>
+                </div>
             </div>
 
             <div class="row">
                 <div class="col">
                     <div class="collapse multi-collapse" id="CollapseDemo@(count)">
                         <div class="card card-body">
-                            <div class="col-xs-5">
-                                <button class="gp">👍</button>
-                                <button class="bp">👎</button>
+                            <div class="col-xs-3">
                                 <button class="emotion info" onclick="showModal(@count)">檢舉</button>
-                                <button onclick="toggleEdit(@item.ReplyID)" class="emotion info">編輯留言</button>
-                                @*改天把刪除也改成按鈕*@
-                                <button onclick="replydelete(@item.ReplyID)" class="emotion info">刪除留言</button>
+                                @if (member != null && item.MemberID == member.MemberID)
+                                {
+                                    <button onclick="toggleEdit(@item.ReplyID)" class="emotion info">編輯留言</button>
+                                    <button onclick="replydelete(@item.ReplyID)" class="emotion info">刪除留言</button>
+                                }
                             </div>
                         </div>
                     </div>
@@ -179,11 +198,100 @@
              url: "@Url.Action("Reply_Report")",
              data: {
                  ReportID: reportId, ReplyID: replyId},
-        success: function (data) {
-            alert("檢舉" + data);
+             success: function (data) {
+                 if (data != "成功") {
+                     alert(data);
+                     window.location.href = 'http://localhost:49949/Login/Login';
+                 } else {
+                     alert("檢舉" + data);
+                 }
         }
       });
     }
     }
+
+    function likeBtn(replyId) {
+        let likebtn = document.getElementById('actionlike' + replyId);
+        let dislikebtn = document.getElementById('actiondislike' + replyId);
+        let ActionId = 1;
+        if (dislikebtn.className == 'bpclick') {
+            alert("此篇留言你已點了不喜歡。");
+        }
+        else {
+            if (likebtn.className == 'gp') {
+                likebtn.className = 'gpclick';
+                
+                $.ajax({
+                 type: "post",
+                 url: "@Url.Action("Reply_EmotionAction")",
+                    data: { ReplyID: replyId, ActionID: ActionId},
+                    success: function (data) {
+                        if (data != "成功") {
+                            alert(data);
+                            window.location.href = 'http://localhost:49949/Login/Login';
+                        }
+                    },
+                    error: function (data) {
+                    }
+                });
+            }
+            else {
+                likebtn.className = 'gp';
+
+                $.ajax({
+                 type: "post",
+                 url: "@Url.Action("Reply_EmotionAction_Cancel")",
+                    data: { ReplyID: replyId},
+                    success: function (data) {
+                        
+                        
+                    },
+                    error: function (data) {
+                    }
+                });
+            }
+        }
+    }
+
+    function dislikeBtn(replyId) {
+        let likebtn = document.getElementById('actionlike' + replyId);
+        let dislikebtn = document.getElementById('actiondislike' + replyId);
+        let ActionId = 2;
+
+        if (likebtn.className == 'gpclick') {
+            alert("此篇留言你以點了喜歡。");
+        } else {
+            if (dislikebtn.className == 'bp') {
+                dislikebtn.className = 'bpclick';
+
+                  $.ajax({
+                 type: "post",
+                 url: "@Url.Action("Reply_EmotionAction")",
+                    data: { ReplyID: replyId, ActionID: ActionId},
+                      success: function (data) {
+                          if (data != "成功") {
+                              alert(data);
+                              window.location.href = 'http://localhost:49949/Login/Login';
+                          }
+                    },
+                    error: function (data) {
+                    }
+                });
+            }
+            else {
+                dislikebtn.className = 'bp';
+                $.ajax({
+                 type: "post",
+                 url: "@Url.Action("Reply_EmotionAction_Cancel")",
+                    data: { ReplyID: replyId},
+                    success: function (data) {
+                    },
+                    error: function (data) {
+                    }
+                });
+            }
+        }
+    }
+
 </script>
 

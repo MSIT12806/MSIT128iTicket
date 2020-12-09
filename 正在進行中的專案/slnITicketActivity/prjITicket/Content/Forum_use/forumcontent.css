@@ -43,7 +43,7 @@
     height: 40px;
     width: 40px;
     background-color: inherit;
-    margin-right:30px;
+    margin-right:10px;
     font-size: 14px;
     line-height: 20px;
     border-radius: 50% 50%;
@@ -58,12 +58,28 @@
         background-color: orange;
     }
 
+.gpclick {
+    border: solid 2px orange;
+    height: 40px;
+    width: 40px;
+    background-color: inherit;
+    margin-right: 10px;
+    font-size: 14px;
+    line-height: 20px;
+    border-radius: 50% 50%;
+    cursor: pointer;
+    display: inline-block;
+    transition: all 0.5s;
+    color: white;
+    background-color: orange;
+}
+
 .bp {
     border: solid 2px gray;
     height: 40px;
     width: 40px;
     background-color: inherit;
-    margin-right: 30px;
+    margin-right: 10px;
     font-size: 14px;
     line-height: 20px;
     border-radius: 50% 50%;
@@ -78,3 +94,19 @@
         color: white;
         background-color: gray;
     }
+
+.bpclick {
+    border: solid 2px gray;
+    height: 40px;
+    width: 40px;
+    background-color: inherit;
+    margin-right: 10px;
+    font-size: 14px;
+    line-height: 20px;
+    border-radius: 50% 50%;
+    cursor: pointer;
+    display: inline-block;
+    transition: all 0.5s;
+    color: white;
+    background-color: gray;
+}
