@@ -7,6 +7,7 @@
     Member member = Session[CDictionary.SK_Logined_Member] as Member;
 
 }
+
 <link href="~/Content/Forum_use/forumcontent.css" rel="stylesheet" />
 <link href="~/Content/Forum_use/css/styles.css" rel="stylesheet" />
 <div class="container">
@@ -43,15 +44,15 @@
                 {
                     <button class="gp" id="actionlike_a" onclick="likeBtn_a()">👍</button>
                 }
-                <label style="margin-right:20px" id="goodpoint">@Model.Article.Article_Emotion.Where(n => n.ActionId == 1 &&　n.ArticleId == Model.Article.ArticleID).Count()</label>
+                <label style="margin-right:20px" id="goodpoint">@Model.Article.Article_Emotion.Where(n => n.ActionId == 1 && n.ArticleId == Model.Article.ArticleID).Count()</label>
 
                 @if (member != null && Model.Article.Article_Emotion.Where(n => n.ActionId == 2 && n.MemberId == member.MemberID && n.ArticleId == Model.Article.ArticleID).Any())
                 {
-                    <button class="bpclick" id="actiondislike_a" onclick="dislikeBtn_a()">👍</button>
+                    <button class="bpclick" id="actiondislike_a" onclick="dislikeBtn_a()">👎</button>
                 }
                 else
                 {
-                    <button class="bp" id="actiondislike_a" onclick="dislikeBtn_a()">👍</button>
+                    <button class="bp" id="actiondislike_a" onclick="dislikeBtn_a()">👎</button>
                 }
                 <label style="margin-right:20px" id="badpoint">@Model.Article.Article_Emotion.Where(n => n.ArticleId == 2 && n.ArticleId == Model.Article.ArticleID).Count()</label>
                 <div style="float:right;right:0px">
@@ -239,7 +240,7 @@
         else {
             if (likebtn.className == 'gp') {
                 likebtn.className = 'gpclick';
-                
+
                 $.ajax({
                  type: "post",
                     url: "@Url.Action("Article_EmotionAction")",
@@ -279,7 +280,7 @@
         else {
             if (dislikebtn.className == 'bp') {
                 dislikebtn.className = 'bpclick';
-                
+
                 $.ajax({
                  type: "post",
                     url: "@Url.Action("Article_EmotionAction")",

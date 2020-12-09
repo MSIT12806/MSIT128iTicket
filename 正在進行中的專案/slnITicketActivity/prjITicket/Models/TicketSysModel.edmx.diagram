@@ -4,55 +4,59 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="bf3b7b9b2d014561802afe7cc4c076de" Name="Diagram1" ZoomLevel="100">
-        <EntityTypeShape EntityType="TicketSysModel.Activity" Width="1.5" PointX="5.25" PointY="21.625" />
-        <EntityTypeShape EntityType="TicketSysModel.ActivityStatus" Width="1.5" PointX="3" PointY="19.625" />
-        <EntityTypeShape EntityType="TicketSysModel.Article" Width="1.5" PointX="15.5" PointY="26.375" />
-        <EntityTypeShape EntityType="TicketSysModel.Article_Emotion" Width="1.5" PointX="20.75" PointY="24.75" />
-        <EntityTypeShape EntityType="TicketSysModel.Article_Report" Width="1.5" PointX="18.75" PointY="20.75" />
-        <EntityTypeShape EntityType="TicketSysModel.ArticleCategories" Width="1.5" PointX="13.25" PointY="34.25" />
-        <EntityTypeShape EntityType="TicketSysModel.BanLIst" Width="1.5" PointX="10.5" PointY="33.25" />
-        <EntityTypeShape EntityType="TicketSysModel.Categories" Width="1.5" PointX="0.75" PointY="27.25" />
-        <EntityTypeShape EntityType="TicketSysModel.Cities" Width="1.5" PointX="0.75" PointY="23.25" />
-        <EntityTypeShape EntityType="TicketSysModel.Comment" Width="1.5" PointX="10.5" PointY="22.75" />
-        <EntityTypeShape EntityType="TicketSysModel.Districts" Width="1.5" PointX="3" PointY="22.75" />
-        <EntityTypeShape EntityType="TicketSysModel.EmotionAction" Width="1.5" PointX="18.5" PointY="31" />
-        <EntityTypeShape EntityType="TicketSysModel.Member" Width="1.5" PointX="8.25" PointY="20.25" />
-        <EntityTypeShape EntityType="TicketSysModel.MemberMissionStatusList" Width="1.5" PointX="13.5" PointY="18.875" />
-        <EntityTypeShape EntityType="TicketSysModel.MemberRole" Width="1.5" PointX="6" PointY="19.25" />
-        <EntityTypeShape EntityType="TicketSysModel.Missions" Width="1.5" PointX="11.25" PointY="16.875" />
-        <EntityTypeShape EntityType="TicketSysModel.Order_Detail" Width="1.5" PointX="15.75" PointY="23" />
-        <EntityTypeShape EntityType="TicketSysModel.Orders" Width="1.5" PointX="13.5" PointY="22.375" />
-        <EntityTypeShape EntityType="TicketSysModel.Reply" Width="1.5" PointX="17.75" PointY="27.625" />
-        <EntityTypeShape EntityType="TicketSysModel.Reply_Emotion" Width="1.5" PointX="21" PointY="21.125" />
-        <EntityTypeShape EntityType="TicketSysModel.Reply_Report" Width="1.5" PointX="23" PointY="25.125" />
-        <EntityTypeShape EntityType="TicketSysModel.Report" Width="1.5" PointX="16.5" PointY="20" />
-        <EntityTypeShape EntityType="TicketSysModel.Seller" Width="1.5" PointX="10.5" PointY="36.375" />
-        <EntityTypeShape EntityType="TicketSysModel.ShoppingCart" Width="1.5" PointX="18" PointY="24" />
-        <EntityTypeShape EntityType="TicketSysModel.ShortMessage" Width="1.5" PointX="10.5" PointY="26.875" />
-        <EntityTypeShape EntityType="TicketSysModel.SubCategories" Width="1.5" PointX="3" PointY="27" />
-        <EntityTypeShape EntityType="TicketSysModel.Subscribes" Width="1.5" PointX="12.75" PointY="30.75" />
-        <EntityTypeShape EntityType="TicketSysModel.TicketCategory" Width="1.5" PointX="7.5" PointY="31.25" />
-        <EntityTypeShape EntityType="TicketSysModel.TicketGroupDetail" Width="1.5" PointX="10.5" PointY="20" />
-        <EntityTypeShape EntityType="TicketSysModel.TicketGroups" Width="1.5" PointX="8.25" PointY="17.125" />
-        <EntityTypeShape EntityType="TicketSysModel.TicketQRCodes" Width="1.5" PointX="18" PointY="17.375" />
-        <EntityTypeShape EntityType="TicketSysModel.Tickets" Width="1.5" PointX="12.75" PointY="26.75" />
-        <EntityTypeShape EntityType="TicketSysModel.TicketTimes" Width="1.5" PointX="7.5" PointY="28.625" />
+      <Diagram DiagramId="bf3b7b9b2d014561802afe7cc4c076de" Name="Diagram1" ZoomLevel="39">
+        <EntityTypeShape EntityType="TicketSysModel.Activity" Width="1.5" PointX="8.25" PointY="24.5" />
+        <EntityTypeShape EntityType="TicketSysModel.ActivityStatus" Width="1.5" PointX="6" PointY="17.75" />
+        <EntityTypeShape EntityType="TicketSysModel.ActivutyFavourite" Width="1.5" PointX="13.5" PointY="26.125" />
+        <EntityTypeShape EntityType="TicketSysModel.Article" Width="1.5" PointX="7.5" PointY="20.375" />
+        <EntityTypeShape EntityType="TicketSysModel.Article_Emotion" Width="1.5" PointX="15.75" PointY="19.625" />
+        <EntityTypeShape EntityType="TicketSysModel.Article_Report" Width="1.5" PointX="9.75" PointY="16.625" />
+        <EntityTypeShape EntityType="TicketSysModel.ArticleCategories" Width="1.5" PointX="5.25" PointY="20.25" />
+        <EntityTypeShape EntityType="TicketSysModel.BanLIst" Width="1.5" PointX="7.5" PointY="33.5" />
+        <EntityTypeShape EntityType="TicketSysModel.Categories" Width="1.5" PointX="3.75" PointY="14.25" />
+        <EntityTypeShape EntityType="TicketSysModel.Cities" Width="1.5" PointX="0.75" PointY="26.25" />
+        <EntityTypeShape EntityType="TicketSysModel.Comment" Width="1.5" PointX="10.5" PointY="25.875" />
+        <EntityTypeShape EntityType="TicketSysModel.Districts" Width="1.5" PointX="3" PointY="25.875" />
+        <EntityTypeShape EntityType="TicketSysModel.Emotion" Width="1.5" PointX="12.75" PointY="17.625" />
+        <EntityTypeShape EntityType="TicketSysModel.EmotionAction" Width="1.5" PointX="10.5" PointY="13.875" />
+        <EntityTypeShape EntityType="TicketSysModel.Member" Width="1.5" PointX="5.25" PointY="23" />
+        <EntityTypeShape EntityType="TicketSysModel.MemberMissionStatusList" Width="1.5" PointX="10.5" PointY="19.875" />
+        <EntityTypeShape EntityType="TicketSysModel.MemberRole" Width="1.5" PointX="3" PointY="23.25" />
+        <EntityTypeShape EntityType="TicketSysModel.Missions" Width="1.5" PointX="8.25" PointY="9.875" />
+        <EntityTypeShape EntityType="TicketSysModel.Order_Detail" Width="1.5" PointX="15.75" PointY="22.875" />
+        <EntityTypeShape EntityType="TicketSysModel.Orders" Width="1.5" PointX="13.5" PointY="21.5" />
+        <EntityTypeShape EntityType="TicketSysModel.Reply" Width="1.5" PointX="15.75" PointY="30.375" />
+        <EntityTypeShape EntityType="TicketSysModel.Reply_Emotion" Width="1.5" PointX="19" PointY="26.875" />
+        <EntityTypeShape EntityType="TicketSysModel.Reply_Report" Width="1.5" PointX="18" PointY="30.875" />
+        <EntityTypeShape EntityType="TicketSysModel.Report" Width="1.5" PointX="7.5" PointY="6.875" />
+        <EntityTypeShape EntityType="TicketSysModel.Seller" Width="1.5" PointX="7.5" PointY="39.5" />
+        <EntityTypeShape EntityType="TicketSysModel.ShoppingCart" Width="1.5" PointX="16" PointY="26.875" />
+        <EntityTypeShape EntityType="TicketSysModel.ShortMessage" Width="1.5" PointX="7.5" PointY="31.125" />
+        <EntityTypeShape EntityType="TicketSysModel.SubCategories" Width="1.5" PointX="6" PointY="14" />
+        <EntityTypeShape EntityType="TicketSysModel.Subscribes" Width="1.5" PointX="12.75" PointY="33.75" />
+        <EntityTypeShape EntityType="TicketSysModel.TicketCategory" Width="1.5" PointX="10.5" PointY="36" />
+        <EntityTypeShape EntityType="TicketSysModel.TicketGroupDetail" Width="1.5" PointX="10.5" PointY="23.125" />
+        <EntityTypeShape EntityType="TicketSysModel.TicketGroups" Width="1.5" PointX="8.25" PointY="13.25" />
+        <EntityTypeShape EntityType="TicketSysModel.TicketQRCodes" Width="1.5" PointX="18" PointY="23.25" />
+        <EntityTypeShape EntityType="TicketSysModel.Tickets" Width="1.5" PointX="12.75" PointY="29.625" />
+        <EntityTypeShape EntityType="TicketSysModel.TicketTimes" Width="1.5" PointX="10.5" PointY="30.625" />
         <AssociationConnector Association="TicketSysModel.FK_Activity_ActivityStatus" />
         <AssociationConnector Association="TicketSysModel.FK_Activity_Districts" />
         <AssociationConnector Association="TicketSysModel.FK_Activity_Seller" />
         <AssociationConnector Association="TicketSysModel.FK_Activity_SubCategories" />
+        <AssociationConnector Association="TicketSysModel.FK_ActivutyFavourite_Activity" />
         <AssociationConnector Association="TicketSysModel.FK_Comment_Activity" />
         <AssociationConnector Association="TicketSysModel.FK_TicketCategory_Activity" />
         <AssociationConnector Association="TicketSysModel.FK_TicketGroupDetail_Activity" />
         <AssociationConnector Association="TicketSysModel.FK_Tickets_Activity" />
         <AssociationConnector Association="TicketSysModel.FK_TicketTimes_Activity" />
+        <AssociationConnector Association="TicketSysModel.FK_ActivutyFavourite_Member" />
         <AssociationConnector Association="TicketSysModel.FK_Article_ArticleCategories" />
         <AssociationConnector Association="TicketSysModel.FK_Article_Member" />
         <AssociationConnector Association="TicketSysModel.FK_Article_Report_Article_Report" />
         <AssociationConnector Association="TicketSysModel.FK_Emotion_Article" />
+        <AssociationConnector Association="TicketSysModel.FK_Emotion_Article1" />
         <AssociationConnector Association="TicketSysModel.FK_Reply_Article" />
-        <AssociationConnector Association="TicketSysModel.FK_Emotion_EmotionAction" />
         <AssociationConnector Association="TicketSysModel.FK_Emotion_Member" />
         <AssociationConnector Association="TicketSysModel.FK_Article_Report_Member" />
         <AssociationConnector Association="TicketSysModel.FK_Article_Report_Report" />
@@ -63,6 +67,8 @@
         <AssociationConnector Association="TicketSysModel.FK_Comment_Member" />
         <AssociationConnector Association="TicketSysModel.FK_Member_Districts" />
         <AssociationConnector Association="TicketSysModel.FK_Orders_Districts" />
+        <AssociationConnector Association="TicketSysModel.FK_Emotion_EmotionAction" />
+        <AssociationConnector Association="TicketSysModel.FK_Emotion_Member1" />
         <AssociationConnector Association="TicketSysModel.FK_Reply_Emotion_EmotionAction" />
         <AssociationConnector Association="TicketSysModel.FK_Member_MemberRole" />
         <AssociationConnector Association="TicketSysModel.FK_MemberMissionStatusList_Member" />

@@ -14,7 +14,7 @@ namespace prjITicket.Models
     
     public partial class Emotion
     {
-        public int EmotionId { get; set; }
+        public int AriticleEmotionId { get; set; }
         public int MemberId { get; set; }
         public int ArticleId { get; set; }
         public int ActionId { get; set; }

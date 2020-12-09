@@ -409,6 +409,9 @@
     <Compile Include="Models\ActivityStatus.cs">
       <DependentUpon>TicketSysModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ActivutyFavourite.cs">
+      <DependentUpon>TicketSysModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Article.cs">
       <DependentUpon>TicketSysModel.tt</DependentUpon>
     </Compile>
@@ -438,6 +441,9 @@
     </Compile>
     <Compile Include="Models\CShoppingCart.cs" />
     <Compile Include="Models\Districts.cs">
+      <DependentUpon>TicketSysModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Emotion.cs">
       <DependentUpon>TicketSysModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\EmotionAction.cs">

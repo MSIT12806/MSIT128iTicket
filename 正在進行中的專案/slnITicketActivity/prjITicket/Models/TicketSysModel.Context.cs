@@ -27,6 +27,7 @@ namespace prjITicket.Models
     
         public virtual DbSet<Activity> Activity { get; set; }
         public virtual DbSet<ActivityStatus> ActivityStatus { get; set; }
+        public virtual DbSet<ActivutyFavourite> ActivutyFavourite { get; set; }
         public virtual DbSet<Article> Article { get; set; }
         public virtual DbSet<Article_Emotion> Article_Emotion { get; set; }
         public virtual DbSet<Article_Report> Article_Report { get; set; }
@@ -36,6 +37,7 @@ namespace prjITicket.Models
         public virtual DbSet<Cities> Cities { get; set; }
         public virtual DbSet<Comment> Comment { get; set; }
         public virtual DbSet<Districts> Districts { get; set; }
+        public virtual DbSet<Emotion> Emotion { get; set; }
         public virtual DbSet<EmotionAction> EmotionAction { get; set; }
         public virtual DbSet<Member> Member { get; set; }
         public virtual DbSet<MemberMissionStatusList> MemberMissionStatusList { get; set; }

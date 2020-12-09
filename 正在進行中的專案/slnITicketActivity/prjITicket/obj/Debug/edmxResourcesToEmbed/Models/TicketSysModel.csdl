@@ -3,6 +3,7 @@
   <EntityContainer Name="TicketSysEntities" annotation:LazyLoadingEnabled="true">
     <EntitySet Name="Activity" EntityType="TicketSysModel.Activity" />
     <EntitySet Name="ActivityStatus" EntityType="TicketSysModel.ActivityStatus" />
+    <EntitySet Name="ActivutyFavourite" EntityType="TicketSysModel.ActivutyFavourite" />
     <EntitySet Name="Article" EntityType="TicketSysModel.Article" />
     <EntitySet Name="Article_Emotion" EntityType="TicketSysModel.Article_Emotion" />
     <EntitySet Name="Article_Report" EntityType="TicketSysModel.Article_Report" />
@@ -12,6 +13,7 @@
     <EntitySet Name="Cities" EntityType="TicketSysModel.Cities" />
     <EntitySet Name="Comment" EntityType="TicketSysModel.Comment" />
     <EntitySet Name="Districts" EntityType="TicketSysModel.Districts" />
+    <EntitySet Name="Emotion" EntityType="TicketSysModel.Emotion" />
     <EntitySet Name="EmotionAction" EntityType="TicketSysModel.EmotionAction" />
     <EntitySet Name="Member" EntityType="TicketSysModel.Member" />
     <EntitySet Name="MemberMissionStatusList" EntityType="TicketSysModel.MemberMissionStatusList" />
@@ -50,6 +52,10 @@
       <End Role="SubCategories" EntitySet="SubCategories" />
       <End Role="Activity" EntitySet="Activity" />
     </AssociationSet>
+    <AssociationSet Name="FK_ActivutyFavourite_Activity" Association="TicketSysModel.FK_ActivutyFavourite_Activity">
+      <End Role="Activity" EntitySet="Activity" />
+      <End Role="ActivutyFavourite" EntitySet="ActivutyFavourite" />
+    </AssociationSet>
     <AssociationSet Name="FK_Comment_Activity" Association="TicketSysModel.FK_Comment_Activity">
       <End Role="Activity" EntitySet="Activity" />
       <End Role="Comment" EntitySet="Comment" />
@@ -70,6 +76,10 @@
       <End Role="Activity" EntitySet="Activity" />
       <End Role="TicketTimes" EntitySet="TicketTimes" />
     </AssociationSet>
+    <AssociationSet Name="FK_ActivutyFavourite_Member" Association="TicketSysModel.FK_ActivutyFavourite_Member">
+      <End Role="Member" EntitySet="Member" />
+      <End Role="ActivutyFavourite" EntitySet="ActivutyFavourite" />
+    </AssociationSet>
     <AssociationSet Name="FK_Article_ArticleCategories" Association="TicketSysModel.FK_Article_ArticleCategories">
       <End Role="ArticleCategories" EntitySet="ArticleCategories" />
       <End Role="Article" EntitySet="Article" />
@@ -86,13 +96,13 @@
       <End Role="Article" EntitySet="Article" />
       <End Role="Article_Emotion" EntitySet="Article_Emotion" />
     </AssociationSet>
+    <AssociationSet Name="FK_Emotion_Article1" Association="TicketSysModel.FK_Emotion_Article1">
+      <End Role="Article" EntitySet="Article" />
+      <End Role="Emotion" EntitySet="Emotion" />
+    </AssociationSet>
     <AssociationSet Name="FK_Reply_Article" Association="TicketSysModel.FK_Reply_Article">
       <End Role="Article" EntitySet="Article" />
       <End Role="Reply" EntitySet="Reply" />
-    </AssociationSet>
-    <AssociationSet Name="FK_Emotion_EmotionAction" Association="TicketSysModel.FK_Emotion_EmotionAction">
-      <End Role="EmotionAction" EntitySet="EmotionAction" />
-      <End Role="Article_Emotion" EntitySet="Article_Emotion" />
     </AssociationSet>
     <AssociationSet Name="FK_Emotion_Member" Association="TicketSysModel.FK_Emotion_Member">
       <End Role="Member" EntitySet="Member" />
@@ -133,6 +143,14 @@
     <AssociationSet Name="FK_Orders_Districts" Association="TicketSysModel.FK_Orders_Districts">
       <End Role="Districts" EntitySet="Districts" />
       <End Role="Orders" EntitySet="Orders" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Emotion_EmotionAction" Association="TicketSysModel.FK_Emotion_EmotionAction">
+      <End Role="EmotionAction" EntitySet="EmotionAction" />
+      <End Role="Emotion" EntitySet="Emotion" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Emotion_Member1" Association="TicketSysModel.FK_Emotion_Member1">
+      <End Role="Member" EntitySet="Member" />
+      <End Role="Emotion" EntitySet="Emotion" />
     </AssociationSet>
     <AssociationSet Name="FK_Reply_Emotion_EmotionAction" Association="TicketSysModel.FK_Reply_Emotion_EmotionAction">
       <End Role="EmotionAction" EntitySet="EmotionAction" />
@@ -247,6 +265,7 @@
     <NavigationProperty Name="Districts" Relationship="TicketSysModel.FK_Activity_Districts" FromRole="Activity" ToRole="Districts" />
     <NavigationProperty Name="Seller" Relationship="TicketSysModel.FK_Activity_Seller" FromRole="Activity" ToRole="Seller" />
     <NavigationProperty Name="SubCategories" Relationship="TicketSysModel.FK_Activity_SubCategories" FromRole="Activity" ToRole="SubCategories" />
+    <NavigationProperty Name="ActivutyFavourite" Relationship="TicketSysModel.FK_ActivutyFavourite_Activity" FromRole="Activity" ToRole="ActivutyFavourite" />
     <NavigationProperty Name="Comment" Relationship="TicketSysModel.FK_Comment_Activity" FromRole="Activity" ToRole="Comment" />
     <NavigationProperty Name="TicketCategory" Relationship="TicketSysModel.FK_TicketCategory_Activity" FromRole="Activity" ToRole="TicketCategory" />
     <NavigationProperty Name="TicketGroupDetail" Relationship="TicketSysModel.FK_TicketGroupDetail_Activity" FromRole="Activity" ToRole="TicketGroupDetail" />
@@ -260,6 +279,16 @@
     <Property Name="ActivityStatusID" Type="Int32" Nullable="false" />
     <Property Name="ActivityStatusName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
     <NavigationProperty Name="Activity" Relationship="TicketSysModel.FK_Activity_ActivityStatus" FromRole="ActivityStatus" ToRole="Activity" />
+  </EntityType>
+  <EntityType Name="ActivutyFavourite">
+    <Key>
+      <PropertyRef Name="ActivutyFavouriteId" />
+    </Key>
+    <Property Name="ActivutyFavouriteId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="MemberId" Type="Int32" Nullable="false" />
+    <Property Name="ActivityId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Activity" Relationship="TicketSysModel.FK_ActivutyFavourite_Activity" FromRole="ActivutyFavourite" ToRole="Activity" />
+    <NavigationProperty Name="Member" Relationship="TicketSysModel.FK_ActivutyFavourite_Member" FromRole="ActivutyFavourite" ToRole="Member" />
   </EntityType>
   <EntityType Name="Article">
     <Key>
@@ -276,6 +305,7 @@
     <NavigationProperty Name="Member" Relationship="TicketSysModel.FK_Article_Member" FromRole="Article" ToRole="Member" />
     <NavigationProperty Name="Article_Report" Relationship="TicketSysModel.FK_Article_Report_Article_Report" FromRole="Article" ToRole="Article_Report" />
     <NavigationProperty Name="Article_Emotion" Relationship="TicketSysModel.FK_Emotion_Article" FromRole="Article" ToRole="Article_Emotion" />
+    <NavigationProperty Name="Emotion" Relationship="TicketSysModel.FK_Emotion_Article1" FromRole="Article" ToRole="Emotion" />
     <NavigationProperty Name="Reply" Relationship="TicketSysModel.FK_Reply_Article" FromRole="Article" ToRole="Reply" />
   </EntityType>
   <EntityType Name="Article_Emotion">
@@ -287,7 +317,6 @@
     <Property Name="ArticleId" Type="Int32" Nullable="false" />
     <Property Name="ActionId" Type="Int32" Nullable="false" />
     <NavigationProperty Name="Article" Relationship="TicketSysModel.FK_Emotion_Article" FromRole="Article_Emotion" ToRole="Article" />
-    <NavigationProperty Name="EmotionAction" Relationship="TicketSysModel.FK_Emotion_EmotionAction" FromRole="Article_Emotion" ToRole="EmotionAction" />
     <NavigationProperty Name="Member" Relationship="TicketSysModel.FK_Emotion_Member" FromRole="Article_Emotion" ToRole="Member" />
   </EntityType>
   <EntityType Name="Article_Report">
@@ -364,13 +393,25 @@
     <NavigationProperty Name="Member" Relationship="TicketSysModel.FK_Member_Districts" FromRole="Districts" ToRole="Member" />
     <NavigationProperty Name="Orders" Relationship="TicketSysModel.FK_Orders_Districts" FromRole="Districts" ToRole="Orders" />
   </EntityType>
+  <EntityType Name="Emotion">
+    <Key>
+      <PropertyRef Name="AriticleEmotionId" />
+    </Key>
+    <Property Name="AriticleEmotionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="MemberId" Type="Int32" Nullable="false" />
+    <Property Name="ArticleId" Type="Int32" Nullable="false" />
+    <Property Name="ActionId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Article" Relationship="TicketSysModel.FK_Emotion_Article1" FromRole="Emotion" ToRole="Article" />
+    <NavigationProperty Name="EmotionAction" Relationship="TicketSysModel.FK_Emotion_EmotionAction" FromRole="Emotion" ToRole="EmotionAction" />
+    <NavigationProperty Name="Member" Relationship="TicketSysModel.FK_Emotion_Member1" FromRole="Emotion" ToRole="Member" />
+  </EntityType>
   <EntityType Name="EmotionAction">
     <Key>
       <PropertyRef Name="EmotionActionId" />
     </Key>
     <Property Name="EmotionActionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="EmotionActionName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-    <NavigationProperty Name="Article_Emotion" Relationship="TicketSysModel.FK_Emotion_EmotionAction" FromRole="EmotionAction" ToRole="Article_Emotion" />
+    <NavigationProperty Name="Emotion" Relationship="TicketSysModel.FK_Emotion_EmotionAction" FromRole="EmotionAction" ToRole="Emotion" />
     <NavigationProperty Name="Reply_Emotion" Relationship="TicketSysModel.FK_Reply_Emotion_EmotionAction" FromRole="EmotionAction" ToRole="Reply_Emotion" />
   </EntityType>
   <EntityType Name="Member">
@@ -395,7 +436,8 @@
     <Property Name="RegisterCheckCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="provider" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="providerFB" Type="Boolean" />
-    <Property Name="providerGO" Type="Boolean" />
+    <Property Name="providerGo" Type="Boolean" />
+    <NavigationProperty Name="ActivutyFavourite" Relationship="TicketSysModel.FK_ActivutyFavourite_Member" FromRole="Member" ToRole="ActivutyFavourite" />
     <NavigationProperty Name="Article" Relationship="TicketSysModel.FK_Article_Member" FromRole="Member" ToRole="Article" />
     <NavigationProperty Name="Article_Emotion" Relationship="TicketSysModel.FK_Emotion_Member" FromRole="Member" ToRole="Article_Emotion" />
     <NavigationProperty Name="Article_Report" Relationship="TicketSysModel.FK_Article_Report_Member" FromRole="Member" ToRole="Article_Report" />
@@ -403,6 +445,7 @@
     <NavigationProperty Name="BanLIst1" Relationship="TicketSysModel.FK_BanLIst_Member1" FromRole="Member" ToRole="BanLIst" />
     <NavigationProperty Name="Comment" Relationship="TicketSysModel.FK_Comment_Member" FromRole="Member" ToRole="Comment" />
     <NavigationProperty Name="Districts" Relationship="TicketSysModel.FK_Member_Districts" FromRole="Member" ToRole="Districts" />
+    <NavigationProperty Name="Emotion" Relationship="TicketSysModel.FK_Emotion_Member1" FromRole="Member" ToRole="Emotion" />
     <NavigationProperty Name="MemberRole" Relationship="TicketSysModel.FK_Member_MemberRole" FromRole="Member" ToRole="MemberRole" />
     <NavigationProperty Name="MemberMissionStatusList" Relationship="TicketSysModel.FK_MemberMissionStatusList_Member" FromRole="Member" ToRole="MemberMissionStatusList" />
     <NavigationProperty Name="Orders" Relationship="TicketSysModel.FK_Orders_Member" FromRole="Member" ToRole="Orders" />
@@ -692,6 +735,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_ActivutyFavourite_Activity">
+    <End Type="TicketSysModel.Activity" Role="Activity" Multiplicity="1" />
+    <End Type="TicketSysModel.ActivutyFavourite" Role="ActivutyFavourite" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Activity">
+        <PropertyRef Name="ActivityID" />
+      </Principal>
+      <Dependent Role="ActivutyFavourite">
+        <PropertyRef Name="ActivityId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_Comment_Activity">
     <End Type="TicketSysModel.Activity" Role="Activity" Multiplicity="1" />
     <End Type="TicketSysModel.Comment" Role="Comment" Multiplicity="*" />
@@ -752,6 +807,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_ActivutyFavourite_Member">
+    <End Type="TicketSysModel.Member" Role="Member" Multiplicity="1" />
+    <End Type="TicketSysModel.ActivutyFavourite" Role="ActivutyFavourite" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Member">
+        <PropertyRef Name="MemberID" />
+      </Principal>
+      <Dependent Role="ActivutyFavourite">
+        <PropertyRef Name="MemberId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_Article_ArticleCategories">
     <End Type="TicketSysModel.ArticleCategories" Role="ArticleCategories" Multiplicity="1" />
     <End Type="TicketSysModel.Article" Role="Article" Multiplicity="*" />
@@ -800,6 +867,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_Emotion_Article1">
+    <End Type="TicketSysModel.Article" Role="Article" Multiplicity="1" />
+    <End Type="TicketSysModel.Emotion" Role="Emotion" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Article">
+        <PropertyRef Name="ArticleID" />
+      </Principal>
+      <Dependent Role="Emotion">
+        <PropertyRef Name="ArticleId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_Reply_Article">
     <End Type="TicketSysModel.Article" Role="Article" Multiplicity="1" />
     <End Type="TicketSysModel.Reply" Role="Reply" Multiplicity="*" />
@@ -809,18 +888,6 @@
       </Principal>
       <Dependent Role="Reply">
         <PropertyRef Name="ArticleID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_Emotion_EmotionAction">
-    <End Type="TicketSysModel.EmotionAction" Role="EmotionAction" Multiplicity="1" />
-    <End Type="TicketSysModel.Article_Emotion" Role="Article_Emotion" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="EmotionAction">
-        <PropertyRef Name="EmotionActionId" />
-      </Principal>
-      <Dependent Role="Article_Emotion">
-        <PropertyRef Name="ActionId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -941,6 +1008,30 @@
       </Principal>
       <Dependent Role="Orders">
         <PropertyRef Name="DistrictId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Emotion_EmotionAction">
+    <End Type="TicketSysModel.EmotionAction" Role="EmotionAction" Multiplicity="1" />
+    <End Type="TicketSysModel.Emotion" Role="Emotion" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="EmotionAction">
+        <PropertyRef Name="EmotionActionId" />
+      </Principal>
+      <Dependent Role="Emotion">
+        <PropertyRef Name="ActionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Emotion_Member1">
+    <End Type="TicketSysModel.Member" Role="Member" Multiplicity="1" />
+    <End Type="TicketSysModel.Emotion" Role="Emotion" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Member">
+        <PropertyRef Name="MemberID" />
+      </Principal>
+      <Dependent Role="Emotion">
+        <PropertyRef Name="MemberId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

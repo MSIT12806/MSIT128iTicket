@@ -27,6 +27,15 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="ActivutyFavourite">
+      <EntityTypeMapping TypeName="TicketSysModel.ActivutyFavourite">
+        <MappingFragment StoreEntitySet="ActivutyFavourite">
+          <ScalarProperty Name="ActivityId" ColumnName="ActivityId" />
+          <ScalarProperty Name="MemberId" ColumnName="MemberId" />
+          <ScalarProperty Name="ActivutyFavouriteId" ColumnName="ActivutyFavouriteId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="Article">
       <EntityTypeMapping TypeName="TicketSysModel.Article">
         <MappingFragment StoreEntitySet="Article">
@@ -117,6 +126,16 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="Emotion">
+      <EntityTypeMapping TypeName="TicketSysModel.Emotion">
+        <MappingFragment StoreEntitySet="Emotion">
+          <ScalarProperty Name="ActionId" ColumnName="ActionId" />
+          <ScalarProperty Name="ArticleId" ColumnName="ArticleId" />
+          <ScalarProperty Name="MemberId" ColumnName="MemberId" />
+          <ScalarProperty Name="AriticleEmotionId" ColumnName="AriticleEmotionId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="EmotionAction">
       <EntityTypeMapping TypeName="TicketSysModel.EmotionAction">
         <MappingFragment StoreEntitySet="EmotionAction">
@@ -128,7 +147,7 @@
     <EntitySetMapping Name="Member">
       <EntityTypeMapping TypeName="TicketSysModel.Member">
         <MappingFragment StoreEntitySet="Member">
-          <ScalarProperty Name="providerGO" ColumnName="providerGO" />
+          <ScalarProperty Name="providerGo" ColumnName="providerGo" />
           <ScalarProperty Name="providerFB" ColumnName="providerFB" />
           <ScalarProperty Name="provider" ColumnName="provider" />
           <ScalarProperty Name="RegisterCheckCode" ColumnName="RegisterCheckCode" />

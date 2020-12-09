@@ -17,6 +17,7 @@ namespace prjITicket.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Activity()
         {
+            this.ActivutyFavourite = new HashSet<ActivutyFavourite>();
             this.Comment = new HashSet<Comment>();
             this.TicketCategory = new HashSet<TicketCategory>();
             this.TicketGroupDetail = new HashSet<TicketGroupDetail>();
@@ -41,6 +42,8 @@ namespace prjITicket.Models
         public virtual Districts Districts { get; set; }
         public virtual Seller Seller { get; set; }
         public virtual SubCategories SubCategories { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ActivutyFavourite> ActivutyFavourite { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Comment> Comment { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

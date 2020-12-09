@@ -12,14 +12,13 @@ namespace prjITicket.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Article_Emotion
+    public partial class ActivutyFavourite
     {
-        public int ArticleEmotionId { get; set; }
+        public int ActivutyFavouriteId { get; set; }
         public int MemberId { get; set; }
-        public int ArticleId { get; set; }
-        public int ActionId { get; set; }
+        public int ActivityId { get; set; }
     
-        public virtual Article Article { get; set; }
+        public virtual Activity Activity { get; set; }
         public virtual Member Member { get; set; }
     }
 }
