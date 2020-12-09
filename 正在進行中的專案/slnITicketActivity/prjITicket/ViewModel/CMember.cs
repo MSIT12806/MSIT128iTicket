@@ -73,13 +73,15 @@ namespace prjITicket.ViewModel
         public string NickName { get { return this.entity.NickName; } }
         [DisplayName("出生日期:")]
         public Nullable<System.DateTime> BirthDate { get { return this.entity.BirthDate; } }
-        [DisplayName("電話號碼:")]
+        [DisplayName("聯絡電話:")]
         public string Phone { get { return this.entity.Phone; } }
-        [RegularExpression(@"^(?=.*[a-zA-Z])(?=.*\d).{8,12}$", ErrorMessage = "密碼請輸入8-12碼,至少一個英文及數字")]
-        [DisplayName("密碼:")]
+        [RegularExpression(@"^(?=.*[a-zA-Z])(?=.*\d).{8,12}$", ErrorMessage = "密碼請輸入8~12碼, 至少一個英文及數字")]
+        [Required(ErrorMessage = "密碼請輸入8~12碼, 至少一個英文及數字")]
         public string Password { get { return this.entity.Password; } }
-        [Required(ErrorMessage = "與密碼不一致")]
-        [DisplayName("請再輸入一次密碼:")]
+        [RegularExpression(@"^(?=.*[a-zA-Z])(?=.*\d).{8,12}$", ErrorMessage = "密碼請輸入8~12碼, 至少一個英文及數字")]
+        [Required(ErrorMessage = "密碼請輸入8~12碼, 至少一個英文及數字")]
+        public string NewPassword { get; set; }
+        [System.Web.Mvc.Compare("NewPassword", ErrorMessage = "與新密碼不一致")]
         public string PasswordCheck { get; set; }
         [DisplayName("iTicket Points:")]
         public Nullable<int> Point { get { return this.entity.Point; } }

@@ -17,6 +17,7 @@ namespace prjITicket.ViewModel
         public string Passport { get; set; }
         public string NickName { get; set; }
         public Nullable<System.DateTime> BirthDate { get; set; }
+        [RegularExpression(@"^(?=.*\d).{10,10}$", ErrorMessage = "手機號碼10碼")]
         public string Phone { get; set; }
         [RegularExpression(@"^(?=.*[a-zA-Z])(?=.*\d).{8,12}$", ErrorMessage = "密碼請輸入8-12碼,至少一個英文及數字")]
         public string Password { get; set; }
@@ -28,5 +29,7 @@ namespace prjITicket.ViewModel
         public Nullable<int> DistrictId { get; set; }
         public string RegisterCheckCode { get; set; }
         public bool agreeterm { get; set; }
+        public string NPassword { get; set; }
     }
+    
 }

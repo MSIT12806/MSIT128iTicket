@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link href="~/Content/Forum_use/css/myLayout.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/Content/css/myLayout.css" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - My ASP.NET Application</title>
@@ -139,7 +139,14 @@
                         <div class="dropdown ml-auto">
                             <button style="width:35px;height:35px" class="btn btn-cart btn-sm" type="button" id="dropdownMenuButton" data-toggle="dropdown"
                                     aria-haspopup="true" aria-expanded="false">
-                                <i style="content:url(../../images/Layout/login_icon.jpg);width:27px;height:27px;transform:translate(-5px,0px);border-radius:50%"></i>
+                                @if (Session[CDictionary.SK_Logined_Member] != null && (Session[CDictionary.SK_Logined_Member] as Member).Icon != null)
+                                {
+                                    <i id="layoutimg" style="content:url(@Url.Content("~/images/Login/Upload/"+(Session[CDictionary.SK_Logined_Member]as Member).Icon));width:35px;height:35px;transform:translate(-6px,-3px);border-radius:50%"></i>
+                                }
+                                else
+                                {
+                                    <i style="content:url(../../images/Login/Layout/bar.png);width:35px;height:35px;transform:translate(-6px,-3px);border-radius:50%"></i>
+                                }
                             </button>
                             <div class="dropdown-menu dropdown-menu-right" style="min-width: 300px" aria-labelledby="dropdownMenuButton">
                                 <div class="p-3">
@@ -148,19 +155,29 @@
                                         <a class="btn btn-block btn-primary btn-sm text-white " href="@Url.Action("Login", "Login")">登入</a>
                                         <a class="btn btn-block btn-primary btn-sm text-white" href="@Url.Action("Register", "Login")">註冊</a>
                                     }
-                                    else if ((Session[CDictionary.SK_Logined_Member] as Member).MemberRole.MemberRoleName == "未驗證" ||
-                                        (Session[CDictionary.SK_Logined_Member] as Member).MemberRole.MemberRoleName == "普通會員")
+
+
+                                    else if ((Session[CDictionary.SK_Logined_Member] as Member).provider == "facebook" ||
+                                        (Session[CDictionary.SK_Logined_Member] as Member).provider == "google")
                                     {
-                                        <a class="btn btn-block btn-primary btn-sm text-white " href="@Url.Action("MemberEdit", "Login")">修改會員</a>
+                                        <a class="btn btn-block btn-primary btn-sm text-white " href="@Url.Action("MemberEdit", "Login")">會員中心</a>
+                                        <a class="btn btn-block btn-primary btn-sm text-white" href="@Url.Action("Logout", "Login")">登出</a>
+
+                                    }
+                                    else if ((Session[CDictionary.SK_Logined_Member] as Member).MemberRole.MemberRoleName == "普通會員" ||
+                                        (Session[CDictionary.SK_Logined_Member] as Member).MemberRole.MemberRoleName == "未驗證")
+                                    {
+                                        <a class="btn btn-block btn-primary btn-sm text-white " href="@Url.Action("MemberEdit", "Login")">會員中心</a>
                                         <a class="btn btn-block btn-primary btn-sm text-white" href="@Url.Action("Logout", "Login")">登出</a>
 
                                     }
                                     else if ((Session[CDictionary.SK_Logined_Member] as Member).MemberRole.MemberRoleName == "商家")
                                     {
-                                        <a class="btn btn-block btn-primary btn-sm text-white " href="@Url.Action("BussEdit", "Login")">修改會員</a>
+                                        <a class="btn btn-block btn-primary btn-sm text-white " href="@Url.Action("BussEdit", "Login")">會員中心</a>
                                         <a class="btn btn-block btn-primary btn-sm text-white" href="@Url.Action("Logout", "Login")">登出</a>
-                                        <a class="btn btn-block btn-primary btn-sm text-white" href="javescript:;">上傳</a>
+                                        <a class="btn btn-block btn-primary btn-sm text-white" href="@Url.Action("ManagementCenter","SellerCenter")">商家中心</a>
                                     }
+
                                 </div>
                             </div>
                         </div>

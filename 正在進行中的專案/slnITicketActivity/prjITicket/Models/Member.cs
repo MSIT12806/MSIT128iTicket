@@ -17,14 +17,13 @@ namespace prjITicket.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Member()
         {
-            this.ActivutyFavourite = new HashSet<ActivutyFavourite>();
+            this.ActivityFavourite = new HashSet<ActivityFavourite>();
             this.Article = new HashSet<Article>();
             this.Article_Emotion = new HashSet<Article_Emotion>();
             this.Article_Report = new HashSet<Article_Report>();
             this.BanLIst = new HashSet<BanLIst>();
             this.BanLIst1 = new HashSet<BanLIst>();
             this.Comment = new HashSet<Comment>();
-            this.Emotion = new HashSet<Emotion>();
             this.MemberMissionStatusList = new HashSet<MemberMissionStatusList>();
             this.Orders = new HashSet<Orders>();
             this.Reply_Emotion = new HashSet<Reply_Emotion>();
@@ -45,7 +44,7 @@ namespace prjITicket.Models
         public Nullable<System.DateTime> BirthDate { get; set; }
         public string Phone { get; set; }
         public string Password { get; set; }
-        public Nullable<int> Point { get; set; }
+        public int Point { get; set; }
         public string Address { get; set; }
         public int MemberRoleId { get; set; }
         public string Icon { get; set; }
@@ -54,10 +53,10 @@ namespace prjITicket.Models
         public string RegisterCheckCode { get; set; }
         public string provider { get; set; }
         public Nullable<bool> providerFB { get; set; }
-        public Nullable<bool> providerGo { get; set; }
+        public Nullable<bool> providerGO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ActivutyFavourite> ActivutyFavourite { get; set; }
+        public virtual ICollection<ActivityFavourite> ActivityFavourite { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Article> Article { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -71,8 +70,6 @@ namespace prjITicket.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Comment> Comment { get; set; }
         public virtual Districts Districts { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Emotion> Emotion { get; set; }
         public virtual MemberRole MemberRole { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MemberMissionStatusList> MemberMissionStatusList { get; set; }

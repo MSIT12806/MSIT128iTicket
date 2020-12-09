@@ -20,6 +20,7 @@ namespace prjITicket.Models
         public int ActionId { get; set; }
     
         public virtual Article Article { get; set; }
+        public virtual EmotionAction EmotionAction { get; set; }
         public virtual Member Member { get; set; }
     }
 }

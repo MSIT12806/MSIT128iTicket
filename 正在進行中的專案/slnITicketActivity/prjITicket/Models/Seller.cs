@@ -28,6 +28,7 @@ namespace prjITicket.Models
         public string SellerPhone { get; set; }
         public string SellerDeccription { get; set; }
         public int MemberId { get; set; }
+        public Nullable<bool> fPass { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Activity> Activity { get; set; }

@@ -29,6 +29,7 @@ namespace prjITicket.Models
         public string Address { get; set; }
         public bool OrderStatus { get; set; }
         public string OrderGuid { get; set; }
+        public int PayPoint { get; set; }
     
         public virtual Districts Districts { get; set; }
         public virtual Member Member { get; set; }

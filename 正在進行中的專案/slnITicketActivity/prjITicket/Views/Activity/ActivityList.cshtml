@@ -5,13 +5,33 @@
     ViewBag.Title = "活動一覽";
 }
 <link href="~/Content/PagedList.css" rel="stylesheet" />
+<link href="~/Content/Activity/MultiRange/nouislider.min.css" rel="stylesheet" />
+<script src="~/Content/Activity/MultiRange/nouislider.min.js"></script>
+<style>
+    #min, #max {
+        width: 70px;
+    }
+</style>
 <script>
+    var html5Slider;
     $(function () {
+        //MultiRange的激活程式碼
+        html5Slider = document.getElementById('slider');
+        noUiSlider.create(html5Slider, {
+            start: [0, @(Model.MaxPriceAll/2)],
+            connect: true,
+            range: {
+                'min': 0,
+                'max':@Model.MaxPriceAll
+            }
+        });
         //根據歷史紀錄的hash值判斷網頁要載入哪個Ajax頁
         if (history.pushState) {
             window.onpopstate = function (e) {
                 //顯示排序按鈕的狀態
                 loadOrderModeBtnStatus();
+                //顯示價格篩選器的狀態
+                loadPriceFilterStatus();
                 if (e.state == null) {
                     if (window.location.hash != "") {
                         loadActivityPageByHashObj(turnToHashObj(window.location.hash.substring(1)));
@@ -35,8 +55,9 @@
             let hashObj = turnToHashObj(window.location.hash.substring(1));
             loadActivityPageByHashObj(hashObj);
         }
-        //網頁載入刷新排序按鈕狀態
+        //網頁載入刷新排序按鈕狀態,刷新價格篩選器狀態
         loadOrderModeBtnStatus();
+        loadPriceFilterStatus();
         //價格,評價排序器有變化就執行排序
         $(":radio").change(function () {
             let orderMode = $(this).val();
@@ -68,16 +89,24 @@
             /////////////////////////////////
             console.log(orderMode);
             /////////////////////////////////
-            saveHistory(`action=keyword&keyword=${keyword}&orderMode=${orderMode}&page=1`);
-            getActivityPagesByKeyword(1, keyword,orderMode);
+            let priceFilter = $("#priceFilter").prop("checked") ? 1 : 0;
+            let values = html5Slider.noUiSlider.get();
+            let minPrice = Math.round(values[0]);
+            let maxPrice = Math.round(values[1]);
+            saveHistory(`priceFilter=${priceFilter}&maxPrice=${maxPrice}&minPrice=${minPrice}&action=keyword&keyword=${keyword}&orderMode=${orderMode}&page=1`);
+            getActivityPagesByKeyword(1, keyword,orderMode,minPrice,maxPrice,priceFilter);
         });
         $("#btnGetAll").click(function () {
             let orderMode = $(":radio:checked").val();
             /////////////////////////////////
             console.log(orderMode);
             /////////////////////////////////
-            saveHistory(`action=all&orderMode=${orderMode}&page=1`);
-            getActivityPages(1,orderMode);
+            let priceFilter = $("#priceFilter").prop("checked") ? 1 : 0;
+            let values = html5Slider.noUiSlider.get();
+            let minPrice = Math.round(values[0]);
+            let maxPrice = Math.round(values[1]);
+            saveHistory(`priceFilter=${priceFilter}&maxPrice=${maxPrice}&minPrice=${minPrice}&action=all&orderMode=${orderMode}&page=1`);
+            getActivityPages(1,orderMode,minPrice,maxPrice,priceFilter);
         });
         //讀取城市資料到下拉框
         loadDataToSelCity();
@@ -89,15 +118,46 @@
         $("#btnCityDis").click(function () {
             let cityId = $("#selCity").val();
             let districtId = $("#selDistrict").val();
-            if (cityId == -1 || districtId == -1) {
+            if (cityId == -1) {
                 return;
             }
             let orderMode = $(":radio:checked").val();
             /////////////////////////////////
             console.log(orderMode);
             /////////////////////////////////
-            saveHistory(`action=district&districtId=${districtId}&orderMode=${orderMode}&page=1`);
-            getActivityPagesByDistrictId(1, districtId, orderMode);
+            let priceFilter = $("#priceFilter").prop("checked") ? 1 : 0;
+            let values = html5Slider.noUiSlider.get();
+            let minPrice = Math.round(values[0]);
+            let maxPrice = Math.round(values[1]);
+            saveHistory(`priceFilter=${priceFilter}&maxPrice=${maxPrice}&minPrice=${minPrice}&action=district&districtId=${districtId}&orderMode=${orderMode}&page=1`);
+            getActivityPagesByDistrictId(1, districtId, orderMode,minPrice,maxPrice,priceFilter);
+        });
+        //保持價格篩選跟input框的值同步
+        var inputMin = document.getElementById('min');
+        var inputMax = document.getElementById('max');
+        html5Slider.noUiSlider.on('update', function (values, handle) {
+            var value = values[handle];
+            if (handle) {
+                inputMax.value = Math.round(value);
+            } else {
+                inputMin.value = Math.round(value);
+            }
+        });
+        //價格篩選有變化時要做的動作
+        html5Slider.noUiSlider.on("set", function (values) {
+            let priceFilter = $("#priceFilter").prop("checked") ? 1 : 0;
+            if (!priceFilter) return;
+            let minPrice = Math.round(values[0]);
+            let maxPrice = Math.round(values[1]);
+            priceFilterConditionChange(minPrice, maxPrice, priceFilter);
+        });
+        //價格篩選checkbox變化時的事件
+        $("#priceFilter").change(function () {
+            let priceFilter = $(this).prop("checked") ? 1 : 0;
+            let values = html5Slider.noUiSlider.get();
+            let minPrice = Math.round(values[0]);
+            let maxPrice = Math.round(values[1]);
+            priceFilterConditionChange(minPrice, maxPrice, priceFilter);
         });
     });
     //獲得hash紀錄參數的物件
@@ -117,30 +177,30 @@
     function loadActivityPageByHashObj(hashObj) {
         switch (hashObj.action) {
             case "all":
-                getActivityPages(hashObj.page,hashObj.orderMode);
+                getActivityPages(hashObj.page,hashObj.orderMode,hashObj.minPrice,hashObj.maxPrice,hashObj.priceFilter);
                 break;
             case "keyword":
-                getActivityPagesByKeyword(hashObj.page, hashObj.keyword,hashObj.orderMode);
+                getActivityPagesByKeyword(hashObj.page, hashObj.keyword, hashObj.orderMode, hashObj.minPrice, hashObj.maxPrice, hashObj.priceFilter);
                 break;
             case "category":
-                getActivityPagesByCategoryId(hashObj.page, hashObj.categoryid,hashObj.orderMode);
+                getActivityPagesByCategoryId(hashObj.page, hashObj.categoryid, hashObj.orderMode, hashObj.minPrice, hashObj.maxPrice, hashObj.priceFilter);
                 break;
             case "subcategory":
-                getActivityPagesBySubCategoryId(hashObj.page, hashObj.subcategoryid,hashObj.orderMode);
+                getActivityPagesBySubCategoryId(hashObj.page, hashObj.subcategoryid, hashObj.orderMode, hashObj.minPrice, hashObj.maxPrice, hashObj.priceFilter);
                 break;
             case "district":
-                getActivityPagesByDistrictId(hashObj.page, hashObj.districtId, hashObj.orderMode);
+                getActivityPagesByDistrictId(hashObj.page, hashObj.districtId, hashObj.orderMode, hashObj.minPrice, hashObj.maxPrice, hashObj.priceFilter);
                 break;
             default:
                 getActivityPages(1,"scoredown");
         }
     }
     //獲得全部活動資料頁的函數
-    function getActivityPages(pageNum,orderMode) {
+    function getActivityPages(pageNum,orderMode,minPrice,maxPrice,priceFilter) {
         $.ajax({
             type: "get",
             url: "@Url.Action("GetActivityPages")",
-            data: { currentPage: pageNum,orderMode:orderMode},
+            data: { currentPage: pageNum,orderMode:orderMode,minPrice:minPrice,maxPrice:maxPrice,priceFilter:priceFilter},
             success: function (result) {
                 $("#showActivities").html(result);
                 returnToActivityList();
@@ -148,12 +208,12 @@
         })
     }
     //通過關鍵字獲得活動資料頁
-    function getActivityPagesByKeyword(pageNum, keyword,orderMode) {
+    function getActivityPagesByKeyword(pageNum, keyword, orderMode, minPrice, maxPrice, priceFilter) {
         keyword = decodeURI(keyword);
         $.ajax({
             type: "get",
             url: "@Url.Action("GetActivityPagesByKeyword")",
-            data: { keyword: keyword, currentPage: pageNum,orderMode:orderMode },
+            data: { keyword: keyword, currentPage: pageNum, orderMode: orderMode, minPrice: minPrice, maxPrice: maxPrice, priceFilter: priceFilter },
             success: function (result) {
                 $("#showActivities").html(result);
                 returnToActivityList();
@@ -161,11 +221,11 @@
         });
     }
     //通過大類獲得活動資料頁
-    function getActivityPagesByCategoryId(pageNum, categoryId,orderMode) {
+    function getActivityPagesByCategoryId(pageNum, categoryId, orderMode, minPrice, maxPrice, priceFilter) {
         $.ajax({
             type: "get",
             url: "@Url.Action("GetActivityPagesByCategoryId")",
-            data: { categoryId: categoryId, currentPage: pageNum,orderMode:orderMode },
+            data: { categoryId: categoryId, currentPage: pageNum, orderMode: orderMode, minPrice: minPrice, maxPrice: maxPrice, priceFilter: priceFilter },
             success: function (result) {
                 $("#showActivities").html(result);
                 returnToActivityList();
@@ -178,15 +238,19 @@
         /////////////////////////////////
         console.log(orderMode);
         /////////////////////////////////
-        saveHistory(`action=category&categoryid=${categoryId}&orderMode=${orderMode}&page=1`);
-        getActivityPagesByCategoryId(1, categoryId,orderMode);
+        let priceFilter = $("#priceFilter").prop("checked") ? 1 : 0;
+        let values = html5Slider.noUiSlider.get();
+        let minPrice = Math.round(values[0]);
+        let maxPrice = Math.round(values[1]);
+        saveHistory(`priceFilter=${priceFilter}&maxPrice=${maxPrice}&minPrice=${minPrice}&action=category&categoryid=${categoryId}&orderMode=${orderMode}&page=1`);
+        getActivityPagesByCategoryId(1, categoryId,orderMode,minPrice,maxPrice,priceFilter);
     }
     //通過子類別獲得活動資料頁
-    function getActivityPagesBySubCategoryId(pageNum, subCategoryId,orderMode) {
+    function getActivityPagesBySubCategoryId(pageNum, subCategoryId, orderMode, minPrice, maxPrice, priceFilter) {
         $.ajax({
             type: "get",
             url: "@Url.Action("GetActivityPagesBySubCategoryId")",
-            data: { subCategoryId: subCategoryId, currentPage:pageNum,orderMode:orderMode },
+            data: { subCategoryId: subCategoryId, currentPage: pageNum, orderMode: orderMode, minPrice: minPrice, maxPrice: maxPrice, priceFilter: priceFilter },
             success: function (result) {
                 $("#showActivities").html(result);
                 returnToActivityList();
@@ -194,11 +258,11 @@
         });
     }
     //通過地區獲得活動資料頁
-    function getActivityPagesByDistrictId(pageNum,districtId,orderMode) {
+    function getActivityPagesByDistrictId(pageNum, districtId, orderMode, minPrice, maxPrice, priceFilter) {
         $.ajax({
             type: "get",
             url: "@Url.Action("GetActivityPagesByDistrictId")",
-            data: { districtId: districtId, currentPage: pageNum, orderMode: orderMode },
+            data: { districtId: districtId, currentPage: pageNum, orderMode: orderMode, minPrice: minPrice, maxPrice: maxPrice, priceFilter: priceFilter },
             success: function (result) {
                 $("#showActivities").html(result);
                 returnToActivityList();
@@ -211,8 +275,12 @@
         /////////////////////////////////
         console.log(orderMode);
         /////////////////////////////////
-        saveHistory(`action=subcategory&subcategoryid=${subCategoryId}&orderMode=${orderMode}&page=1`);
-        getActivityPagesBySubCategoryId(1, subCategoryId, orderMode);
+        let priceFilter = $("#priceFilter").prop("checked") ? 1 : 0;
+        let values = html5Slider.noUiSlider.get();
+        let minPrice = Math.round(values[0]);
+        let maxPrice = Math.round(values[1]);
+        saveHistory(`priceFilter=${priceFilter}&maxPrice=${maxPrice}&minPrice=${minPrice}&action=subcategory&subcategoryid=${subCategoryId}&orderMode=${orderMode}&page=1`);
+        getActivityPagesBySubCategoryId(1, subCategoryId, orderMode,minPrice,maxPrice,priceFilter);
         addSubCategorySearchedTime(subCategoryId);
     }
     //增加子類別被搜索的次數的計數
@@ -254,6 +322,21 @@
             $(`#btnGroupOrderMode input[value=${orderMode}]`).prop("checked",true).parent().addClass("active").siblings().removeClass("active focus");
         }
     }
+    //刷新或者後退前進時價格篩選器同步改變
+    function loadPriceFilterStatus() {
+        if (window.location.hash == "") {
+            html5Slider.noUiSlider.set([0,@(Model.MaxPriceAll/2)], false, true);
+            $("#priceFilter").prop("checked", false);
+        }
+        else {
+            let hashObj = turnToHashObj(window.location.hash.substring(1));
+            let minPrice = hashObj.minPrice;
+            let maxPrice = hashObj.maxPrice;
+            let priceFilter = parseInt(hashObj.priceFilter);
+            html5Slider.noUiSlider.set([minPrice, maxPrice], false, true);
+            $("#priceFilter").prop("checked",Boolean(priceFilter));
+        }
+    }
     //把城市資訊塞入下拉框
     function loadDataToSelCity() {
         $.ajax({
@@ -278,7 +361,8 @@
             url: "@Url.Action("getDistrictsByCityId")",
             data: { cityId: cityId },
             success: function (result) {
-                $("#selDistrict").html("<option style='display:none' value='-1'>請選擇</option>");
+                //如果選全部,就把cityId用負數紀錄在value
+                $("#selDistrict").html(`<option value='${cityId*(-1)}'>全部</option>`);
                 let districts = JSON.parse(result);
                 for (let district of districts) {
                     let opt = $("<option></option>");
@@ -288,6 +372,50 @@
                 }
             }
         });
+    }
+    //價格篩選環境有變化時的函數
+    function priceFilterConditionChange(minPrice, maxPrice, priceFilter) {
+        if (window.location.hash != "") {
+            let newHash = "";
+            let hash = window.location.hash.substring(1);
+            if (hash.indexOf("priceFilter") == -1) {
+                let keyValues = hash.split("&");
+                for (let i = 0; i < keyValues.length; i++) {
+                    if (keyValues[i].indexOf("page") != -1) {
+                        keyValues[i] = "page=1";
+                    }
+                }
+                keyValues.unshift(`minPrice=${minPrice}`);
+                keyValues.unshift(`maxPrice=${maxPrice}`);
+                keyValues.unshift(`priceFilter=${priceFilter}`);
+                newHash = keyValues.join("&");
+            }
+            else {
+                let keyValues = hash.split("&");
+                for (let i = 0; i < keyValues.length; i++) {
+                    if (keyValues[i].indexOf("minPrice") != -1) {
+                        keyValues[i] = `minPrice=${minPrice}`;
+                    }
+                    if (keyValues[i].indexOf("maxPrice") != -1) {
+                        keyValues[i] = `maxPrice=${maxPrice}`;
+                    }
+                    if (keyValues[i].indexOf("priceFilter") != -1) {
+                        keyValues[i] = `priceFilter=${priceFilter}`;
+                    }
+                    if (keyValues[i].indexOf("page") != -1) {
+                        keyValues[i] = "page=1";
+                    }
+                }
+                newHash = keyValues.join("&");
+            }
+            saveHistory(newHash);
+            loadActivityPageByHashObj(turnToHashObj(newHash));
+        }
+        else {
+            let newHash = `priceFilter=${priceFilter}&maxPrice=${maxPrice}&minPrice=${minPrice}&action=all&orderMode=scoredown&page=1`;
+            saveHistory(newHash);
+            loadActivityPageByHashObj(turnToHashObj(newHash));
+        }
     }
 </script>
 <style>
@@ -337,7 +465,7 @@
                         <label class="col-md-4 col-form-label text-right">區域</label>
                         <div class="col-md-8">
                             <select id="selDistrict" name="district" class="form-control">
-                                <option value="-1">請選擇</option>
+                                <option value="">請選擇</option>
                                 <!--塞入區域資訊-->
                             </select>
                         </div>
@@ -436,20 +564,33 @@
                 <span class="sr-only">Next</span>
             </a>
         </div>
-        <!--順序篩選器-->
-        <div id="btnGroupOrderMode" class="btn-group btn-group-toggle btn-group-sm m1-1 my-3" data-toggle="buttons">
-            <label class="btn btn-outline-info">
-                <input value="scoredown" type="radio" name="options" id="" autocomplete="off">評價<i class='fas fa-angle-double-down' style="font-size:18px"></i>
-            </label>
-            <label class="btn btn-outline-info">
-                <input value="scoreup" type="radio" name="options" id="" autocomplete="off">評價<i class='fas fa-angle-double-up' style="font-size:18px"></i>
-            </label>
-            <label class="btn btn-outline-secondary">
-                <input value="pricedown" type="radio" name="options" id="" autocomplete="off">價格<i class='fas fa-angle-double-down' style="font-size:18px"></i>
-            </label>
-            <label class="btn btn-outline-secondary">
-                <input value="priceup" type="radio" name="options" id="" autocomplete="off">價格<i class='fas fa-angle-double-up' style="font-size:18px"></i>
-            </label>
+        <!--順序,價格篩選器-->
+        <div class="row">
+            <div class="col-md-4">
+                <div id="btnGroupOrderMode" class="btn-group btn-group-toggle btn-group-sm m1-1 my-3" data-toggle="buttons">
+                    <label class="btn btn-outline-info">
+                        <input value="scoredown" type="radio" name="options" id="" autocomplete="off">評價<i class='fas fa-angle-double-down' style="font-size:18px"></i>
+                    </label>
+                    <label class="btn btn-outline-info">
+                        <input value="scoreup" type="radio" name="options" id="" autocomplete="off">評價<i class='fas fa-angle-double-up' style="font-size:18px"></i>
+                    </label>
+                    <label class="btn btn-outline-secondary">
+                        <input value="pricedown" type="radio" name="options" id="" autocomplete="off">價格<i class='fas fa-angle-double-down' style="font-size:18px"></i>
+                    </label>
+                    <label class="btn btn-outline-secondary">
+                        <input value="priceup" type="radio" name="options" id="" autocomplete="off">價格<i class='fas fa-angle-double-up' style="font-size:18px"></i>
+                    </label>
+                </div>
+            </div>
+            <div class="col-md-8 my-auto">
+                <div class="row align-items-center">
+                    <div class="col-sm-auto">
+                        <div style="width:200px;display:inline-block" id="slider"></div>
+                        <input style="margin-left:20px" disabled type="text" id="min" />至<input type="text" id="max" disabled />
+                        <input id="priceFilter" type="checkbox" />價格篩選
+                    </div>
+                </div>
+            </div>
         </div>
         <!---->
         <div id="showActivities">

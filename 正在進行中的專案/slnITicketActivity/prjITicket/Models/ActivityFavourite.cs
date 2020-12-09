@@ -12,9 +12,9 @@ namespace prjITicket.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class ActivutyFavourite
+    public partial class ActivityFavourite
     {
-        public int ActivutyFavouriteId { get; set; }
+        public int ActivityFavouriteId { get; set; }
         public int MemberId { get; set; }
         public int ActivityId { get; set; }
     

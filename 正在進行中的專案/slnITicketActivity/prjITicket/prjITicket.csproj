@@ -115,6 +115,136 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\Activity\CommentStar.css" />
+    <Content Include="Content\Activity\MultiRange\nouislider.min.css" />
+    <Content Include="Content\Activity\MultiRange\nouislider.min.js" />
+    <Content Include="Content\BackEnd\css\myLayout.css" />
+    <Content Include="Content\BackEnd\css\shop-homepage.css" />
+    <Content Include="Content\BackEnd\css\shop-item.css" />
+    <Content Include="Content\BackEnd\css\styles.css" />
+    <Content Include="Content\BackEnd\demo\chart-area-demo.js" />
+    <Content Include="Content\BackEnd\demo\chart-bar-demo.js" />
+    <Content Include="Content\BackEnd\demo\chart-pie-demo.js" />
+    <Content Include="Content\BackEnd\demo\datatables-demo.js" />
+    <Content Include="Content\BackEnd\js\BackEndMember01.js" />
+    <Content Include="Content\BackEnd\js\BackEndMember02.js" />
+    <Content Include="Content\BackEnd\js\scripts.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\AUTHORS.txt" />
+    <Content Include="Content\BackEnd\node_modules\jquery\dist\jquery.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\dist\jquery.min.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\dist\jquery.slim.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\dist\jquery.slim.min.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\external\sizzle\dist\sizzle.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\external\sizzle\dist\sizzle.min.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\external\sizzle\LICENSE.txt" />
+    <Content Include="Content\BackEnd\node_modules\jquery\LICENSE.txt" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\ajax.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\ajax\jsonp.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\ajax\load.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\ajax\script.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\ajax\var\location.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\ajax\var\nonce.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\ajax\var\rquery.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\ajax\xhr.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\attributes.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\attributes\attr.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\attributes\classes.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\attributes\prop.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\attributes\support.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\attributes\val.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\callbacks.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\core.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\core\access.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\core\camelCase.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\core\DOMEval.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\core\init.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\core\isAttached.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\core\nodeName.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\core\parseHTML.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\core\parseXML.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\core\ready-no-deferred.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\core\ready.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\core\readyException.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\core\stripAndCollapse.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\core\support.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\core\toType.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\core\var\rsingleTag.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\css.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\css\addGetHookIf.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\css\adjustCSS.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\css\curCSS.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\css\finalPropName.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\css\hiddenVisibleSelectors.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\css\showHide.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\css\support.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\css\var\cssExpand.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\css\var\getStyles.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\css\var\isHiddenWithinTree.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\css\var\rboxStyle.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\css\var\rnumnonpx.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\css\var\swap.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\data.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\data\Data.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\data\var\acceptData.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\data\var\dataPriv.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\data\var\dataUser.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\deferred.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\deferred\exceptionHook.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\deprecated.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\deprecated\ajax-event-alias.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\deprecated\event.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\dimensions.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\effects.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\effects\animatedSelector.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\effects\Tween.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\event.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\event\focusin.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\event\support.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\event\trigger.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\exports\amd.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\exports\global.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\jquery.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\manipulation.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\manipulation\buildFragment.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\manipulation\getAll.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\manipulation\setGlobalEval.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\manipulation\support.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\manipulation\var\rscriptType.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\manipulation\var\rtagName.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\manipulation\wrapMap.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\manipulation\_evalUrl.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\offset.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\queue.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\queue\delay.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\selector-native.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\selector-sizzle.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\selector.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\serialize.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\traversing.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\traversing\findFilter.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\traversing\var\dir.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\traversing\var\rneedsContext.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\traversing\var\siblings.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\var\arr.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\var\class2type.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\var\document.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\var\documentElement.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\var\flat.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\var\fnToString.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\var\getProto.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\var\hasOwn.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\var\indexOf.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\var\isFunction.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\var\isWindow.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\var\ObjectFunctionString.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\var\pnum.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\var\push.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\var\rcheckableType.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\var\rcssNum.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\var\rnothtmlwhite.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\var\slice.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\var\support.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\var\toString.js" />
+    <Content Include="Content\BackEnd\node_modules\jquery\src\wrap.js" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -239,6 +369,7 @@
     <Content Include="Content\Layout\vendor\jquery\jquery.min.js" />
     <Content Include="Content\Layout\vendor\jquery\jquery.slim.js" />
     <Content Include="Content\Layout\vendor\jquery\jquery.slim.min.js" />
+    <Content Include="Content\Login\css_login\jquery-ui.css" />
     <Content Include="Content\Login\css_login\style.css" />
     <Content Include="Content\Login\fonts\material-icon\css\material-design-iconic-font.css" />
     <Content Include="Content\Login\fonts\material-icon\css\material-design-iconic-font.min.css" />
@@ -282,6 +413,27 @@
     <Content Include="images\Activity\taibeigame.jpg" />
     <Content Include="images\Home\Title.png" />
     <Content Include="images\Layout\login_icon.jpg" />
+    <Content Include="images\Login\Layout\bar.png" />
+    <Content Include="images\Login\Layout\chat.png" />
+    <Content Include="images\Login\Layout\check-list.png" />
+    <Content Include="images\Login\Layout\heart.png" />
+    <Content Include="images\Login\Layout\login_icon.jpg" />
+    <Content Include="images\Login\Layout\money.png" />
+    <Content Include="images\Login\Layout\settings.png" />
+    <Content Include="images\Login\Upload\25bb1348-829d-4b33-ad00-7050eb23fba0.png" />
+    <Content Include="images\Login\Upload\2ce06ff7-c85e-4347-b1fe-c0cff54abeeb.png" />
+    <Content Include="images\Login\Upload\486e24e6-07d3-4156-bd23-bb89c315b5dc.png" />
+    <Content Include="images\Login\Upload\4cb7b7f5-c401-4b6c-a109-9ddb6b28bbc2.png" />
+    <Content Include="images\Login\Upload\5452117d-d74d-42d1-abe9-24e3308b914d.png" />
+    <Content Include="images\Login\Upload\78b7982a-0935-40fc-91e9-00a1bc15253a.png" />
+    <Content Include="images\Login\Upload\8ff6ca38-5ce2-43dc-8867-ab7ebec07530.png" />
+    <Content Include="images\Login\Upload\96c11506-e1a5-4b34-8e68-ceb1146a9edc.png" />
+    <Content Include="images\Login\Upload\b772ed79-5f7b-4b00-aac2-a6b7568860d6.png" />
+    <Content Include="images\Login\Upload\c296e1de-9dd2-4221-abea-b788d61d98e8.png" />
+    <Content Include="images\Login\Upload\c5eaf7b3-d955-46ed-9a62-243d5055c557.png" />
+    <Content Include="images\Login\Upload\ca5a0793-678f-4029-b601-3afc23a54bbf.png" />
+    <Content Include="images\Login\Upload\d8710037-da57-4688-aa8e-3431ed9c651b.png" />
+    <Content Include="images\Login\Upload\ec95222d-a00b-4c12-bac4-03fcca951751.png" />
     <Content Include="Models\TicketSysModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>TicketSysModel.edmx</DependentUpon>
@@ -383,15 +535,30 @@
     <Content Include="Content\Login\fonts\poppins\roboto-condensed-v16-latin-regular.woff" />
     <Content Include="Content\Login\fonts\poppins\roboto-condensed-v16-latin-regular.woff2" />
     <Content Include="Content\Forum_use\build\ckeditor.js.map" />
+    <Content Include="App_Code\ViewFunc.cshtml" />
+    <Content Include="DemoFile\企業合同確認書.docx" />
+    <Content Include="Content\BackEnd\node_modules\jquery\bower.json" />
+    <Content Include="Content\BackEnd\node_modules\jquery\dist\jquery.min.map" />
+    <Content Include="Content\BackEnd\node_modules\jquery\dist\jquery.slim.min.map" />
+    <Content Include="Content\BackEnd\node_modules\jquery\external\sizzle\dist\sizzle.min.map" />
+    <Content Include="Content\BackEnd\node_modules\jquery\package.json" />
+    <Content Include="Content\BackEnd\node_modules\jquery\README.md" />
     <None Include="Properties\PublishProfiles\shoppingcarajax - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\Layout\modernizr-2.8.3.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Views\Shared\ForgetEmail.html" />
+    <Content Include="Views\Shared\RegisterEmailTemplate.html" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -400,16 +567,17 @@
     <Compile Include="Controllers\ForumController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\SellerCenterController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Activity.cs">
       <DependentUpon>TicketSysModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\ActivityStatus.cs">
+    <Compile Include="Models\ActivityFavourite.cs">
       <DependentUpon>TicketSysModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\ActivutyFavourite.cs">
+    <Compile Include="Models\ActivityStatus.cs">
       <DependentUpon>TicketSysModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Article.cs">
@@ -427,6 +595,7 @@
     <Compile Include="Models\BanLIst.cs">
       <DependentUpon>TicketSysModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\CActivity.cs" />
     <Compile Include="Models\CAdmin.cs" />
     <Compile Include="Models\Categories.cs">
       <DependentUpon>TicketSysModel.tt</DependentUpon>
@@ -443,15 +612,14 @@
     <Compile Include="Models\Districts.cs">
       <DependentUpon>TicketSysModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Emotion.cs">
-      <DependentUpon>TicketSysModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\EmotionAction.cs">
       <DependentUpon>TicketSysModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\facebook.cs" />
     <Compile Include="Models\Forum\CCropImage.cs" />
     <Compile Include="Models\Forum\CForum_ArticleList_Factory.cs" />
     <Compile Include="Models\Forum\CleanClear.cs" />
+    <Compile Include="Models\google.cs" />
     <Compile Include="Models\Member.cs">
       <DependentUpon>TicketSysModel.tt</DependentUpon>
     </Compile>
@@ -531,9 +699,12 @@
       <DependentUpon>TicketSysModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service\MailService.cs" />
+    <Compile Include="ViewModel\CBussMember.cs" />
     <Compile Include="ViewModel\CBussRegister.cs" />
     <Compile Include="ViewModel\CMember.cs" />
     <Compile Include="ViewModel\CSeller.cs" />
+    <Compile Include="ViewModel\QBussMember.cs" />
     <Compile Include="ViewModel\QMember.cs" />
     <Compile Include="ViewModel\VMActivityDetail.cs" />
     <Compile Include="ViewModel\VMActivityList.cs" />
@@ -572,6 +743,17 @@
     <Content Include="Views\Shared\_ForumLayout.cshtml" />
     <Content Include="Views\Forum\forum_reply.cshtml" />
     <Content Include="Views\Forum\SearchArticle.cshtml" />
+    <Content Include="Views\Activity\AddPriceAndUnitsInStock.cshtml" />
+    <Content Include="Views\Activity\UpLoadActivity.cshtml" />
+    <Content Include="Views\Login\EmailValidate.cshtml" />
+    <Content Include="Views\Login\Forget.cshtml" />
+    <Content Include="Views\Login\getActivityFavouriteByMemberId.cshtml" />
+    <Content Include="Views\Login\getOrderbyEmail.cshtml" />
+    <Content Include="Views\Login\PasswordValidate.cshtml" />
+    <Content Include="Views\SellerCenter\GetQueryResult.cshtml" />
+    <Content Include="Views\SellerCenter\GetUploadPage.cshtml" />
+    <Content Include="Views\SellerCenter\ManagementCenter.cshtml" />
+    <Content Include="Views\Shared\_BackSellerLayout.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -581,6 +763,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="FileSave\" />
     <Folder Include="Scripts\Activity\" />
   </ItemGroup>
   <ItemGroup>

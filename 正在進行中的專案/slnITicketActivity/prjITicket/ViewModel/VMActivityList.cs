@@ -13,5 +13,6 @@ namespace prjITicket.ViewModel
         public List<Categories> Categories { get; set; }
         public List<Activity> ScrollImgActivities { get; set; }
         public List<SubCategories> HotSubCategories { get; set; }
+        public int MaxPriceAll { get; set; }
     }
 }

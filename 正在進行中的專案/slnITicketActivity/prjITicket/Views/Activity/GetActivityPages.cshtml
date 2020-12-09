@@ -74,7 +74,7 @@
 <!--分頁部分,用Ajax-->
 @if (ViewBag.ActionName == "GetActivityPages")
 {
-    @Html.PagedListPager(Model, page => Url.Action("GetActivityPages", new { currentPage = page, orderMode = ViewBag.OrderMode }),
+    @Html.PagedListPager(Model, page => Url.Action("GetActivityPages", new { currentPage = page, orderMode = ViewBag.OrderMode,minPrice=ViewBag.MinPrice,maxPrice=ViewBag.MaxPrice,priceFilter=ViewBag.PriceFilter }),
     PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(
         new PagedListRenderOptions() { MaximumPageNumbersToDisplay = 5 },
         new AjaxOptions() { OnBegin = "returnToActivityListTop", OnComplete = "savePageHistory", InsertionMode = InsertionMode.Replace, UpdateTargetId = "showActivities" }
@@ -83,7 +83,7 @@
 }
 else if (ViewBag.ActionName == "GetActivityPagesByKeyword")
 {
-    @Html.PagedListPager(Model, page => Url.Action("GetActivityPagesByKeyword", new { keyword = ViewBag.Keyword, currentPage = page, orderMode = ViewBag.OrderMode }),
+    @Html.PagedListPager(Model, page => Url.Action("GetActivityPagesByKeyword", new { keyword = ViewBag.Keyword, currentPage = page, orderMode = ViewBag.OrderMode, minPrice = ViewBag.MinPrice, maxPrice = ViewBag.MaxPrice, priceFilter = ViewBag.PriceFilter }),
     PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(
         new PagedListRenderOptions() { MaximumPageNumbersToDisplay = 5 },
         new AjaxOptions() { OnBegin = "returnToActivityListTop", OnComplete = "savePageHistory", InsertionMode = InsertionMode.Replace, UpdateTargetId = "showActivities" }
@@ -92,7 +92,7 @@ else if (ViewBag.ActionName == "GetActivityPagesByKeyword")
 }
 else if (ViewBag.ActionName == "GetActivityPagesByCategoryId")
 {
-    @Html.PagedListPager(Model, page => Url.Action("GetActivityPagesByCategoryId", new { categoryId = ViewBag.CategoryId, currentPage = page, orderMode = ViewBag.OrderMode }),
+    @Html.PagedListPager(Model, page => Url.Action("GetActivityPagesByCategoryId", new { categoryId = ViewBag.CategoryId, currentPage = page, orderMode = ViewBag.OrderMode, minPrice = ViewBag.MinPrice, maxPrice = ViewBag.MaxPrice, priceFilter = ViewBag.PriceFilter }),
     PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(
         new PagedListRenderOptions() { MaximumPageNumbersToDisplay = 5 },
         new AjaxOptions() { OnBegin = "returnToActivityListTop", OnComplete = "savePageHistory", InsertionMode = InsertionMode.Replace, UpdateTargetId = "showActivities" }
@@ -101,7 +101,7 @@ else if (ViewBag.ActionName == "GetActivityPagesByCategoryId")
 }
 else if (ViewBag.ActionName == "GetActivityPagesBySubCategoryId")
 {
-    @Html.PagedListPager(Model, page => Url.Action("GetActivityPagesBySubCategoryId", new { subCategoryId = ViewBag.SubCategoryId, currentPage = page, orderMode = ViewBag.OrderMode }),
+    @Html.PagedListPager(Model, page => Url.Action("GetActivityPagesBySubCategoryId", new { subCategoryId = ViewBag.SubCategoryId, currentPage = page, orderMode = ViewBag.OrderMode, minPrice = ViewBag.MinPrice, maxPrice = ViewBag.MaxPrice, priceFilter = ViewBag.PriceFilter }),
     PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(
         new PagedListRenderOptions() { MaximumPageNumbersToDisplay = 5 },
         new AjaxOptions() { OnBegin = "returnToActivityListTop", OnComplete = "savePageHistory", InsertionMode = InsertionMode.Replace, UpdateTargetId = "showActivities" }
@@ -110,7 +110,7 @@ else if (ViewBag.ActionName == "GetActivityPagesBySubCategoryId")
 }
 else if (ViewBag.ActionName == "GetActivityPagesByDistrictId")
 {
-    @Html.PagedListPager(Model, page => Url.Action("GetActivityPagesByDistrictId", new { districtId = ViewBag.DistrictId, currentPage = page, orderMode = ViewBag.OrderMode }),
+    @Html.PagedListPager(Model, page => Url.Action("GetActivityPagesByDistrictId", new { districtId = ViewBag.DistrictId, currentPage = page, orderMode = ViewBag.OrderMode, minPrice = ViewBag.MinPrice, maxPrice = ViewBag.MaxPrice, priceFilter = ViewBag.PriceFilter }),
     PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(
         new PagedListRenderOptions() { MaximumPageNumbersToDisplay = 5 },
         new AjaxOptions() { OnBegin= "returnToActivityListTop", OnComplete = "savePageHistory", InsertionMode = InsertionMode.Replace, UpdateTargetId = "showActivities" }
