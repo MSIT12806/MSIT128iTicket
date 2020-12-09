@@ -17,6 +17,8 @@ namespace prjITicket.ViewModel
         public List<ArticleCategories> ArticleCategories { get; set; }
         public List<Article> Article { get; set; }
         public string searchWord { get; set; }
+        public int page { get; set; }
+        public int ArticleCategoryID { get; set; }
     }
 
 }

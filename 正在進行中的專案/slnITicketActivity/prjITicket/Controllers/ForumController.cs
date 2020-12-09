@@ -33,22 +33,6 @@ namespace 期末專題_討論版.Controllers
                 result.Add("msg", "裁剪圖片區域值有缺少");
                 return Json(result);
             }
-            //好像是資料庫的咚咚
-            //Guid imageID;
-            //if (!Guid.TryParse(id, out imageID))
-            //{
-            //    result.Add("result", "error");
-            //    result.Add("msg", "資料編號錯誤");
-            //    return Json(result);
-            //}
-
-            //var instance = service.FindOne(imageID);
-            //if (instance == null)
-            //{
-            //    result.Add("result", "error");
-            //    result.Add("msg", "資料不存在");
-            //    return Json(result);
-            //}
             string id2 = id.Remove(0, 23);
             byte[] arr = Convert.FromBase64String(id2);
             MemoryStream instance = new MemoryStream(arr);
@@ -73,13 +57,6 @@ namespace 期末專題_討論版.Controllers
             );
             if (processResult["result"].Equals("Success", StringComparison.OrdinalIgnoreCase))
             {
-                //裁剪圖片檔名儲存到資料庫
-                //service.Update(instance.ID, processResult["CropImage"]);
-                //如果有之前的裁剪圖片，則刪除
-                //if (!string.IsNullOrWhiteSpace(processResult["OldCropImage"]))
-                //{
-                //    cropUtils.DeleteCropImage(processResult["OldCropImage"]);
-                //}
                 result.Add("result", "OK");
                 result.Add("msg", "");
                 result.Add("CropImage", processResult["CropImage"].Remove(0, 1));
@@ -144,32 +121,17 @@ namespace 期末專題_討論版.Controllers
         {
             return RedirectToAction("forum_mainblock");
         }
-
-        public ActionResult forum_mainblock(int ArticleCategoryID=0,int page =0)
+        //初次載入調用，之後都用不到惹
+        public ActionResult forum_mainblock()
         {
             TicketSysEntities db = new TicketSysEntities();
-
-            if (ArticleCategoryID == 0)
-            {
-                var q = (from n in db.Article
-                         orderby n.Date descending
-                         select n).ToList();
-                var p = db.ArticleCategories.Select(n => n).ToList();
-                var qq = new VMforum_mainblock { Article = q, ArticleCategories = p };
-                return View("forum_mainblock", "_ForumLayout", qq);
-            }
-            else
-            {
-                var q = (from n in db.Article
-                         where n.ArticleCategoryID == ArticleCategoryID
-                         orderby n.Date descending
-                         select n).ToList();
-                var p = db.ArticleCategories.Select(n => n).ToList();
-                var qq = new VMforum_mainblock { Article = q, ArticleCategories = p };
-                return View("forum_mainblock", "_ForumLayout", qq);
-            }
-            
-           
+            var q = (from n in db.Article
+                     orderby n.Date descending
+                     select n).ToList();
+            var p = db.ArticleCategories.Select(n => n).ToList();
+            int maxPage = q.Count / 4;
+            var qq = new VMforum_mainblock { Article = q, ArticleCategories = p, page = maxPage };
+            return View("forum_mainblock", "_ForumLayout", qq);
         }
         public ActionResult forum_content(int? articleID)
         {
@@ -292,12 +254,6 @@ namespace 期末專題_討論版.Controllers
                 return ex.Message;
             }
         }
-        //public ActionResult Contact()
-        //{
-        //    ViewBag.Message = "Your contact page.";
-
-        //    return View();
-        //}
         public ActionResult Edit_article(int? articleID)
         {
             TicketSysEntities db = new TicketSysEntities();
@@ -407,31 +363,42 @@ namespace 期末專題_討論版.Controllers
         }
 
         //文章搜尋
-        public ActionResult SearchArticle(string searchText)
+        public ActionResult SearchArticle(string searchText = "", int Page = 0, int CategoryID = 0, int searchType = 30)
         {
             TicketSysEntities db = new TicketSysEntities();
-            int maxPage = (db.Article.Count()/4);
-            int page = 0;
-            if(int.TryParse(searchText,out page)&&page<=maxPage)
-            {
-                var q = (from n in db.Article
-                         orderby n.Date descending
-                         select n).Skip(page * 4).ToList();
-                var p = db.ArticleCategories.Select(n => n).ToList();
-                var qq = new VMforum_mainblock { Article = q, ArticleCategories = p, searchWord = searchText };
-                return PartialView(qq);
-            }
-            else
-            {
-                var q = (from n in db.Article
-                         where n.ArticleTitle.Contains(searchText) || n.ArticleContent.Contains(searchText) || n.Member.NickName.Contains(searchText)
-                         orderby n.Date descending
-                         select n).ToList();
-                var p = db.ArticleCategories.Select(n => n).ToList();
-                var qq = new VMforum_mainblock { Article = q, ArticleCategories = p, searchWord = searchText };
+            CForum_ArticleList_Factory al = new CForum_ArticleList_Factory();
 
-                return PartialView(qq);
+            List<Article> articles = db.Article.ToList();
+
+            //有選擇討論版
+            if (CategoryID != 0)
+                articles = al.Article_Category(articles, CategoryID);
+
+            //搜尋有文字
+            if (!string.IsNullOrEmpty(searchText))
+            {
+                //searchType =2...有勾作者
+                //searchType =3...有勾標題
+                //searchType =5...有勾內文  
+                List<Article> q = new List<Article>();
+                if (searchType % 2 == 0)
+                    q = q.Union(al.Article_Search_Editor(articles, searchText)).ToList();
+                if (searchType % 3 == 0)
+                    q = q.Union(al.Article_Search_Title(articles, searchText)).ToList();
+                if (searchType % 5 == 0)
+                    q = q.Union(al.Article_Search_Content(articles, searchText)).ToList();
+                articles = q;
             }
+            //todo:按日期檢索
+            ///
+            int maxPage = (articles.Count() / 4);
+            //第幾頁
+            articles = articles.OrderByDescending(n => n.Date).Skip(Page * 4).ToList();//這個頁數不能一起算欸！放最後篩好了
+            var p = db.ArticleCategories.Select(n => n).ToList();
+            var qq = new VMforum_mainblock { Article = articles, ArticleCategories = p, searchWord = searchText, page = maxPage, ArticleCategoryID = CategoryID };
+            return PartialView(qq);
+
+
         }
 
         //⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇貼文、留言Emotion⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇//
@@ -521,4 +488,3 @@ namespace 期末專題_討論版.Controllers
         }
     }
 }
-//todo: 檢舉按鈕、文章分類、左側列RWD...
