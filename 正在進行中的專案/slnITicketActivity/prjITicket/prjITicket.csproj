@@ -318,7 +318,6 @@
     <Content Include="Content\Forum_use\css\imgareaselect-animated.css" />
     <Content Include="Content\Forum_use\css\imgareaselect-default.css" />
     <Content Include="Content\Forum_use\css\jquery.imgareaselect.min.js" />
-    <Content Include="Content\Forum_use\css\myLayout.css" />
     <Content Include="Content\Forum_use\css\qq.css" />
     <Content Include="Content\Forum_use\css\shop-homepage.css" />
     <Content Include="Content\Forum_use\css\shop-item.css" />
