@@ -15,8 +15,6 @@
 </style>
 
 <div class="container">
-    @*@using (Html.BeginForm())
-        {*@
     <div class="row">
         <!-- Post Content Column -->
         <div class="col-lg-9">
@@ -234,7 +232,7 @@
         $('input[name="y2"]').val(selection.y2);
 
     }
-    var picPath;
+    var picPath = null;
     function SaveCropEventHandler()
 {
     var x1 = $('input[name="x1"]').val();

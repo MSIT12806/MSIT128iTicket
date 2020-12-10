@@ -244,7 +244,8 @@ namespace 期末專題_討論版.Controllers
                 article.ArticleCategoryID = 1;
                 article.ArticleTitle = title;
                 article.ArticleContent = content;
-                article.Picture = picPath;
+                if(string.IsNullOrEmpty(picPath))
+                    article.Picture = picPath;
                 db.Article.Add(article);
                 db.SaveChanges();
                 return "OK";
@@ -274,7 +275,8 @@ namespace 期末專題_討論版.Controllers
                 article.ArticleTitle = title;
                 article.ArticleContent = content;
                 article.Date = DateTime.Now;
-                article.Picture = picPath;
+                if (string.IsNullOrEmpty(picPath))
+                    article.Picture = picPath;
                 db.SaveChanges();
             }
             return "OK";

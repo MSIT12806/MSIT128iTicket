@@ -26,12 +26,14 @@
                     <input style="margin-top:10px;margin-bottom:10px;" type="text" class="form-control" placeholder="Default input" name="ArticleTitle" id="articleTitle" value="@Model.ArticleTitle" />
                 </div>
                 <div class="toast-body">
-                    <select style="width:80px">
+                    <select style="width:auto">
                         <option value="0">選擇討論版</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
+                        @foreach (var item in Model)
+                        {
+                            <option value="0">
+                                @item.ArticleCategoryName
+                            </option>
+                        }
                     </select>
                     <select style="width:60px">
                         <option value="0">請選擇屬性框</option>
