@@ -234,7 +234,10 @@ namespace 期末專題_討論版.Controllers
 
                 try
             {
-
+                if (string.IsNullOrEmpty(title))
+                    return "標題不得空白";
+                if (string.IsNullOrEmpty(content))
+                    return "內文不得空白";
                 //其他部分
                 TicketSysEntities db = new TicketSysEntities();
                 Member member = Session[CDictionary.SK_Logined_Member] as Member;//如果轉型失敗，回傳null;
@@ -261,8 +264,14 @@ namespace 期末專題_討論版.Controllers
             var q = from n in db.Article
                     where n.ArticleID == articleID
                     select n;
+            var p = db.ArticleCategories.Select(n => n);
             Article article = q.FirstOrDefault();
-            return View(article);
+            VMforum_mainblock vMforum_Mainblock = new VMforum_mainblock();
+            vMforum_Mainblock.Article = new List<Article>();
+            vMforum_Mainblock.ArticleCategories = new List<ArticleCategories>();
+            vMforum_Mainblock.Article.Add(article);
+            vMforum_Mainblock.ArticleCategories = p.ToList();
+            return View(vMforum_Mainblock);
         }
         [ValidateInput(false)]
         [HttpPost]
@@ -275,7 +284,7 @@ namespace 期末專題_討論版.Controllers
                 article.ArticleTitle = title;
                 article.ArticleContent = content;
                 article.Date = DateTime.Now;
-                if (string.IsNullOrEmpty(picPath))
+                if (!string.IsNullOrEmpty(picPath))
                     article.Picture = picPath;
                 db.SaveChanges();
             }
