@@ -9,7 +9,6 @@ using System.IO;
 using System.Drawing;
 using System.Web.UI;
 using prjITicket.ViewModel;
-using PagedList;
 
 namespace 期末專題_討論版.Controllers
 {
@@ -222,22 +221,21 @@ namespace 期末專題_討論版.Controllers
         {
             Member member = Session[CDictionary.SK_Logined_Member] as Member;
             TicketSysEntities db = new TicketSysEntities();
-            List<Activity> activities = db.Activity.Where(n => n.SellerID == member.MemberID).ToList();
-            IPagedList<Activity> q = activities.ToPagedList(1, activities.Count);
             VMforum_mainblock vMforum_Mainblock = new VMforum_mainblock();
+            vMforum_Mainblock.activities = db.Activity.Where(n => n.SellerID == member.MemberID).ToList();
+            vMforum_Mainblock.ArticleCategories = db.ArticleCategories.ToList();
 
-
-            return View(q);
+            return View(vMforum_Mainblock);
         }
         //關閉保護html傳送
         [ValidateInput(false)]
         [HttpPost]
-        public string Add_article(string title, string content, string picPath)
+        public string Add_article(string title, string content, string picPath, int[] Activities)
         {
             if (Session[CDictionary.SK_Logined_Member] == null)
                 return "Fail";
 
-                try
+            try
             {
                 if (string.IsNullOrEmpty(title))
                     return "標題不得空白";
@@ -252,8 +250,17 @@ namespace 期末專題_討論版.Controllers
                 article.ArticleCategoryID = 1;
                 article.ArticleTitle = title;
                 article.ArticleContent = content;
-                if(string.IsNullOrEmpty(picPath))
+                if (string.IsNullOrEmpty(picPath))
                     article.Picture = picPath;
+                //article 的活動
+                foreach (var item in Activities)
+                {
+                    Ad_Article_Activity ad_Article_Activity = new Ad_Article_Activity();
+                    ad_Article_Activity.ActivityID = item;
+                    ad_Article_Activity.ArticleID = article.ArticleID;
+                    db.Ad_Article_Activity.Add(ad_Article_Activity);
+                }
+                
                 db.Article.Add(article);
                 db.SaveChanges();
                 return "OK";
@@ -521,6 +528,17 @@ namespace 期末專題_討論版.Controllers
             {
                 return ex.Message;
             }
+        }
+        //在ActivityList頁面中Ajax調用這個方法取得活動的次詳細分頁
+        public ActionResult GetActivitySubDetailPage(int activityId)
+        {
+            TicketSysEntities db = new TicketSysEntities();
+            Activity activity = db.Activity.Where(a => a.ActivityStatusID == 1).FirstOrDefault(a => a.ActivityID == activityId);
+            if (activity == null)
+            {
+                //todo 回傳活動是空值的錯誤頁面
+            }
+            return PartialView("GetActivitySubDetailPage", activity);
         }
     }
 }

@@ -818,6 +818,8 @@
     <Content Include="Views\Login\PasswordValidate.cshtml" />
     <Content Include="Views\Activity\OrderDetailByTicketGroup.cshtml" />
     <Content Include="Views\Forum\forum_Activity.cshtml" />
+    <Content Include="Views\Forum\GetActivityPages.cshtml" />
+    <Content Include="Views\Forum\GetActivitySubDetailPage.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

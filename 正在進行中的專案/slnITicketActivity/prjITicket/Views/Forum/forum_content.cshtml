@@ -190,18 +190,68 @@
         </div>
     </div>
     <!-- /.row -->
+    <button type="button" id="BackTop" class="toTop-arrow"></button>
 </div>
 <script>
-    refreshTime()
-    function refreshTime() {
-        $("#ajaxdemoshow").empty().load("/Forum/forum_reply?articleID=@Model.Article.ArticleID")
-        $("#ajaxshowActivity").empty().load("/Forum/forum_Activity?articleID=@Model.Article.ArticleID")
-    }
-    setInterval("refreshTime()", 300000);
-    $("#content").html(`@Html.Raw(Model.Article.ArticleContent)`);
+    class MyUploadAdapter {
+        // According to the document we need a constructor first
+        constructor(loader) {
+            this.loader = loader;
+        }
 
-     $("#replysql").click(function () {
-        let rpcontent = $("#replycontent").val();
+        // start upload methods
+        upload() {
+            return new Promise((resolve, reject) => {
+                // 使用 FileReader() 物件讀取檔案
+                const reader = this.reader = new window.FileReader();
+                // 觸發 load 事件後，resolve 丟回物件完成 Promise
+                reader.addEventListener('load', () => {
+                    resolve({ default: reader.result });
+                });
+
+                // 觸發錯誤事件，以 reject 丟回 Promise 失敗原因
+                reader.addEventListener('error', err => {
+                    reject(err);
+                });
+                // 觸發 abort 事件時，以 reject() ，使 Promise 失敗
+                reader.addEventListener('abort', () => {
+                    reject();
+                });
+
+                // 告訴 FileReader 物件用 url 格式讀取，用於設定 img.src 性質
+                this.loader.file.then(file => {
+                    reader.readAsDataURL(file);
+                });
+            });
+        }
+
+        // start abort()
+        abort() {
+            //  觸發 FileReader abort 事件
+            this.reader.abort();
+        }
+    }
+
+
+    function MyAdapterPlugin(editor) {
+        editor.plugins.get('FileRepository').createUploadAdapter = (loader) => { return new MyUploadAdapter(loader) };
+    };
+
+    let editor;
+    ClassicEditor
+        .create(document.querySelector('#editor'), {
+            extraPlugins: [MyAdapterPlugin],
+        })
+        .then(neweditor => {
+            //把編輯器的參考存起來
+            editor = neweditor;
+        })
+        .catch(error => {
+            console.error(error);
+        });
+
+    $("#replysql").click(function () {
+        let rpcontent = editor.data();
         let articleID = @Model.Article.ArticleID;
          if (rpcontent == "") {
              alert("請輸入留言");
@@ -226,6 +276,42 @@
          }
 
     });
+    refreshTime()
+    function refreshTime() {
+        $("#ajaxdemoshow").empty().load("/Forum/forum_reply?articleID=@Model.Article.ArticleID")
+        $("#ajaxshowActivity").empty().load("/Forum/forum_Activity?articleID=@Model.Article.ArticleID")
+    }
+    setInterval("refreshTime()", 300000);
+    $("#content").html(`@Html.Raw(Model.Article.ArticleContent)`);
+
+
+
+     @*$("#replysql").click(function () {
+        let rpcontent = $("#replycontent").val();
+        let articleID = @Model.Article.ArticleID;
+         if (rpcontent == "") {
+             alert("請輸入留言");
+         }
+         else {
+             $.ajax({
+                 type: "post",
+                 url: "@Url.Action("forum_content")",
+                 data: { content: rpcontent, articleID: articleID },
+                 success: function (data) {
+                     if (data != "成功") {
+                         alert(data);
+                         window.location.href = 'http://localhost:49949/Login/Login';
+                     }
+                     else {
+                         alert(data);
+                         $("#ajaxdemoshow").empty().load("/Forum/forum_reply?articleID=@Model.Article.ArticleID");
+                         $("#replycontent").val("");
+                     }
+                 }
+             });
+         }
+
+    });*@
 
     function reportReason_article() {
         let reportId = $('#articleReportReason').val();
@@ -273,6 +359,8 @@
                         if (data != "成功") {
                             alert(data);
                             window.location.href = 'http://localhost:49949/Login/Login';
+                        } else {
+                            $("#goodpoint").text(parseInt($("#goodpoint").text()) + 1);
                         }
                     },
                     error: function (data) {
@@ -286,6 +374,7 @@
                     url: "@Url.Action("Article_EmotionAction_Cancel")",
                     data: { ArticleID: @Model.Article.ArticleID},
                     success: function (data) {
+                        $("#goodpoint").text(parseInt($("#goodpoint").text()) - 1);
                     },
                     error: function (data) {
                     }
@@ -333,11 +422,28 @@
             }
         }
     }
+    $(function () {
+        $('#BackTop').click(function () {
+            $('html,body').animate({ scrollTop: 0 }, 333);
+        });
+        $(window).scroll(function () {
+            if ($(this).scrollTop() > 300) {
+                $('#BackTop').fadeIn(222);
+            } else {
+                $('#BackTop').stop().fadeOut(222);
+            }
+        }).scroll();
+    });
+    function reply_quote(replyId) {
+        let msg = "<h1>Test Title</h1><p>aaaaaa</p><p>bbbbbbbbbb</p>";
+        editor.setData(msg);
+
+    }
     //獲得活動的次詳細頁
     function getActivitySubDetailPage(activityId) {
         $.ajax({
             type: "get",
-            url: "@Url.Action("../Activity/GetActivitySubDetailPage")",
+            url: "@Url.Action("GetActivitySubDetailPage")",
             data: { activityId: activityId },
             success: function (result) {
                 $("#showActivity").html(result);
