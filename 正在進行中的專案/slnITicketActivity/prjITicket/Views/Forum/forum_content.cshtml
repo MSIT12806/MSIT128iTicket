@@ -11,6 +11,25 @@
 <link href="~/Content/Forum_use/forumcontent.css" rel="stylesheet" />
 <link href="~/Content/Forum_use/css/styles.css" rel="stylesheet" />
 <div class="container">
+    @* 彈出視窗:Modal *@
+    <div class="modal fade" id="UploadImage" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">活動資訊</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div id="showActivity" class="modal-body">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <input type="button" class="btn btn-primary" id="ButtonCrop" data-dismiss="modal" value="Save the Crop Image" />
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="row">
         <!-- Post Content Column -->
         <div class="col-lg-9">
@@ -20,6 +39,7 @@
             <!-- Author -->
             <p class="lead">
                 by
+                @Html.ActionLink(Model.Article.Member.Name, "forum_mainblock", "Forum", new { searchText = Model.Article.Member.Name })
                 <a href="#">@Model.Article.Member.Name</a>
             </p>
             <hr>
@@ -93,6 +113,9 @@
                     </footer>
                 </div>
             </div>
+            <div id="ajaxshowActivity">
+
+            </div>
             <!-- Comments Form -->
             <div class="card my-4">
                 <h5 class="card-header">留言區:</h5>
@@ -123,7 +146,8 @@
             </div>
             <!-- Categories Widget -->
             <div class="card my-3">
-                <h5 class="card-header">Categories</h5>
+                <h5 class="card-header">@Model.Article.Member.NickName</h5>
+                <img style="content:url(/images/Login/Upload/@Model.Article.Member.Icon); height:200px;">
                 <div class="card-body">
                     <div class="row">
                         <div class="col-lg-6">
@@ -171,9 +195,9 @@
     refreshTime()
     function refreshTime() {
         $("#ajaxdemoshow").empty().load("/Forum/forum_reply?articleID=@Model.Article.ArticleID")
+        $("#ajaxshowActivity").empty().load("/Forum/forum_Activity?articleID=@Model.Article.ArticleID")
     }
     setInterval("refreshTime()", 300000);
-
     $("#content").html(`@Html.Raw(Model.Article.ArticleContent)`);
 
      $("#replysql").click(function () {
@@ -308,5 +332,19 @@
                 });
             }
         }
+    }
+    //獲得活動的次詳細頁
+    function getActivitySubDetailPage(activityId) {
+        $.ajax({
+            type: "get",
+            url: "@Url.Action("../Activity/GetActivitySubDetailPage")",
+            data: { activityId: activityId },
+            success: function (result) {
+                $("#showActivity").html(result);
+                $("#activityListPageRight").hide(0, "swing", function () {
+                    $(document).scrollTop(0);
+                });
+            }
+        });
     }
 </script>

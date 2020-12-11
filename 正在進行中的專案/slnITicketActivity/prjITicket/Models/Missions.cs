@@ -15,33 +15,35 @@ namespace prjITicket.Models
 using System;
     using System.Collections.Generic;
     
-public partial class SubCategories
+public partial class Missions
 {
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-    public SubCategories()
+    public Missions()
     {
 
-        this.Activity = new HashSet<Activity>();
+        this.MemberMissionStatusList = new HashSet<MemberMissionStatusList>();
 
     }
 
 
-    public int SubCategoryId { get; set; }
+    public int MissionID { get; set; }
 
-    public string SubCategoryName { get; set; }
+    public string MissionName { get; set; }
 
-    public int CategoryId { get; set; }
+    public string Description { get; set; }
 
-    public int SearchedTime { get; set; }
+    public int Reward { get; set; }
+
+    public int Difficulty { get; set; }
+
+    public System.DateTime EndDate { get; set; }
 
 
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
 
-    public virtual ICollection<Activity> Activity { get; set; }
-
-    public virtual Categories Categories { get; set; }
+    public virtual ICollection<MemberMissionStatusList> MemberMissionStatusList { get; set; }
 
 }
 

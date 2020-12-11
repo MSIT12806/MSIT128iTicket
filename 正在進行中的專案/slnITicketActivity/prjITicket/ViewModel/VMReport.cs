@@ -10,6 +10,7 @@ namespace prjITicket.ViewModel
     {
         public Article Article { get; set; }
         public List<Report> Report { get; set; }
+        public List<Activity> Activities{ get; set; }
         
     }
     public class VMforum_mainblock

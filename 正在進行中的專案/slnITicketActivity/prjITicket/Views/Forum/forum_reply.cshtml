@@ -18,62 +18,60 @@
 {
 
 
-    <div class="media mb-4">
-        <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
-        <div class="media-body">
-            <div class="float-right">
-                <button class="btn" data-toggle="collapse" href=#CollapseDemo@(count) role="button" aria-expanded="false" aria-controls="CollapseDemo@(count)"><i class="fa fa-bars"></i></button>
+<div class="media mb-4">
+    <img style="content:url(/images/Login/Upload/@item.Member.Icon); width:50px; height:50px;"> 
+    <div class="media-body">
+        <div class="float-right">
+            <button class="btn" data-toggle="collapse" href=#CollapseDemo@(count) role="button" aria-expanded="false" aria-controls="CollapseDemo@(count)"><i class="fa fa-bars"></i></button>
+        </div>
+        <h5 class="mt-0">@item.Member.Name</h5>
+        <div id="replyshow">
+            <p id="replyshow_content_@(item.ReplyID)">@(item.ReplyContent)</p>
+            <input onkeydown="txtReplyKeyDown(@item.ReplyID)" id="replyEdit_content_@(item.ReplyID)" name="@(item.ReplyID)" type="text" style="width:600px;display:none;" rows="1" value="@(item.ReplyContent)">
+            <p id="fnt_@(item.ReplyID)" style="display:none;font-size:13px;color:gray">
+                修改完成後按
+                <span style="color:blue">Enter</span>修改或是
+                <span style="color:blue">Esc</span>取消
+            </p>
+            <div style="margin-bottom:5px;">
+                @if (member != null && item.Reply_Emotion.Where(n => n.ActionId == 1 && n.MemberId == member.MemberID && n.ReplyId == item.ReplyID).Any())
+                {
+                    <button class="gpclick" id="actionlike@(item.ReplyID)" onclick="likeBtn(@item.ReplyID)">👍</button>
+                }
+                else
+                {
+                    <button class="gp" id="actionlike@(item.ReplyID)" onclick="likeBtn(@item.ReplyID)">👍</button>
+                }
+                <label style="margin-right:20px" id="goodpoint@(item.ReplyID)">@item.Reply_Emotion.Where(n => n.ActionId == 1 && n.ReplyId == item.ReplyID).Count()</label>
+                @if (member != null && item.Reply_Emotion.Where(n => n.ActionId == 2 && n.MemberId == member.MemberID && n.ReplyId == item.ReplyID).Any())
+                {
+                    <button class="bpclick" id="actiondislike@(item.ReplyID)" onclick="dislikeBtn(@item.ReplyID)">👎</button>
+                }
+                else
+                {
+                    <button class="bp" id="actiondislike@(item.ReplyID)" onclick="dislikeBtn(@item.ReplyID)">👎</button>
+                }
+                <label style="margin-right:20px" id="badpoint@(item.ReplyID)">@item.Reply_Emotion.Where(n => n.ActionId == 2 && n.ReplyId == item.ReplyID).Count()</label>
             </div>
-
-            <h5 class="mt-0">@item.Member.Name</h5>
-            <div id="replyshow">
-                <p id="replyshow_content_@(item.ReplyID)">@(item.ReplyContent)</p>
-                <input onkeydown="txtReplyKeyDown(@item.ReplyID)" id="replyEdit_content_@(item.ReplyID)" name="@(item.ReplyID)" type="text" style="width:600px;display:none;" rows="1" value="@(item.ReplyContent)">
-                <p id="fnt_@(item.ReplyID)" style="display:none;font-size:13px;color:gray">
-                    修改完成後按
-                    <span style="color:blue">Enter</span>修改或是
-                    <span style="color:blue">Esc</span>取消
-                </p>
-                <div style="margin-bottom:5px;">
-                    @if (member != null && item.Reply_Emotion.Where(n => n.ActionId == 1 && n.MemberId == member.MemberID && n.ReplyId == item.ReplyID).Any())
-                    {
-                        <button class="gpclick" id="actionlike@(item.ReplyID)" onclick="likeBtn(@item.ReplyID)">👍</button>
-                    }
-                    else
-                    {
-                        <button class="gp" id="actionlike@(item.ReplyID)" onclick="likeBtn(@item.ReplyID)">👍</button>
-                    }
-                    <label style="margin-right:20px" id="goodpoint@(item.ReplyID)">@item.Reply_Emotion.Where(n => n.ActionId == 1 && n.ReplyId == item.ReplyID).Count()</label>
-                    @if (member != null && item.Reply_Emotion.Where(n => n.ActionId == 2 && n.MemberId == member.MemberID && n.ReplyId == item.ReplyID).Any())
-                    {
-                        <button class="bpclick" id="actiondislike@(item.ReplyID)" onclick="dislikeBtn(@item.ReplyID)">👎</button>
-                    }
-                    else
-                    {
-                        <button class="bp" id="actiondislike@(item.ReplyID)" onclick="dislikeBtn(@item.ReplyID)">👎</button>
-                    }
-                    <label style="margin-right:20px" id="badpoint@(item.ReplyID)">@item.Reply_Emotion.Where(n => n.ActionId == 2 && n.ReplyId == item.ReplyID).Count()</label>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col">
-                    <div class="collapse multi-collapse" id="CollapseDemo@(count)">
-                        <div class="card card-body">
-                            <div class="col-xs-3">
-                                <button class="emotion info" onclick="showModal(@count)">檢舉</button>
-                                @if (member != null && item.MemberID == member.MemberID)
-                                {
-                                    <button onclick="toggleEdit(@item.ReplyID)" class="emotion info">編輯留言</button>
-                                    <button onclick="replydelete(@item.ReplyID)" class="emotion info">刪除留言</button>
-                                }
-                            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="collapse multi-collapse" id="CollapseDemo@(count)">
+                    <div class="card card-body">
+                        <div class="col-xs-3">
+                            <button class="emotion info" onclick="showModal(@count)">檢舉</button>
+                            @if (member != null && item.MemberID == member.MemberID)
+                            {
+                                <button onclick="toggleEdit(@item.ReplyID)" class="emotion info">編輯留言</button>
+                                <button onclick="replydelete(@item.ReplyID)" class="emotion info">刪除留言</button>
+                            }
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
     <div style="display:none" id="Modal@(count)" class="w3-modal w3-animate-opacity">
         <div class="w3-modal-content">

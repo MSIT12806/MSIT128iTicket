@@ -9,6 +9,7 @@ using System.IO;
 using System.Drawing;
 using System.Web.UI;
 using prjITicket.ViewModel;
+using PagedList;
 
 namespace 期末專題_討論版.Controllers
 {
@@ -122,7 +123,7 @@ namespace 期末專題_討論版.Controllers
             return RedirectToAction("forum_mainblock");
         }
         //初次載入調用，之後都用不到惹
-        public ActionResult forum_mainblock()
+        public ActionResult forum_mainblock(string searchText)
         {
             TicketSysEntities db = new TicketSysEntities();
             var q = (from n in db.Article
@@ -130,7 +131,7 @@ namespace 期末專題_討論版.Controllers
                      select n).ToList();
             var p = db.ArticleCategories.Select(n => n).ToList();
             int maxPage = q.Count / 4;
-            var qq = new VMforum_mainblock { Article = q, ArticleCategories = p, page = maxPage };
+            var qq = new VMforum_mainblock { Article = q, ArticleCategories = p, page = maxPage ,searchWord = searchText };
             return View("forum_mainblock", "_ForumLayout", qq);
         }
         public ActionResult forum_content(int? articleID)
@@ -219,8 +220,12 @@ namespace 期末專題_討論版.Controllers
         //
         public ActionResult Add_article()
         {
+            Member member = Session[CDictionary.SK_Logined_Member] as Member;
             TicketSysEntities db = new TicketSysEntities();
-            var q =db.ArticleCategories.Select(n => n).ToList();
+            List<Activity> activities = db.Activity.Where(n => n.SellerID == member.MemberID).ToList();
+            IPagedList<Activity> q = activities.ToPagedList(1, activities.Count);
+            VMforum_mainblock vMforum_Mainblock = new VMforum_mainblock();
+
 
             return View(q);
         }
@@ -313,6 +318,7 @@ namespace 期末專題_討論版.Controllers
                 return ex.Message;
             }
         }
+        //載入留言內容
         public ActionResult forum_reply(int? articleID)
         {
             TicketSysEntities db = new TicketSysEntities();
@@ -323,6 +329,25 @@ namespace 期末專題_討論版.Controllers
             List<Report> report = db.Report.ToList();
 
             return PartialView(new VMReport() { Article = article, Report = report });
+
+        }
+        //載入活動資訊
+        public ActionResult forum_Activity(int? articleID)
+        {
+            TicketSysEntities db = new TicketSysEntities();
+            var q = from n in db.Ad_Article_Activity
+                    where n.ArticleID == articleID
+                    select n;
+            List<Ad_Article_Activity> Ads = q.ToList();
+            List<Activity> Activitys = new List<Activity>();
+            foreach (var item in Ads)
+            {
+                Activity activity = db.Activity.Where(n => n.ActivityID == item.ActivityID).FirstOrDefault();
+                Activitys.Add(activity);
+            }
+            Article article = db.Article.Where(n => n.ArticleID == articleID).FirstOrDefault();
+
+            return PartialView(Activitys);
 
         }
 

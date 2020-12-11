@@ -618,6 +618,9 @@
     <Compile Include="Models\ActivityStatus.cs">
       <DependentUpon>TicketSysModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Ad_Article_Activity.cs">
+      <DependentUpon>TicketSysModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Article.cs">
       <DependentUpon>TicketSysModel.tt</DependentUpon>
     </Compile>
@@ -663,7 +666,13 @@
     <Compile Include="Models\Member.cs">
       <DependentUpon>TicketSysModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\MemberMissionStatusList.cs">
+      <DependentUpon>TicketSysModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\MemberRole.cs">
+      <DependentUpon>TicketSysModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Missions.cs">
       <DependentUpon>TicketSysModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Orders.cs">
@@ -808,6 +817,7 @@
     <Content Include="Views\Login\getShortMassageByMemberId.cshtml" />
     <Content Include="Views\Login\PasswordValidate.cshtml" />
     <Content Include="Views\Activity\OrderDetailByTicketGroup.cshtml" />
+    <Content Include="Views\Forum\forum_Activity.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

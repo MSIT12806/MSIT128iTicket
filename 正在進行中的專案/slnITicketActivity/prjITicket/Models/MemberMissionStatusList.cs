@@ -15,24 +15,24 @@ namespace prjITicket.Models
 using System;
     using System.Collections.Generic;
     
-public partial class Article_Emotion
+public partial class MemberMissionStatusList
 {
 
-    public int ArticleEmotionId { get; set; }
+    public int MissionStatusID { get; set; }
 
-    public int MemberId { get; set; }
+    public int MemberID { get; set; }
 
-    public int ArticleId { get; set; }
+    public int MissionID { get; set; }
 
-    public int ActionId { get; set; }
+    public System.DateTime DateTime { get; set; }
+
+    public bool IsCompleted { get; set; }
 
 
-
-    public virtual Article Article { get; set; }
-
-    public virtual EmotionAction EmotionAction { get; set; }
 
     public virtual Member Member { get; set; }
+
+    public virtual Missions Missions { get; set; }
 
 }
 
