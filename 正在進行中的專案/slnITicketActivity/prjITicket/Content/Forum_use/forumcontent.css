@@ -10,6 +10,10 @@
     margin-right: 10px;
 }
 
+.itembtn{
+
+}
+
 .emotion {
     border: none;
     background-color: inherit;
@@ -19,6 +23,7 @@
     cursor: pointer;
     display: inline-block;
     /*float: left;*/
+    transition: all 0.2s;
 }
 
     .emotion:hover {
@@ -42,7 +47,15 @@
 }
 
 .default {
+    margin-top:2px;
+    margin-bottom:2px;
     color: black;
+}
+.defaultclick {
+    margin-top: 2px;
+    margin-bottom: 2px;
+    color: white;
+    background-color: black;
 }
 
 .gp {

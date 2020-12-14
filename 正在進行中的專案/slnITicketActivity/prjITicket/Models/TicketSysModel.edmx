@@ -22,6 +22,13 @@
           <Property Name="ActivityStatusID" Type="int" Nullable="false" />
           <Property Name="DistrictId" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="ActivityFailedReason">
+          <Key>
+            <PropertyRef Name="ActivityFailedReasonID" />
+          </Key>
+          <Property Name="ActivityFailedReasonID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FailedReason" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
         <EntityType Name="ActivityFavourite">
           <Key>
             <PropertyRef Name="ActivityFavouriteId" />
@@ -215,7 +222,7 @@
             <PropertyRef Name="ReplyID" />
           </Key>
           <Property Name="ReplyID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="ReplyContent" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ReplyContent" Type="nvarchar(max)" Nullable="false" />
           <Property Name="MemberID" Type="int" Nullable="false" />
           <Property Name="ReplyDate" Type="datetime" Nullable="false" />
           <Property Name="ArticleID" Type="int" Nullable="false" />
@@ -257,7 +264,7 @@
           <Property Name="SellerDeccription" Type="nvarchar(max)" />
           <Property Name="MemberId" Type="int" Nullable="false" />
           <Property Name="fPass" Type="bit" />
-          <Property Name="fFileName" Type="nchar" MaxLength="50" />
+          <Property Name="fFileName" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="ShoppingCart">
           <Key>
@@ -316,6 +323,7 @@
           <Property Name="TicketGroupId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="TicketGroupName" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="TicketGroupDiscount" Type="numeric" Precision="3" Scale="2" Nullable="false" />
+          <Property Name="Status" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="TicketQRCodes">
           <Key>
@@ -971,6 +979,7 @@
         </Association>
         <EntityContainer Name="TicketSysModelStoreContainer">
           <EntitySet Name="Activity" EntityType="Self.Activity" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ActivityFailedReason" EntityType="Self.ActivityFailedReason" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ActivityFavourite" EntityType="Self.ActivityFavourite" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ActivityStatus" EntityType="Self.ActivityStatus" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Ad_Article_Activity" EntityType="Self.Ad_Article_Activity" Schema="dbo" store:Type="Tables" />
@@ -1220,6 +1229,7 @@
       <Schema Namespace="TicketSysModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="TicketSysEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Activity" EntityType="TicketSysModel.Activity" />
+          <EntitySet Name="ActivityFailedReason" EntityType="TicketSysModel.ActivityFailedReason" />
           <EntitySet Name="ActivityFavourite" EntityType="TicketSysModel.ActivityFavourite" />
           <EntitySet Name="ActivityStatus" EntityType="TicketSysModel.ActivityStatus" />
           <EntitySet Name="Ad_Article_Activity" EntityType="TicketSysModel.Ad_Article_Activity" />
@@ -1491,6 +1501,13 @@
           <NavigationProperty Name="Tickets" Relationship="TicketSysModel.FK_Tickets_Activity" FromRole="Activity" ToRole="Tickets" />
           <NavigationProperty Name="TicketTimes" Relationship="TicketSysModel.FK_TicketTimes_Activity" FromRole="Activity" ToRole="TicketTimes" />
         </EntityType>
+        <EntityType Name="ActivityFailedReason">
+          <Key>
+            <PropertyRef Name="ActivityFailedReasonID" />
+          </Key>
+          <Property Name="ActivityFailedReasonID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FailedReason" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
         <EntityType Name="ActivityFavourite">
           <Key>
             <PropertyRef Name="ActivityFavouriteId" />
@@ -1742,7 +1759,7 @@
             <PropertyRef Name="ReplyID" />
           </Key>
           <Property Name="ReplyID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ReplyContent" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ReplyContent" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="MemberID" Type="Int32" Nullable="false" />
           <Property Name="ReplyDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="ArticleID" Type="Int32" Nullable="false" />
@@ -1796,7 +1813,7 @@
           <Property Name="SellerDeccription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="MemberId" Type="Int32" Nullable="false" />
           <Property Name="fPass" Type="Boolean" />
-          <Property Name="fFileName" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="fFileName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Activity" Relationship="TicketSysModel.FK_Activity_Seller" FromRole="Seller" ToRole="Activity" />
           <NavigationProperty Name="Member" Relationship="TicketSysModel.FK_Seller_Member" FromRole="Seller" ToRole="Member" />
           <NavigationProperty Name="Subscribes" Relationship="TicketSysModel.FK_Subscribes_Seller" FromRole="Seller" ToRole="Subscribes" />
@@ -1869,6 +1886,7 @@
           <Property Name="TicketGroupId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="TicketGroupName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="TicketGroupDiscount" Type="Decimal" Nullable="false" Precision="3" Scale="2" />
+          <Property Name="Status" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="TicketGroupDetail" Relationship="TicketSysModel.FK_TicketGroupDetail_TicketGroups" FromRole="TicketGroups" ToRole="TicketGroupDetail" />
         </EntityType>
         <EntityType Name="TicketQRCodes">
@@ -2555,6 +2573,14 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="ActivityFailedReason">
+            <EntityTypeMapping TypeName="TicketSysModel.ActivityFailedReason">
+              <MappingFragment StoreEntitySet="ActivityFailedReason">
+                <ScalarProperty Name="FailedReason" ColumnName="FailedReason" />
+                <ScalarProperty Name="ActivityFailedReasonID" ColumnName="ActivityFailedReasonID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="ActivityFavourite">
             <EntityTypeMapping TypeName="TicketSysModel.ActivityFavourite">
               <MappingFragment StoreEntitySet="ActivityFavourite">
@@ -2875,6 +2901,7 @@
           <EntitySetMapping Name="TicketGroups">
             <EntityTypeMapping TypeName="TicketSysModel.TicketGroups">
               <MappingFragment StoreEntitySet="TicketGroups">
+                <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="TicketGroupDiscount" ColumnName="TicketGroupDiscount" />
                 <ScalarProperty Name="TicketGroupName" ColumnName="TicketGroupName" />
                 <ScalarProperty Name="TicketGroupId" ColumnName="TicketGroupId" />

@@ -69,50 +69,109 @@ namespace 期末專題_討論版.Controllers
             return Json(result);
 
         }
-         
+
         //文章要不要有刪除功能呢？
         //水桶文底下的留言是可以被接受的？
         //水桶作者，文章屏蔽？
 
-
+            //判斷權限的類別
+        Authority authority = new Authority();
         public void  Delete(int articleID)
         {
+            
             Member member = Session[CDictionary.SK_Logined_Member] as Member;
+            List<string> author = authority.Authorityjudgment(member);
             TicketSysEntities db = new TicketSysEntities();
-            Article article = db.Article.Where(n => n.ArticleID == articleID).FirstOrDefault();
-            if (Session[CDictionary.SK_Logined_Member] == null)
-            {
 
-                Page Page = new Page();
-                Response.Write("<script>alert('您尚未登入！即將跳轉至登入頁面');" +
-                    "window.location.href='http://localhost:49949/Login/Login';</script> ");
-            }
-            else if (article.MemberID != member.MemberID)
-            {
-                Response.Write("<script>alert('您非該文章作者，禁止刪除！即將跳轉至討論版首頁');" +
-                    "window.location.href='http://localhost:49949/Forum/forum_mainblock';</script> ");
-            }
-            else
+            //是一般會員且是作者，就可以編輯
+            Article article = db.Article.Where(n => n.ArticleID == articleID).FirstOrDefault();
+
+            if (author.Contains("管理員"))
             {
                 var q = db.Article.Where(n => n.ArticleID == articleID).FirstOrDefault();
                 var reply = db.Reply.Where(n => n.ArticleID == articleID);
                 foreach (var item in reply)
                 {
+                    var qq = db.Reply_Emotion.Where(n => n.ReplyId == item.ReplyID);
+                    var qqq = db.Reply_Report.Where(n => n.ReplyId == item.ReplyID);
+                    foreach (var items in qq)
+                    {
+                        db.Reply_Emotion.Remove(items);
+                    }
+                    foreach (var itemss in qqq)
+                    {
+                        db.Reply_Report.Remove(itemss);
+                    }
+
+                }
+                
+                foreach (var item in reply)
+                {
                     db.Reply.Remove(item);
+
+                }
+                foreach (var item in db.Article_Report.Where(n => n.ArticleId == articleID))
+                {
+                    db.Article_Report.Remove(item);
+                }
+                foreach (var item in db.Article_Emotion.Where(n => n.ArticleId == articleID))
+                {
+                    db.Article_Emotion.Remove(item);
+                }
+                foreach (var item in db.Ad_Article_Activity.Where(n=>n.ArticleID == articleID))
+                {
+                    db.Ad_Article_Activity.Remove(item);
                 }
                 db.Article.Remove(q);
                 db.SaveChanges();
-                Response.Write("<script>" +                     
+                Response.Write("<script>" +
                     "alert('刪除成功！即將跳轉至討論版首頁');" +
                     "window.location.href='http://localhost:49949/Forum/forum_mainblock';" +
                     "</script> ");
             }
+            else if (author.Contains("一般會員"))
+            {
+                if(article.MemberID == member.MemberID)
+                {
+                    var q = db.Article.Where(n => n.ArticleID == articleID).FirstOrDefault();
+                    var reply = db.Reply.Where(n => n.ArticleID == articleID);
+                    foreach (var item in reply)
+                    {
+                        db.Reply.Remove(item);
+                    }
+                    db.Article.Remove(q);
+                    db.SaveChanges();
+                    Response.Write("<script>" +
+                        "alert('刪除成功！即將跳轉至討論版首頁');" +
+                        "window.location.href='http://localhost:49949/Forum/forum_mainblock';" +
+                        "</script> ");
+                }
+                else
+                {
+                    Response.Write("<script>alert('您非該文章作者，禁止刪除！即將跳轉至討論版首頁');" +
+                   "window.location.href='http://localhost:49949/Forum/forum_mainblock';</script> ");
+                }
+            }
+            else
+            {
+                Response.Write("<script>alert('您尚未登入！即將跳轉至登入頁面');" +
+                    "window.location.href='http://localhost:49949/Login/Login';</script> ");
+            }          
            
         }
         public ActionResult Reply_Delete(int replyID, int ArticleID)
         {
             TicketSysEntities db = new TicketSysEntities();
             var q = db.Reply.Where(n => n.ReplyID == replyID).FirstOrDefault();
+            foreach (var item in db.Reply_Report.Where(n=>n.ReplyId==q.ReplyID))
+            {
+                db.Reply_Report.Remove(item);
+            }
+            foreach (var item in db.Reply_Emotion.Where(n => n.ReplyId == q.ReplyID))
+            {
+                db.Reply_Emotion.Remove(item);
+
+            }
             db.Reply.Remove(q);
             db.SaveChanges();
             return RedirectToAction("forum_content", "Forum", new { articleID = ArticleID });
@@ -131,6 +190,10 @@ namespace 期末專題_討論版.Controllers
             var p = db.ArticleCategories.Select(n => n).ToList();
             int maxPage = q.Count / 4;
             var qq = new VMforum_mainblock { Article = q, ArticleCategories = p, page = maxPage ,searchWord = searchText };
+
+            //刪除沒有用到的圖片(就是剪裁失敗的)
+            CleanClear cleanClear = new CleanClear();
+            cleanClear.cleanData();
             return View("forum_mainblock", "_ForumLayout", qq);
         }
         public ActionResult forum_content(int? articleID)
@@ -159,7 +222,7 @@ namespace 期末專題_討論版.Controllers
                 {
                 TicketSysEntities db = new TicketSysEntities();
                 Reply rp = new Reply();
-                rp.MemberID = 1;
+                rp.MemberID = member.MemberID;
                 rp.ReplyDate = DateTime.Now;
                 rp.ArticleID = articleID;
                 rp.ReplyContent = content;
@@ -179,10 +242,10 @@ namespace 期末專題_討論版.Controllers
         //改變編輯─標題圖示的顯示與編輯
         public void before_Add_article()
         {
-            if (Session[CDictionary.SK_Logined_Member] == null)
+            Member member = Session[CDictionary.SK_Logined_Member] as Member;
+            List<string> author = authority.Authorityjudgment(member);
+            if (author.Contains("未登入"))
             {
-
-                Page Page = new Page();
                 Response.Write("<script>alert('您尚未登入！即將跳轉至登入頁面');" +
                     "window.location.href='http://localhost:49949/Login/Login';</script> ");
             }
@@ -196,24 +259,26 @@ namespace 期末專題_討論版.Controllers
         public void before_Edit_article(int? articleID)
         {
             Member member = Session[CDictionary.SK_Logined_Member] as Member;
+            List<string> author = authority.Authorityjudgment(member);
             TicketSysEntities db = new TicketSysEntities();
             Article article = db.Article.Where(n => n.ArticleID == articleID).FirstOrDefault();
-            if (Session[CDictionary.SK_Logined_Member] == null)
+            if (author.Contains("未登入"))
             {
 
                 Page Page = new Page();
                 Response.Write("<script>alert('您尚未登入！即將跳轉至登入頁面');" +
                     "window.location.href='http://localhost:49949/Login/Login';</script> ");
             }
-            else if(article.MemberID != member.MemberID)            
-            {
-                Response.Write("<script>alert('您非該文章作者，禁止編輯！即將跳轉至討論版首頁');" +
-                    "window.location.href='http://localhost:49949/Forum/forum_mainblock';</script> ");
-            }
-            else
+            else if(article.MemberID == member.MemberID || member.MemberRoleId==3)            
             {
                 Response.Write("<script>" +
                     $"window.location.href='http://localhost:49949/Forum/Edit_article?articleID={articleID}';</script> ");
+            }
+            else
+            {
+                Response.Write("<script>alert('您非該文章作者，禁止編輯！即將跳轉至討論版首頁');" +
+                    "window.location.href='http://localhost:49949/Forum/forum_mainblock';</script> ");
+                
             }
         }
         //
@@ -222,7 +287,7 @@ namespace 期末專題_討論版.Controllers
             Member member = Session[CDictionary.SK_Logined_Member] as Member;
             TicketSysEntities db = new TicketSysEntities();
             VMforum_mainblock vMforum_Mainblock = new VMforum_mainblock();
-            vMforum_Mainblock.activities = db.Activity.Where(n => n.SellerID == member.MemberID).ToList();
+            vMforum_Mainblock.activities = db.Activity.Where(n => n.Seller.MemberId == member.MemberID).ToList();
             vMforum_Mainblock.ArticleCategories = db.ArticleCategories.ToList();
 
             return View(vMforum_Mainblock);
@@ -230,7 +295,7 @@ namespace 期末專題_討論版.Controllers
         //關閉保護html傳送
         [ValidateInput(false)]
         [HttpPost]
-        public string Add_article(string title, string content, string picPath, int[] Activities)
+        public string Add_article(string title, string content,int ArticleCategoryID, string picPath, int[] Activities)
         {
             if (Session[CDictionary.SK_Logined_Member] == null)
                 return "Fail";
@@ -247,19 +312,23 @@ namespace 期末專題_討論版.Controllers
                 Article article = new Article();
                 article.MemberID = member.MemberID;
                 article.Date = DateTime.Now;
-                article.ArticleCategoryID = 1;
+                article.ArticleCategoryID = ArticleCategoryID;
                 article.ArticleTitle = title;
                 article.ArticleContent = content;
-                if (string.IsNullOrEmpty(picPath))
+                if (!string.IsNullOrEmpty(picPath))
                     article.Picture = picPath;
                 //article 的活動
-                foreach (var item in Activities)
+                if (Activities!= null)
+                {
+                    foreach (var item in Activities)
                 {
                     Ad_Article_Activity ad_Article_Activity = new Ad_Article_Activity();
                     ad_Article_Activity.ActivityID = item;
                     ad_Article_Activity.ArticleID = article.ArticleID;
                     db.Ad_Article_Activity.Add(ad_Article_Activity);
                 }
+                }
+                
                 
                 db.Article.Add(article);
                 db.SaveChanges();
@@ -283,11 +352,12 @@ namespace 期末專題_討論版.Controllers
             vMforum_Mainblock.ArticleCategories = new List<ArticleCategories>();
             vMforum_Mainblock.Article.Add(article);
             vMforum_Mainblock.ArticleCategories = p.ToList();
+            vMforum_Mainblock.activities = db.Activity.Where(n => n.SellerID == article.MemberID).ToList();
             return View(vMforum_Mainblock);
         }
         [ValidateInput(false)]
         [HttpPost]
-        public string Edit_article(string title, string content,int ArticleID, string picPath)
+        public string Edit_article(string title, string content,int ArticleID, string picPath, int[] Activities)
         {
             TicketSysEntities db = new TicketSysEntities();
             Article article = db.Article.Where(n => n.ArticleID == ArticleID).FirstOrDefault();
@@ -298,10 +368,27 @@ namespace 期末專題_討論版.Controllers
                 article.Date = DateTime.Now;
                 if (!string.IsNullOrEmpty(picPath))
                     article.Picture = picPath;
+                if (Activities != null)
+                {
+                    //把先前的紀錄清空
+                    foreach (var items in db.Ad_Article_Activity.Where(n=>n.ArticleID==ArticleID))
+                    {
+                        db.Ad_Article_Activity.Remove(items);
+                    }
+                    //加入新的活動連結
+                    foreach (var item in Activities)
+                    {
+                        Ad_Article_Activity ad_Article_Activity = new Ad_Article_Activity();
+                        ad_Article_Activity.ActivityID = item;
+                        ad_Article_Activity.ArticleID = ArticleID;
+                        db.Ad_Article_Activity.Add(ad_Article_Activity);
+                    }
+                }
                 db.SaveChanges();
             }
             return "OK";
         }
+        [ValidateInput(false)]
         public string Reply_Edit(string rpcontent, int replyID)
         {
             try
@@ -434,7 +521,7 @@ namespace 期末專題_討論版.Controllers
             }
             //todo:按日期檢索
             ///
-            int maxPage = (articles.Count() / 4);
+            int maxPage = ((articles.Count()-1) / 4);
             //第幾頁
             articles = articles.OrderByDescending(n => n.Date).Skip(Page * 4).ToList();//這個頁數不能一起算欸！放最後篩好了
             var p = db.ArticleCategories.Select(n => n).ToList();

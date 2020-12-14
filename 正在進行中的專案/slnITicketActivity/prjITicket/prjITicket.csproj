@@ -612,6 +612,9 @@
     <Compile Include="Models\Activity.cs">
       <DependentUpon>TicketSysModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ActivityFailedReason.cs">
+      <DependentUpon>TicketSysModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\ActivityFavourite.cs">
       <DependentUpon>TicketSysModel.tt</DependentUpon>
     </Compile>
@@ -658,6 +661,7 @@
       <DependentUpon>TicketSysModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\facebook.cs" />
+    <Compile Include="Models\Forum\Authority.cs" />
     <Compile Include="Models\Forum\CCropImage.cs" />
     <Compile Include="Models\Forum\CForum_ArticleList_Factory.cs" />
     <Compile Include="Models\Forum\CleanClear.cs" />

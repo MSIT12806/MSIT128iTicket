@@ -5,8 +5,6 @@
 @{
     Member member = Session[CDictionary.SK_Logined_Member] as Member;
     int count = 0;
-    string rpcontent = "";
-    int rpId = 0;
 }
 
 
@@ -16,65 +14,64 @@
 <link href="~/Content/Forum_use/forumcontent.css" rel="stylesheet" />
 <link href="~/Content/Forum_use/css/styles.css" rel="stylesheet" />
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
 @foreach (var item in Model.Article.Reply)
 {
-
-
-    <div class="media mb-4">
-        <img style="content:url(/images/Login/Upload/@item.Member.Icon); width:50px; height:50px;">
-        <div class="media-body">
-            <div class="float-right">
-                <div class="w3-dropdown-hover w3-right" style="background-color:white">
-                    <button class="btn"><i class="fa fa-bars"></i></button>
-                    <div id="Dropdown@(count)" class="w3-dropdown-content w3-bar-block w3-border w3-animate-opacity" style="right:0;width:80px">
-                        <button onclick="reply_quote(@item.ReplyID)" class="emotion info">引用留言</button> @*Quote V.動詞 引用*@
-                        <button class="emotion info" onclick="showModal(@count)">檢舉留言</button>
-                        @if (member != null && item.MemberID == member.MemberID)
-                        {
-                            <button onclick="toggleEdit(@item.ReplyID)" class="emotion info">編輯留言</button>
-                            <button onclick="replydelete(@item.ReplyID)" class="emotion info">刪除留言</button>
-                        }
-                    </div>
+<div class="media mb-4">
+    <img class="reply_Profile" src="/images/Login/Upload/@item.Member.Icon" style="width:50px; height:50px;" onerror="this.src='/images/Login/Layout/bar.png'">
+    <div class="media-body">
+        <div class="float-right">
+            <div class="w3-dropdown-hover w3-right" style="background-color:white">
+                <button class="btn"><i class="fa fa-bars"></i></button>
+                <div id="Dropdown@(count)" class="w3-dropdown-content w3-bar-block w3-border w3-animate-opacity" style="right:0;width:80px">
+                    <button onclick="reply_quote(@item.ReplyID,'@item.Member.Name')" class="emotion info">引用留言</button> @*Quote V.動詞 引用*@
+                    <button class="emotion info" onclick="showModal(@count)">檢舉留言</button>
+                    @if (member != null && item.MemberID == member.MemberID)
+                    {
+                        <button onclick="toggleEdit(@item.ReplyID)" class="emotion info">編輯留言</button>
+                        <button onclick="replydelete(@item.ReplyID)" class="emotion info">刪除留言</button>
+                    }
                 </div>
             </div>
-            <h5 class="mt-0">@item.Member.Name</h5>
-            <div id="replyshow">
-                <div id="replyshow_content_@(item.ReplyID)"></div>
-
-                <input onkeydown="txtReplyKeyDown(@item.ReplyID)" id="replyEdit_content_@(item.ReplyID)" name="@(item.ReplyID)" type="text" style="width:600px;display:none;" rows="1" value="@(item.ReplyContent)">
-                <p id="fnt_@(item.ReplyID)" style="display:none;font-size:13px;color:gray">
-                    修改完成後按
-                    <span style="color:blue">Enter</span>修改或是
-                    <span style="color:blue">Esc</span>取消
-                </p>
-                <div style="margin-bottom:5px;">
-                    @if (member != null && item.Reply_Emotion.Where(n => n.ActionId == 1 && n.MemberId == member.MemberID && n.ReplyId == item.ReplyID).Any())
-                    {
-                        <button class="gpclick" id="actionlike@(item.ReplyID)" onclick="likeBtn(@item.ReplyID)">👍</button>
-                    }
-                    else
-                    {
-                        <button class="gp" id="actionlike@(item.ReplyID)" onclick="likeBtn(@item.ReplyID)">👍</button>
-                    }
-                    <label style="margin-right:20px" id="goodpoint@(item.ReplyID)">@item.Reply_Emotion.Where(n => n.ActionId == 1 && n.ReplyId == item.ReplyID).Count()</label>
-                    @if (member != null && item.Reply_Emotion.Where(n => n.ActionId == 2 && n.MemberId == member.MemberID && n.ReplyId == item.ReplyID).Any())
-                    {
-                        <button class="bpclick" id="actiondislike@(item.ReplyID)" onclick="dislikeBtn(@item.ReplyID)">👎</button>
-                    }
-                    else
-                    {
-                        <button class="bp" id="actiondislike@(item.ReplyID)" onclick="dislikeBtn(@item.ReplyID)">👎</button>
-                    }
-                    <label style="margin-right:20px" id="badpoint@(item.ReplyID)">@item.Reply_Emotion.Where(n => n.ActionId == 2 && n.ReplyId == item.ReplyID).Count()</label>
-                </div>
-            </div>
-
-
-
-            <br />
-
         </div>
+        <h5 class="mt-0">@item.Member.Name</h5>
+        <div id="replyshow">
+            <div id="replyshow_content_@(item.ReplyID)">@Html.Raw(item.ReplyContent)</div>
+
+            <input onkeydown="txtReplyKeyDown(@item.ReplyID)" id="replyEdit_content_@(item.ReplyID)" name="@(item.ReplyID)" type="text" style="width:600px;display:none;" rows="1" value="@Html.Raw(item.ReplyContent)">
+            <p id="fnt_@(item.ReplyID)" style="display:none;font-size:13px;color:gray">
+                修改完成後按
+                <span style="color:blue">Enter</span>修改或是
+                <span style="color:blue">Esc</span>取消
+            </p>
+            <div style="margin-bottom:5px;">
+                @if (member != null && item.Reply_Emotion.Where(n => n.ActionId == 1 && n.MemberId == member.MemberID && n.ReplyId == item.ReplyID).Any())
+                {
+                    <button class="gpclick" id="actionlike@(item.ReplyID)" onclick="likeBtn(@item.ReplyID)">👍</button>
+                }
+                else
+                {
+                    <button class="gp" id="actionlike@(item.ReplyID)" onclick="likeBtn(@item.ReplyID)">👍</button>
+                }
+                <label style="margin-right:20px" id="goodpoint@(item.ReplyID)">@item.Reply_Emotion.Where(n => n.ActionId == 1 && n.ReplyId == item.ReplyID).Count()</label>
+                @if (member != null && item.Reply_Emotion.Where(n => n.ActionId == 2 && n.MemberId == member.MemberID && n.ReplyId == item.ReplyID).Any())
+                {
+                    <button class="bpclick" id="actiondislike@(item.ReplyID)" onclick="dislikeBtn(@item.ReplyID)">👎</button>
+                }
+                else
+                {
+                    <button class="bp" id="actiondislike@(item.ReplyID)" onclick="dislikeBtn(@item.ReplyID)">👎</button>
+                }
+                <label style="margin-right:20px" id="badpoint@(item.ReplyID)">@item.Reply_Emotion.Where(n => n.ActionId == 2 && n.ReplyId == item.ReplyID).Count()</label>
+            </div>
+        </div>
+
+
+
+        <br />
+
     </div>
+</div>
 
     <div style="display:none" id="Modal@(count)" class="w3-modal w3-animate-opacity">
         <div class="w3-modal-content">
@@ -102,23 +99,17 @@
             <footer class="w3-container w3-teal">
                 <div style="margin:5px 0px;" class="float-right">
                     <button class="w3-button w3-black" type="button" onclick="closeModal(@count)">取消</button>
-                    <button class="w3-button w3-pale-green" type="button" onclick="reportReason(@item.ReplyID)">確定</button>
+                    <button class="w3-button w3-pale-green" type="button" onclick="reportReason(@item.ReplyID,@count)">確定</button>
+
                 </div>
             </footer>
         </div>
     </div>
-    rpcontent = item.ReplyContent;
-    rpId = item.ReplyID;
+    
     count += 1;
-
-
 }
 
 <script>
-
-
-     $("#replyshow_content_@rpId").html(`@Html.Raw(rpcontent)`);
-
     function replydelete(replyId) {
         $.ajax({
                     type: "post",
@@ -134,7 +125,7 @@
     function txtReplyKeyDown(replyId) {
 
         if (window.event.keyCode == 13) {
-            let rpcontent = $("#replyEdit_content_"+`${replyId}`).val();
+            let rpcontent = $("#replyEdit_content_"+ replyId).val();
 
             if (rpcontent == "")
             {
@@ -144,11 +135,11 @@
             {
                 $.ajax({
                     type: "post",
-                    url: "@Url.Action("Reply_Edit")",
-                    data: { rpcontent: rpcontent, replyId: replyId },
+                    url: "@Url.Action("Reply_Edit","Forum")",
+                    data: { rpcontent: rpcontent, replyID: replyId },
                     success: function (data) {
                         alert("成功")
-                        $("#ajaxdemoshow").load(`/Forum/forum_reply?articleID=@Model.Article.ArticleID`);
+                        $("#ajaxdemoshow").load(`@Url.Action("forum_reply","Forum",new { articleID =Model.Article.ArticleID})`);
                     }
                 });
             }
@@ -188,7 +179,8 @@
         Modal.style.display = 'none';
     }
 
-    function reportReason(replyId) {
+    function reportReason(replyId,count) {
+        let Modal = document.getElementById('Modal' + count);
         let reportId = $('#reason').val();
         if (reportId === '#') {
             alert("社會再走，理由要有");
@@ -249,7 +241,6 @@
                     data: { ReplyID: replyId},
                     success: function (data) {
                         goodpoint.innerText = parseInt(goodpoint.innerText) - 1;
-
                     },
                     error: function (data) {
                     }
@@ -257,7 +248,6 @@
             }
         }
     }
-
     function dislikeBtn(replyId) {
         let likebtn = document.getElementById('actionlike' + replyId);
         let dislikebtn = document.getElementById('actiondislike' + replyId);
@@ -278,6 +268,8 @@
                           if (data != "成功") {
                               alert(data);
                               window.location.href = 'http://localhost:49949/Login/Login';
+                          } else {
+                              badpoint.innerText = parseInt(badpoint.innerText) + 1;
                           }
                     },
                     error: function (data) {
@@ -299,5 +291,8 @@
             }
         }
     }
+
+
+   
 </script>
 

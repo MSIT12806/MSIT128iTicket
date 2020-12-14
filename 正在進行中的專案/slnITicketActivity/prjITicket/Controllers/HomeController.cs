@@ -1,4 +1,5 @@
-﻿using System;
+﻿using prjITicket.Models.Forum;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -9,9 +10,10 @@ namespace prjITicket.Controllers
     public class HomeController : Controller
     {
         // GET: Home
-        public ActionResult Index()
+        public void Index()
         {
-            return View();
+
+            
         }
     }
 }

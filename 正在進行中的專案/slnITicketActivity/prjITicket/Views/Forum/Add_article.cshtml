@@ -1,9 +1,12 @@
 ﻿@using PagedList;
 @using PagedList.Mvc;
 @using prjITicket.ViewModel;
+@using prjITicket.Models
 @model VMforum_mainblock
 @{
+    Member member = Session[CDictionary.SK_Logined_Member] as Member;
 }
+<link href="~/Content/Forum_use/forumcontent.css" rel="stylesheet" />
 <link href="~/Content/Forum_use/css/styles.css" rel="stylesheet" />
 <style>
 
@@ -29,11 +32,11 @@
                 </div>
                 <div class="toast-body">
                     <div>
-                        <select style="width:auto">
+                        <select id="ArticleCategorySelected" style="width:auto">
                             <option value="0">選擇討論版</option>
                             @foreach (var item in Model.ArticleCategories)
                             {
-                                <option value="0">
+                                <option value="@item.ArticleCategoryID">
                                     @item.ArticleCategoryName
                                 </option>
                             }
@@ -95,7 +98,7 @@
                             
                         </textarea>
                     <div>
-                        @if (true)
+                        @if (member.MemberRoleId == 3)
                         {
                             <div class="input-group my-4">
                                 <button style="width:300%" id="forSeller" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">加入商品</button>
@@ -117,7 +120,7 @@
 
                                     @foreach (var item in Model.activities)
                                     {
-                                        <button id="@item.ActivityID" onclick="AddActivity(this)">@item.ActivityName</button>
+                                        <button class="emotion default" id="@item.ActivityID" onclick="AddActivity(this)">@item.ActivityName</button>
                                     }
 
 
@@ -156,7 +159,16 @@
 <script>
     var Activity = [];
     function AddActivity(result) {
-        Activity.push(result.id);
+        let x = document.getElementById(result.id);
+        if (x.className == "emotion default") {
+            x.className = "emotion defaultclick";
+            Activity.push(result.id);
+        } else {
+            x.className = "emotion default";
+            Activity = Activity.filter(function (item) {
+                return item != x.id;
+            })
+        }
     }
 
                 var imgFile;
@@ -330,12 +342,12 @@
     $("#btnSubmit").click(function(){
         let title = $("#articleTitle").val();
         let content = editor.getData();
-        let ActivityAry = [];
+        let ArticleCategoryID = $("#ArticleCategorySelected").val();
 
         $.ajax({
         type: "post",
         url: "@Url.Action("Add_article")",
-        data: { title: title, content: content, picPath: picPath, Activities: Activity},
+            data: { title: title, content: content, picPath: picPath, ArticleCategoryID: ArticleCategoryID, Activities: Activity},
         success: function (result) {
                 if (result == "OK") {
                     location.href ='@Url.Action("forum_mainblock")';
