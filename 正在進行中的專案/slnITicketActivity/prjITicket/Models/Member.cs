@@ -42,8 +42,6 @@ public partial class Member
 
         this.Reply_Emotion = new HashSet<Reply_Emotion>();
 
-        this.Reply = new HashSet<Reply>();
-
         this.Reply_Report = new HashSet<Reply_Report>();
 
         this.Seller = new HashSet<Seller>();
@@ -140,10 +138,6 @@ public partial class Member
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
 
     public virtual ICollection<Reply_Emotion> Reply_Emotion { get; set; }
-
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-
-    public virtual ICollection<Reply> Reply { get; set; }
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
 

@@ -39,11 +39,9 @@ public partial class Reply
 
     public int ArticleID { get; set; }
 
+    public bool Readed { get; set; }
 
 
-    public virtual Article Article { get; set; }
-
-    public virtual Member Member { get; set; }
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
 

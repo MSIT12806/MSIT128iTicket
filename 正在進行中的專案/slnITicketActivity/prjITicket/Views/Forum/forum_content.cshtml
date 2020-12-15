@@ -150,6 +150,8 @@
                 </div>
             </div>
             <!-- Side Widget -->
+            @if (Model.Article.MemberID == member.MemberID || member.MemberRoleId==4)
+            {
             <div class="card my-3">
                 <h5 class="card-header" style="background-color:coral">管理員/發文者才能看到的文章操作區</h5>
                 <div class="card-body">
@@ -157,6 +159,7 @@
                     @Html.ActionLink("刪除", "Delete", "Forum", new { articleID = Model.Article.ArticleID }, null)
                 </div>
             </div>
+            }
         </div>
     </div>  
     <!-- /.row -->

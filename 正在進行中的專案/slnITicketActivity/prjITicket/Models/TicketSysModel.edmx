@@ -22,9 +22,12 @@
           <Property Name="ActivityStatusID" Type="int" Nullable="false" />
           <Property Name="DistrictId" Type="int" Nullable="false" />
         </EntityType>
+        <!--產生期間發現錯誤:
+警告 6002: 資料表/檢視 'TicketSys.dbo.ActivityFailedReason' 未定義主索引鍵。已推斷此索引鍵，並將定義建立成唯讀的資料表/檢視。-->
         <EntityType Name="ActivityFailedReason">
           <Key>
             <PropertyRef Name="ActivityFailedReasonID" />
+            <PropertyRef Name="FailedReason" />
           </Key>
           <Property Name="ActivityFailedReasonID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="FailedReason" Type="nvarchar" MaxLength="50" Nullable="false" />
@@ -222,10 +225,11 @@
             <PropertyRef Name="ReplyID" />
           </Key>
           <Property Name="ReplyID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="ReplyContent" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="ReplyContent" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="MemberID" Type="int" Nullable="false" />
           <Property Name="ReplyDate" Type="datetime" Nullable="false" />
           <Property Name="ArticleID" Type="int" Nullable="false" />
+          <Property Name="Readed" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Reply_Emotion">
           <Key>
@@ -264,7 +268,7 @@
           <Property Name="SellerDeccription" Type="nvarchar(max)" />
           <Property Name="MemberId" Type="int" Nullable="false" />
           <Property Name="fPass" Type="bit" />
-          <Property Name="fFileName" Type="nvarchar" MaxLength="50" />
+          <Property Name="fFileName" Type="nchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="ShoppingCart">
           <Key>
@@ -701,18 +705,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Reply_Article">
-          <End Role="Article" Type="Self.Article" Multiplicity="1" />
-          <End Role="Reply" Type="Self.Reply" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Article">
-              <PropertyRef Name="ArticleID" />
-            </Principal>
-            <Dependent Role="Reply">
-              <PropertyRef Name="ArticleID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Reply_Emotion_EmotionAction">
           <End Role="EmotionAction" Type="Self.EmotionAction" Multiplicity="1" />
           <End Role="Reply_Emotion" Type="Self.Reply_Emotion" Multiplicity="*" />
@@ -746,18 +738,6 @@
             </Principal>
             <Dependent Role="Reply_Emotion">
               <PropertyRef Name="ReplyId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Reply_Member">
-          <End Role="Member" Type="Self.Member" Multiplicity="1" />
-          <End Role="Reply" Type="Self.Reply" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Member">
-              <PropertyRef Name="MemberID" />
-            </Principal>
-            <Dependent Role="Reply">
-              <PropertyRef Name="MemberID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -979,7 +959,6 @@
         </Association>
         <EntityContainer Name="TicketSysModelStoreContainer">
           <EntitySet Name="Activity" EntityType="Self.Activity" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="ActivityFailedReason" EntityType="Self.ActivityFailedReason" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ActivityFavourite" EntityType="Self.ActivityFavourite" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ActivityStatus" EntityType="Self.ActivityStatus" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Ad_Article_Activity" EntityType="Self.Ad_Article_Activity" Schema="dbo" store:Type="Tables" />
@@ -1014,6 +993,12 @@
           <EntitySet Name="TicketQRCodes" EntityType="Self.TicketQRCodes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tickets" EntityType="Self.Tickets" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TicketTimes" EntityType="Self.TicketTimes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ActivityFailedReason" EntityType="Self.ActivityFailedReason" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [ActivityFailedReason].[ActivityFailedReasonID] AS [ActivityFailedReasonID], 
+    [ActivityFailedReason].[FailedReason] AS [FailedReason]
+    FROM [dbo].[ActivityFailedReason] AS [ActivityFailedReason]</DefiningQuery>
+          </EntitySet>
           <AssociationSet Name="FK_Activity_ActivityStatus" Association="Self.FK_Activity_ActivityStatus">
             <End Role="ActivityStatus" EntitySet="ActivityStatus" />
             <End Role="Activity" EntitySet="Activity" />
@@ -1130,10 +1115,6 @@
             <End Role="Member" EntitySet="Member" />
             <End Role="Orders" EntitySet="Orders" />
           </AssociationSet>
-          <AssociationSet Name="FK_Reply_Article" Association="Self.FK_Reply_Article">
-            <End Role="Article" EntitySet="Article" />
-            <End Role="Reply" EntitySet="Reply" />
-          </AssociationSet>
           <AssociationSet Name="FK_Reply_Emotion_EmotionAction" Association="Self.FK_Reply_Emotion_EmotionAction">
             <End Role="EmotionAction" EntitySet="EmotionAction" />
             <End Role="Reply_Emotion" EntitySet="Reply_Emotion" />
@@ -1145,10 +1126,6 @@
           <AssociationSet Name="FK_Reply_Emotion_Reply" Association="Self.FK_Reply_Emotion_Reply">
             <End Role="Reply" EntitySet="Reply" />
             <End Role="Reply_Emotion" EntitySet="Reply_Emotion" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Reply_Member" Association="Self.FK_Reply_Member">
-            <End Role="Member" EntitySet="Member" />
-            <End Role="Reply" EntitySet="Reply" />
           </AssociationSet>
           <AssociationSet Name="FK_Reply_Report_Member" Association="Self.FK_Reply_Report_Member">
             <End Role="Member" EntitySet="Member" />
@@ -1229,7 +1206,6 @@
       <Schema Namespace="TicketSysModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="TicketSysEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Activity" EntityType="TicketSysModel.Activity" />
-          <EntitySet Name="ActivityFailedReason" EntityType="TicketSysModel.ActivityFailedReason" />
           <EntitySet Name="ActivityFavourite" EntityType="TicketSysModel.ActivityFavourite" />
           <EntitySet Name="ActivityStatus" EntityType="TicketSysModel.ActivityStatus" />
           <EntitySet Name="Ad_Article_Activity" EntityType="TicketSysModel.Ad_Article_Activity" />
@@ -1264,6 +1240,7 @@
           <EntitySet Name="TicketQRCodes" EntityType="TicketSysModel.TicketQRCodes" />
           <EntitySet Name="Tickets" EntityType="TicketSysModel.Tickets" />
           <EntitySet Name="TicketTimes" EntityType="TicketSysModel.TicketTimes" />
+          <EntitySet Name="ActivityFailedReason" EntityType="TicketSysModel.ActivityFailedReason" />
           <AssociationSet Name="FK_Activity_ActivityStatus" Association="TicketSysModel.FK_Activity_ActivityStatus">
             <End Role="ActivityStatus" EntitySet="ActivityStatus" />
             <End Role="Activity" EntitySet="Activity" />
@@ -1332,10 +1309,6 @@
             <End Role="Article" EntitySet="Article" />
             <End Role="Article_Emotion" EntitySet="Article_Emotion" />
           </AssociationSet>
-          <AssociationSet Name="FK_Reply_Article" Association="TicketSysModel.FK_Reply_Article">
-            <End Role="Article" EntitySet="Article" />
-            <End Role="Reply" EntitySet="Reply" />
-          </AssociationSet>
           <AssociationSet Name="FK_Emotion_EmotionAction" Association="TicketSysModel.FK_Emotion_EmotionAction">
             <End Role="EmotionAction" EntitySet="EmotionAction" />
             <End Role="Article_Emotion" EntitySet="Article_Emotion" />
@@ -1399,10 +1372,6 @@
           <AssociationSet Name="FK_Reply_Emotion_Member" Association="TicketSysModel.FK_Reply_Emotion_Member">
             <End Role="Member" EntitySet="Member" />
             <End Role="Reply_Emotion" EntitySet="Reply_Emotion" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Reply_Member" Association="TicketSysModel.FK_Reply_Member">
-            <End Role="Member" EntitySet="Member" />
-            <End Role="Reply" EntitySet="Reply" />
           </AssociationSet>
           <AssociationSet Name="FK_Reply_Report_Member" Association="TicketSysModel.FK_Reply_Report_Member">
             <End Role="Member" EntitySet="Member" />
@@ -1501,13 +1470,6 @@
           <NavigationProperty Name="Tickets" Relationship="TicketSysModel.FK_Tickets_Activity" FromRole="Activity" ToRole="Tickets" />
           <NavigationProperty Name="TicketTimes" Relationship="TicketSysModel.FK_TicketTimes_Activity" FromRole="Activity" ToRole="TicketTimes" />
         </EntityType>
-        <EntityType Name="ActivityFailedReason">
-          <Key>
-            <PropertyRef Name="ActivityFailedReasonID" />
-          </Key>
-          <Property Name="ActivityFailedReasonID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="FailedReason" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-        </EntityType>
         <EntityType Name="ActivityFavourite">
           <Key>
             <PropertyRef Name="ActivityFavouriteId" />
@@ -1552,7 +1514,6 @@
           <NavigationProperty Name="Member" Relationship="TicketSysModel.FK_Article_Member" FromRole="Article" ToRole="Member" />
           <NavigationProperty Name="Article_Report" Relationship="TicketSysModel.FK_Article_Report_Article_Report" FromRole="Article" ToRole="Article_Report" />
           <NavigationProperty Name="Article_Emotion" Relationship="TicketSysModel.FK_Emotion_Article" FromRole="Article" ToRole="Article_Emotion" />
-          <NavigationProperty Name="Reply" Relationship="TicketSysModel.FK_Reply_Article" FromRole="Article" ToRole="Reply" />
         </EntityType>
         <EntityType Name="Article_Emotion">
           <Key>
@@ -1684,7 +1645,6 @@
           <NavigationProperty Name="MemberMissionStatusList" Relationship="TicketSysModel.FK_MemberMissionStatusList_Member" FromRole="Member" ToRole="MemberMissionStatusList" />
           <NavigationProperty Name="Orders" Relationship="TicketSysModel.FK_Orders_Member" FromRole="Member" ToRole="Orders" />
           <NavigationProperty Name="Reply_Emotion" Relationship="TicketSysModel.FK_Reply_Emotion_Member" FromRole="Member" ToRole="Reply_Emotion" />
-          <NavigationProperty Name="Reply" Relationship="TicketSysModel.FK_Reply_Member" FromRole="Member" ToRole="Reply" />
           <NavigationProperty Name="Reply_Report" Relationship="TicketSysModel.FK_Reply_Report_Member" FromRole="Member" ToRole="Reply_Report" />
           <NavigationProperty Name="Seller" Relationship="TicketSysModel.FK_Seller_Member" FromRole="Member" ToRole="Seller" />
           <NavigationProperty Name="ShoppingCart" Relationship="TicketSysModel.FK_ShoppingCart_Member" FromRole="Member" ToRole="ShoppingCart" />
@@ -1759,12 +1719,11 @@
             <PropertyRef Name="ReplyID" />
           </Key>
           <Property Name="ReplyID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ReplyContent" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ReplyContent" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="MemberID" Type="Int32" Nullable="false" />
           <Property Name="ReplyDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="ArticleID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Article" Relationship="TicketSysModel.FK_Reply_Article" FromRole="Reply" ToRole="Article" />
-          <NavigationProperty Name="Member" Relationship="TicketSysModel.FK_Reply_Member" FromRole="Reply" ToRole="Member" />
+          <Property Name="Readed" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Reply_Emotion" Relationship="TicketSysModel.FK_Reply_Emotion_Reply" FromRole="Reply" ToRole="Reply_Emotion" />
           <NavigationProperty Name="Reply_Report" Relationship="TicketSysModel.FK_Reply_Report_Reply" FromRole="Reply" ToRole="Reply_Report" />
         </EntityType>
@@ -1813,7 +1772,7 @@
           <Property Name="SellerDeccription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="MemberId" Type="Int32" Nullable="false" />
           <Property Name="fPass" Type="Boolean" />
-          <Property Name="fFileName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="fFileName" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
           <NavigationProperty Name="Activity" Relationship="TicketSysModel.FK_Activity_Seller" FromRole="Seller" ToRole="Activity" />
           <NavigationProperty Name="Member" Relationship="TicketSysModel.FK_Seller_Member" FromRole="Seller" ToRole="Member" />
           <NavigationProperty Name="Subscribes" Relationship="TicketSysModel.FK_Subscribes_Seller" FromRole="Seller" ToRole="Subscribes" />
@@ -1924,6 +1883,14 @@
           <Property Name="ActivityId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Activity" Relationship="TicketSysModel.FK_TicketTimes_Activity" FromRole="TicketTimes" ToRole="Activity" />
           <NavigationProperty Name="Tickets" Relationship="TicketSysModel.FK_Tickets_TicketTimes" FromRole="TicketTimes" ToRole="Tickets" />
+        </EntityType>
+        <EntityType Name="ActivityFailedReason">
+          <Key>
+            <PropertyRef Name="ActivityFailedReasonID" />
+            <PropertyRef Name="FailedReason" />
+          </Key>
+          <Property Name="ActivityFailedReasonID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FailedReason" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_Activity_ActivityStatus">
           <End Type="TicketSysModel.ActivityStatus" Role="ActivityStatus" Multiplicity="1" />
@@ -2129,18 +2096,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Reply_Article">
-          <End Type="TicketSysModel.Article" Role="Article" Multiplicity="1" />
-          <End Type="TicketSysModel.Reply" Role="Reply" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Article">
-              <PropertyRef Name="ArticleID" />
-            </Principal>
-            <Dependent Role="Reply">
-              <PropertyRef Name="ArticleID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Emotion_EmotionAction">
           <End Type="TicketSysModel.EmotionAction" Role="EmotionAction" Multiplicity="1" />
           <End Type="TicketSysModel.Article_Emotion" Role="Article_Emotion" Multiplicity="*" />
@@ -2330,18 +2285,6 @@
             </Principal>
             <Dependent Role="Reply_Emotion">
               <PropertyRef Name="MemberId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Reply_Member">
-          <End Type="TicketSysModel.Member" Role="Member" Multiplicity="1" />
-          <End Type="TicketSysModel.Reply" Role="Reply" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Member">
-              <PropertyRef Name="MemberID" />
-            </Principal>
-            <Dependent Role="Reply">
-              <PropertyRef Name="MemberID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2573,14 +2516,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ActivityFailedReason">
-            <EntityTypeMapping TypeName="TicketSysModel.ActivityFailedReason">
-              <MappingFragment StoreEntitySet="ActivityFailedReason">
-                <ScalarProperty Name="FailedReason" ColumnName="FailedReason" />
-                <ScalarProperty Name="ActivityFailedReasonID" ColumnName="ActivityFailedReasonID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="ActivityFavourite">
             <EntityTypeMapping TypeName="TicketSysModel.ActivityFavourite">
               <MappingFragment StoreEntitySet="ActivityFavourite">
@@ -2791,6 +2726,7 @@
           <EntitySetMapping Name="Reply">
             <EntityTypeMapping TypeName="TicketSysModel.Reply">
               <MappingFragment StoreEntitySet="Reply">
+                <ScalarProperty Name="Readed" ColumnName="Readed" />
                 <ScalarProperty Name="ArticleID" ColumnName="ArticleID" />
                 <ScalarProperty Name="ReplyDate" ColumnName="ReplyDate" />
                 <ScalarProperty Name="MemberID" ColumnName="MemberID" />
@@ -2936,6 +2872,14 @@
                 <ScalarProperty Name="ActivityId" ColumnName="ActivityId" />
                 <ScalarProperty Name="TicketTime" ColumnName="TicketTime" />
                 <ScalarProperty Name="TicketTimeId" ColumnName="TicketTimeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ActivityFailedReason">
+            <EntityTypeMapping TypeName="TicketSysModel.ActivityFailedReason">
+              <MappingFragment StoreEntitySet="ActivityFailedReason">
+                <ScalarProperty Name="FailedReason" ColumnName="FailedReason" />
+                <ScalarProperty Name="ActivityFailedReasonID" ColumnName="ActivityFailedReasonID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

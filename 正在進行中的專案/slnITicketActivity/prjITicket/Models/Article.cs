@@ -28,8 +28,6 @@ public partial class Article
 
         this.Article_Emotion = new HashSet<Article_Emotion>();
 
-        this.Reply = new HashSet<Reply>();
-
     }
 
 
@@ -64,10 +62,6 @@ public partial class Article
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
 
     public virtual ICollection<Article_Emotion> Article_Emotion { get; set; }
-
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-
-    public virtual ICollection<Reply> Reply { get; set; }
 
 }
 

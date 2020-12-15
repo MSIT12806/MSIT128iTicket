@@ -34,8 +34,6 @@ public partial class TicketSysEntities : DbContext
 
     public virtual DbSet<Activity> Activity { get; set; }
 
-    public virtual DbSet<ActivityFailedReason> ActivityFailedReason { get; set; }
-
     public virtual DbSet<ActivityFavourite> ActivityFavourite { get; set; }
 
     public virtual DbSet<ActivityStatus> ActivityStatus { get; set; }
@@ -103,6 +101,8 @@ public partial class TicketSysEntities : DbContext
     public virtual DbSet<Tickets> Tickets { get; set; }
 
     public virtual DbSet<TicketTimes> TicketTimes { get; set; }
+
+    public virtual DbSet<ActivityFailedReason> ActivityFailedReason { get; set; }
 
 }
 
